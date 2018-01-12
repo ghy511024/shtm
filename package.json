@@ -2,7 +2,7 @@
   "name": "ptl",
   "version": "0.0.2",
   "license": "MIT",
-  "main": "./src/jstl.js",
+  "main": "./src/ptl.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:ghy511024/ptl.git"
