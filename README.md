@@ -1,0 +1,14 @@
+##js bnf
+http://tomcopeland.blogs.com/EcmaScript.html
+
+关于bnf 的几个项目
+
+git@github.com:calder/OmNom.js.git
+git@github.com:JoshDreamland/JS-BNF.git
+
+* js 语法解析工具
+    * (esprima) http://esprima.org/
+    * (v8)https://code.google.com/p/v8/source/browse/branches/bleeding_edge/src/ast.h
+    * (SpiderMonkey) https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API
+    * (uglifyjs) http://lisperator.net/uglifyjs/
+    * (AST explorer) http://astexplorer.net/
