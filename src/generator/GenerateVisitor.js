@@ -12,6 +12,7 @@ const ForEachIpml = require ("../tag/ipml/ForEachIpml");
 const IfIpml = require ("../tag/ipml/IfIpml");
 const Parser = require ("../compile/Parser");
 const jerr = require ("../err/Err");
+const path=require("path")
 
 class GenerateVisitor extends Node.Visitor {
     constructor (out, pageContext, compiler) {
@@ -84,7 +85,7 @@ class GenerateVisitor extends Node.Visitor {
      * include 实现，
      * */
     _vIncludeAction (n) {
-        let pageNodes = this.compiler.getPageNode (n.attrs.getValue ("page"), null);
+        let pageNodes = this.compiler.getPageNode(path.join(this.pageContext.fileDir,n.attrs.getValue("page")), null);
         if (pageNodes == null) {
             jerr.err ("GetnnerateVisitor.visitInclude err")
             return;

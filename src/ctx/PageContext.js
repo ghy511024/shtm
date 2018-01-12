@@ -10,7 +10,10 @@ const SESSION = "node.jstl.jsSession";
 const ELparser = require ("../ast/ELparser");
 
 class PageContext {
-    constructor (data) {
+    constructor (data,filPath) {
+        if (filPath != null) {
+            this.fileDir = filPath.slice(0, filPath.lastIndexOf(path.join("/")));
+        }
         this.data = data;
         this.attributes = {};
         this.isNametableInitialized = false;

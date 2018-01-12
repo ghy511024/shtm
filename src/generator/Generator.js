@@ -35,8 +35,8 @@ class Generator {
     /**
      * 最终线上express用的时候，会采用字符串形式输出
      * */
-    static generateStr(data, compiler, out, page) {
-        let pageContext = new PageContext(data);
+    static generateStr(data, compiler, out, page,fileName) {
+        let pageContext = new PageContext(data,fileName);
         page.visit(new GenerateVisitor(out, pageContext, compiler));
     }
 
