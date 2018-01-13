@@ -31,10 +31,12 @@ var T = {
             maps: { ghy: "1", xixi: 2 }
         }
         let t1 = +new Date ();
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 1000; i++) {
             jstl.compile (jsppath, data);
         }
         console.log (+new Date () - t1);
+        // let str = jstl.compile (jsppath, data);
+        // console.log (str);
     }
 }
 T.t2 ();

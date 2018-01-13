@@ -16,7 +16,7 @@ class Generator {
         this.out = out;
     }
 
-    static generateTree(outpath, compiler, page) {
+    static generateTree( page) {
         let a = new GenerateVisitor_tree()
         page.visit(a);
         console.log(JSON.stringify(a.getTree()));

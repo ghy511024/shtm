@@ -30,9 +30,12 @@ class Compiler {
     }
 
     compile (filename, data) {
+        // let t1 = new Date ();
         let stringWriter = new StringWriter ();
         let out = new ServletWriter (stringWriter);
         this.doParser (filename, null, out, data);
+        // let t1 = new Date ();
+        // console.log ("总时间", +new Date () - t1)
         return out.toString ();
     }
 
@@ -42,17 +45,20 @@ class Compiler {
     }
 
     getPageNode (filename, parent) {
-        let reader = this.getReader (filename);
+
         let pageNodes = this.cache[filename];
         if (pageNodes == null) {
+            let reader = this.getReader (filename);
             pageNodes = Parser.parse (filename, reader, parent);
+            this.cache[filename] = pageNodes;
         }
         return pageNodes;
     }
 
     doParser (filename, parent, out, data) {
         let pageNodes = this.getPageNode (filename, parent);
-        Generator.generateStr (data, this, out, pageNodes,filename);
+        Generator.generateStr (data, this, out, pageNodes, filename);
+        // Generator.generateTree ( pageNodes);
     }
 }
 
