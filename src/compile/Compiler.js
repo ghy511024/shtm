@@ -53,7 +53,8 @@ class Compiler {
 
     doParser (filename, parent, out, data) {
         let pageNodes = this.getPageNode (filename, parent);
-        Generator.generateStr (data, this, out, pageNodes, filename);
+        // Generator.generateStr (data, this, out, pageNodes, filename);
+        Generator.generateTree ( pageNodes);
     }
 }
 
