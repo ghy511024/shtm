@@ -1,11 +1,11 @@
 {
-  "name": "ptl",
-  "version": "0.0.3",
+  "name": "shtm",
+  "version": "0.0.0",
   "license": "MIT",
   "main": "./src/ptl.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:ghy511024/ptl.git"
+    "url": "git+ssh://git@github.com:ghy511024/shtm.git"
   },
   "dependencies": {
     "esprima": "^4.0.0"
