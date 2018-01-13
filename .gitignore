@@ -1,5 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
-/.idea
+.idea
 /fangapp/css/dev/.sass-cache/
 /.sass-cache/
 /node_modules
