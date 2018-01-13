@@ -1,14 +1,33 @@
-##js bnf
-http://tomcopeland.blogs.com/EcmaScript.html
 
-关于bnf 的几个项目
+### 变量输出
+```
+var data={a:1}
 
-git@github.com:calder/OmNom.js.git
-git@github.com:JoshDreamland/JS-BNF.git
+// 模版
+${data.a}
+```
 
-* js 语法解析工具
-    * (esprima) http://esprima.org/
-    * (v8)https://code.google.com/p/v8/source/browse/branches/bleeding_edge/src/ast.h
-    * (SpiderMonkey) https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API
-    * (uglifyjs) http://lisperator.net/uglifyjs/
-    * (AST explorer) http://astexplorer.net/
+### if 判断
+```
+var data="ss"
+
+// 模版
+<c:if test="${data=='ss'&&3>2}">
+ <p>hellow world</p>
+</c:if>
+```
+
+### 循环
+```
+var list=[1,2,3]
+
+// 模版
+<ul>
+    <c:forEach items="${list1}" var="item">
+        <li>
+            <span>${item}</span>
+        </li>
+    </c:forEach>
+</ul>
+
+```

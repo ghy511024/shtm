@@ -53,6 +53,7 @@ class GenerateVisitor extends Node.Visitor {
         } else if (n instanceof Node.TemplateText) {
             let obj = {};
             obj.name = name;
+            obj.text=n.text;
             this.tmp.push(obj);
         } else if (n instanceof Node.ELExpression) {
             let obj = {};

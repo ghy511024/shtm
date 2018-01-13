@@ -9,12 +9,17 @@ const Mark = require("./Mark");
 const TagInfo = require("../taglib/TagInfo");
 
 class JspReader {
-    constructor(baseDir, fname) {
-        this.currFileId = 0;
-        this.size = 0;
-        this.singleFile = false;
-        this.sourceFiles = [];
-        this.pushFile(baseDir, fname, "utf-8");
+    constructor(baseDir, fname, str) {
+        if (fname != null) {
+            this.currFileId = 0;
+            this.size = 0;
+            this.singleFile = true;
+            this.sourceFiles = [];
+            this.pushFile(baseDir, fname, "utf-8");
+        } else if (str != null) {
+            this.pushString(str);
+        }
+
     }
 
     getFile(fileId) {
@@ -109,6 +114,20 @@ class JspReader {
         }
         this.reset(oldstart);
         return ret;
+    }
+
+    pushString(fileStr) {
+        try {
+            let charArray = fileStr.split("");
+            if (this.current == null) {
+                this.current = new Mark(this, charArray)
+            } else {
+                this.current.pushStream(charArray);
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 
     pushFile(baseDir, fname, encoding, reader) {

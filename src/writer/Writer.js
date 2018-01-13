@@ -12,7 +12,7 @@ class Writer extends Abstract {
 
     print(s) {
         if (s == null) {
-            s = "null";
+            s = "";
         }
         this.write(s);
     }

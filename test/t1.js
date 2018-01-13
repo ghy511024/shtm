@@ -21,7 +21,7 @@ var T = {
         console.log (str);
     },
     t2: function () {
-        var jsppath = path.join (__dirname, "./jsp/x1.jsp");
+        var jsppath = path.join (__dirname, "./jsp/x.ptl");
         jstl.setBaseDir (path.join (__dirname, "./jsp"))
         let data = {
             num1: "1",
@@ -31,12 +31,13 @@ var T = {
             maps: { ghy: "1", xixi: 2 }
         }
         let t1 = +new Date ();
-        for (let i = 0; i < 1000; i++) {
-            jstl.compile (jsppath, data);
-        }
+        // for (let i = 0; i < 10000; i++) {
+        //     jstl.compile (jsppath, data);
+        // }
+        let str = jstl.compile (jsppath, data);
+        console.log (str);
         console.log (+new Date () - t1);
-        // let str = jstl.compile (jsppath, data);
-        // console.log (str);
+
     }
 }
 T.t2 ();
