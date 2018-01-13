@@ -96,7 +96,6 @@ class Parser {
                 this.reader.pushChar ();
                 continue;
             }
-
             // else if (ch == '\\') {
             //     if (this.reader.hasMoreInput ()) {
             //         ttext += ch;
