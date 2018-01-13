@@ -33,20 +33,18 @@ class jspErr {
     static getErrInfo (mark, preline, nextline) {
         let sline = Math.max (mark.line - preline, 1)
         let retstr = "";
-        for (let i = sline; i <= mark.line; i++) {
+        for (let i = sline; i < mark.line; i++) {
             let start = Mark.newMark (mark);
             start.resetLine (i);
-            retstr += (i + " " + mark.reader.getTextline (start, i));
+            retstr += ("   "+i + "|" + mark.reader.getTextline (start, i));
         }
-        for (let i = 0; i < mark.col + 1; i++) {
-            retstr += " ";
-        }
-        retstr += "↑";
-        retstr += "\n";
+        let cmark = Mark.newMark (mark);
+        cmark.resetLine (mark.line);
+        retstr += (">> "+cmark.line + "|" + cmark.reader.getTextline (cmark,cmark.line));
         for (let i = 1; i < nextline; i++) {
             let start = Mark.newMark (mark);
             start.resetLine (mark.line + i);
-            retstr += start.line + " " + mark.reader.getTextline (start, start.line)
+            retstr += "   "+start.line + "|" + mark.reader.getTextline (start, start.line)
         }
         return retstr;
     }

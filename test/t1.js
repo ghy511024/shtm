@@ -30,11 +30,13 @@ var T = {
                 { a: [{ "x": "dd" }, [1, 2, 3]] }],
             maps: { ghy: "1", xixi: 2 }
         }
-        let t1 = +new Date ();
-        for (let i = 0; i < 100; i++) {
-            jstl.compile (jsppath, data);
-        }
-        console.log (+new Date () - t1);
+        // let t1 = +new Date ();
+        // for (let i = 0; i < 10000; i++) {
+        //     jstl.compile (jsppath, data);
+        // }
+        // console.log (+new Date () - t1);
+        let str = jstl.compile (jsppath, data);
+        console.log (str);
     }
 }
 T.t2 ();

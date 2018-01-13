@@ -57,7 +57,7 @@ class PageContext {
         exp.replace(reg, function (_, $1) {
             exp_str = $1;
         })
-        return ELparser.getValueByLocal(exp_str, tmpData, node);
+        return ELparser.getValue(exp_str, tmpData, node);
     }
 }
 
