@@ -1,8 +1,12 @@
 {
   "name": "ptl",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
-  "main": "index.js",
+  "main": "./src/ptl.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:ghy511024/ptl.git"
+  },
   "dependencies": {
     "esprima": "^4.0.0"
   }
