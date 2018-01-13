@@ -1,0 +1,44 @@
+<html>
+<head>
+
+</head>
+<body>
+<h1>${title}</h1>
+
+<c:if test="${if_test1}">
+    <p>show if_test1</p>
+</c:if>
+<c:if test="${if_test1&&if_test2}">
+    <p>两个都显示</p>
+</c:if>
+<h3>for 循环，多重嵌套</h3>
+<ul>
+    <c:forEach items="${list}" var="item">
+        <li>
+            <p>${item.name}</p>
+            <ol>
+                <c:forEach items="${item.data}" var="li">
+                    <li>
+                        ${li}
+                    </li>
+                </c:forEach>
+            </ol>
+        </li>
+    </c:forEach>
+</ul>
+
+<h3>for 循环 map</h3>
+<c:forEach items="${maps}" var="item">
+    <p><span>${item.key}:</span><span>${item.value}</span></p>
+</c:forEach>
+
+<h3>map 混合使用</h3>
+<c:forEach items="${list2}" var="item">
+    <p><span>${item}:</span><span>${nameMap[item]}</span></p>
+</c:forEach>
+
+<h3>include 外部页面</h3>
+<p>与handbares 不同，无需设置额外的模版跟路径，即可直接在模版使用</p>
+<jsp:include page="child.shtm"></jsp:include>
+</body>
+</html>

@@ -1,0 +1,5 @@
+sdfsdf
+<h3>map 混合使用</h3>
+<c:forEach items="${list2}" var="item">
+    <p><span>${item}:</span><span>${nameMap[item]}</span></p>
+</c:forEach>

@@ -1,25 +1,27 @@
-var esprima = require ('esprima');
-
+var esprima = require('esprima');
+// console.log(esprima.Syntax,"vvvvvvvvvvvvvvvvvv")
+// console.log(esprima.ComputedMemberExpression,"vvvvvvvvvvvvvvvvvv")
 class AstCompiler {
-    constructor (ctx) {
+    constructor(ctx) {
         this.ctx = ctx;
     }
 
-    excute (program) {
+    excute(program) {
+
         // let program = 'a>b&&c==0';
-        let ast = esprima.parse (program);
+        let ast = esprima.parse(program);
         let astBody = ast.body || [];
         let value;
         if (astBody.length > 0) {
             let expression = astBody[0].expression;
-            // console.log ("express:", expression)
-            value = this.getvalue (expression, this.ctx);
+            console.log("express:", JSON.stringify(astBody[0]), JSON.stringify(this.ctx))
+            value = this.getvalue(expression, this.ctx);
             // console.log (value)
         }
         return value;
     }
 
-    getvalue (node, ctx) {
+    getvalue(node, ctx) {
         ctx = ctx || this.ctx;
         let type = node.type;
         let value;
@@ -27,10 +29,10 @@ class AstCompiler {
             case "ThisExpression":
                 break;
             case "Identifier":
-                value = this.getIdentifier (node, ctx);
+                value = this.getIdentifier(node, ctx);
                 break;
             case "Literal":
-                value = this.getLiteral (node);
+                value = this.getLiteral(node);
                 break;
             case "ArrayExpression":
                 break;
@@ -45,7 +47,7 @@ class AstCompiler {
             case "TaggedTemplateExpression":
                 break;
             case "MemberExpression":
-                value = this.getMemberExpression (node, ctx);
+                value = this.getMemberExpression(node, ctx);
                 break;
             case "Super":
                 break;
@@ -62,10 +64,10 @@ class AstCompiler {
             case "UnaryExpression":
                 break;
             case "BinaryExpression":
-                value = this.getBinaryExpression (node, ctx);
+                value = this.getBinaryExpression(node, ctx);
                 break;
             case "LogicalExpression":
-                value = this.getLogicalExpression (node, ctx);
+                value = this.getLogicalExpression(node, ctx);
                 break;
             case "ConditionalExpression":
                 break;
@@ -83,31 +85,39 @@ class AstCompiler {
         return value;
     }
 
-    getIdentifier (node, ctx) {
+    getIdentifier(node, ctx) {
         let idname = node.name;
         // console.log("Identifier", idname, ctx)
         return ctx[idname]
     }
 
-    getLiteral (node) {
+    getLiteral(node) {
         let value = node.value;
         return value;
     }
 
-    getMemberExpression (node, ctx) {
+    getMemberExpression(node, ctx) {
         let object = node.object;
         let property = node.property;
         let computed = node.computed;// 暂时没用到
-        let object_val = this.getvalue (object, ctx);
-        let property_val = this.getvalue (property, object_val);
-        return property_val;
+        let object_val = this.getvalue(object, ctx);
+
+        let property_val = this.getvalue(property, ctx)
+        if (computed) {
+            let property_val = this.getvalue(property, ctx);
+            return object_val[property_val];
+        } else {
+            let property_val = this.getvalue(property, object_val);
+            return property_val;
+        }
+
     }
 
-    getBinaryExpression (node, ctx) {
+    getBinaryExpression(node, ctx) {
         let left = node.left;
         let right = node.right;
-        let left_val = this.getvalue (left, ctx);
-        let right_val = this.getvalue (right, ctx);
+        let left_val = this.getvalue(left, ctx);
+        let right_val = this.getvalue(right, ctx);
         let operator = node.operator;
 
         let value;
@@ -188,11 +198,11 @@ class AstCompiler {
         return value;
     }
 
-    getLogicalExpression (node) {
+    getLogicalExpression(node) {
         let left = node.left;
         let right = node.right;
-        let left_val = this.getvalue (left);
-        let right_val = this.getvalue (right);
+        let left_val = this.getvalue(left);
+        let right_val = this.getvalue(right);
         let operator = node.operator;
         let value;
         switch (operator) {
