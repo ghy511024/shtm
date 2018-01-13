@@ -1,0 +1,13 @@
+{
+  "name": "ptl",
+  "version": "0.0.3",
+  "license": "MIT",
+  "main": "./src/ptl.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:ghy511024/ptl.git"
+  },
+  "dependencies": {
+    "esprima": "^4.0.0"
+  }
+}

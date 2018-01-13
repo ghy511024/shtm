@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+/fangapp/css/dev/.sass-cache/
+/.sass-cache/
+/node_modules
+*/node_modules
+.DS_Store
