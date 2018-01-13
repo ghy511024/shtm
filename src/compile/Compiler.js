@@ -46,14 +46,14 @@ class Compiler {
         let pageNodes = this.cache[filename];
         if (pageNodes == null) {
             pageNodes = Parser.parse (filename, reader, parent);
-            this.cache
+            this.cache[filename] = pageNodes;
         }
         return pageNodes;
     }
 
     doParser (filename, parent, out, data) {
         let pageNodes = this.getPageNode (filename, parent);
-        Generator.generateStr (data, this, out, pageNodes,filename);
+        Generator.generateStr (data, this, out, pageNodes, filename);
     }
 }
 
