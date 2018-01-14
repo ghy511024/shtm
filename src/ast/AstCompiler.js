@@ -14,7 +14,7 @@ class AstCompiler {
         let value;
         if (astBody.length > 0) {
             let expression = astBody[0].expression;
-            console.log("express:", JSON.stringify(astBody[0]), JSON.stringify(this.ctx))
+            // console.log("express:", JSON.stringify(astBody[0]), JSON.stringify(this.ctx))
             value = this.getvalue(expression, this.ctx);
             // console.log (value)
         }
