@@ -7,8 +7,8 @@ const jerr = require("../err/Err");
 
 class ELparser {
     static getValue(el, ctx, node) {
-        // return ELparser.getValueByLocal (el, ctx,node);
-        return ELparser.getValueByAst(el, ctx);
+        return ELparser.getValueByLocal (el, ctx,node);
+        // return ELparser.getValueByAst(el, ctx);
     }
 
     // 正规 ast 抽象语法树路线，解释器需要自己写，（目前就实现了基础表达式的解析）。

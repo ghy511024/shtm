@@ -20,11 +20,12 @@ var T = {
     },
     t2: function () {
         var jsppath = path.join(__dirname, "./view/demo.shtm");
+        // var jsppath = path.join(__dirname, "./view/demo.shtm");
         // var jsppath = path.join(__dirname, "./view/mapdemo.shtm");
         let data = {
             title: "smart html template",
             if_test1: true,
-            if_testfalse: true,
+            if_test2: false,
             list: [
                 {name: "北京", data: ["朝阳", "海淀"]},
                 {name: "四川", data: ["新都", "龙泉", "天府广场"]}],

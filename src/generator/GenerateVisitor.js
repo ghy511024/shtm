@@ -77,8 +77,9 @@ class GenerateVisitor extends Node.Visitor {
             if (if_val != Tag.SKIP_BODY) {
                 this.visitBody (n);
             }
+        } else if(n.localName == "include"){
+            this._vIncludeAction(n)
         }
-        // this.visitBody(n)
     }
 
     /**
