@@ -33,12 +33,12 @@ var T = {
             nameMap: {sc: "四川", bj: "北京"},
         }
         let t1 = +new Date();
-        // for (let i = 0; i < 10000; i++) {
-        //     jstl.compile (jsppath, data);
-        // }
-        let str = jstl.compile(jsppath, data);
-        console.log(str);
-        // console.log(+new Date() - t1);
+        for (let i = 0; i < 10000; i++) {
+            jstl.compile (jsppath, data);
+        }
+        // let str = jstl.compile(jsppath, data);
+        // console.log(str);
+        console.log(+new Date() - t1);
 
     }
 }
