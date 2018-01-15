@@ -47,7 +47,7 @@ class Compiler {
     getPageNode(filename, parent) {
 
         let pageNodes = this.cache[filename];
-        if (pageNodes == null||true) {
+        if (pageNodes == null) {
             let reader = this.getReader(filename);
             pageNodes = Parser.parse(filename, reader, parent);
             this.cache[filename] = pageNodes;
