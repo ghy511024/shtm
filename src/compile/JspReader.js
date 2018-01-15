@@ -2,7 +2,7 @@
  * Created by ghy on 2017/11/17.
  */
 const path = require("path");
-const fs = require("fs");
+// const fs = require("fs");
 
 const Ut = require("./Ut");
 const Mark = require("./Mark");
@@ -10,14 +10,14 @@ const TagInfo = require("../taglib/TagInfo");
 
 class JspReader {
     constructor(baseDir, fname, str) {
-        if (fname != null) {
-            this.currFileId = 0;
-            this.size = 0;
-            this.singleFile = true;
-            this.sourceFiles = [];
-            this.pushFile(baseDir, fname, "utf-8");
-        } else if (str != null) {
+        this.sourceFiles = [];
+        this.singleFile = true;
+        this.size = 0;
+        this.currFileId = 0;
+        if (str != null) {
             this.pushString(str);
+        } else if (str != null) {
+            this.pushFile(baseDir, fname, "utf-8");
         }
 
     }
@@ -117,6 +117,9 @@ class JspReader {
     }
 
     pushString(fileStr) {
+        if (!fileStr) {
+            return;
+        }
         try {
             let charArray = fileStr.split("");
             if (this.current == null) {
@@ -144,11 +147,10 @@ class JspReader {
         } else {
             absPath = path.join(baseDir, longName)
         }
-        let fileStr = fs.readFileSync(absPath, "utf-8");
+        // let fileStr = fs.readFileSync(absPath, "utf-8");
         let charArray = fileStr.split("");
         try {
             if (this.current == null) {
-
                 this.current = new Mark(this, charArray, fileid, this.getFile(fileid), "utf-8")
             } else {
                 this.current.pushStream(charArray, fileid, this.getFile(fileid), longName, "utf-8");

@@ -22,14 +22,14 @@ class JSTL {
      'view engine': 'ptl' }
      *
      * */
-    compile(filename, options, cb) {
+    compileFile(fileName, options, cb, fileStr) {
         let retstr;
         try {
             let baseDir = (options.settings || {}).views;
             if (baseDir != null && this.cp.baseDir == null) {
                 this.cp.setBaseDir(baseDir);
             }
-            retstr = this.cp.compile(filename, options);
+            retstr = this.cp.compile(fileName, options, fileStr);
             if (typeof cb === "function") {
                 cb(null, retstr);
             }
@@ -45,13 +45,16 @@ class JSTL {
         }
     }
 
+    compile(filename, options, cb, fileStr) {
+        return this.compileFile(filename, options, cb, fileStr)
+    }
+
     setBaseDir(baseDir) {
         this.cp.setBaseDir(baseDir);
     }
 
     _express(filename, options, cb) {
-        this.compile(filename, options, cb)
+        this.compileFile(filename, options, cb)
     }
 }
-
 module.exports = new JSTL();
