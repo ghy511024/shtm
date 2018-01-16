@@ -15,7 +15,7 @@ class GenBuffer {
     }
 
     toString () {
-        return this.stringWriter.toString ();
+        return this.out.toString ();
     }
 }
 module.exports = GenBuffer;

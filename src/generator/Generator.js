@@ -2,6 +2,7 @@ const Compiler = require("../compile/Compiler")
 const GenerateVisitor = require("./GenerateVisitor");
 const GenerateVisitor_tree = require("./GenerateVisitor_tree");
 const GenerateVisitor_for = require("./GenerateVisitor_for");
+const GenerateVisitor_fn = require("./GenerateVisitor_fn");
 const ServletWriter = require("../../src/writer/ServletWriter");
 const PageContext = require("../ctx/PageContext");
 
@@ -37,6 +38,12 @@ class Generator {
         let gen = new GenerateVisitor_for(out, pageContext, compiler);
         gen.visit2(page);
 
+    }
+    static generateFn(data, compiler, out, page, fileName) {
+        let pageContext = new PageContext(data, fileName);
+        let gen=new GenerateVisitor_fn(out, pageContext, compiler)
+        page.visit(gen);
+        gen.generatePostamble(page);
     }
 }
 

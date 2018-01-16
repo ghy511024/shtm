@@ -1,7 +1,9 @@
 const PageContext = require ("../ctx/PageContext");
+const Tag = require ("./Tag");
 
-class TagSupport {
+class TagSupport extends Tag {
     constructor () {
+        super ();
         this.pageContext = null;
         this.parent = null;
         this.id = null;

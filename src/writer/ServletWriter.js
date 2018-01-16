@@ -36,7 +36,7 @@ class ServletWriter {
 
     println(s) {
         this.javaLine++;
-        this.writer.print(s)
+        this.writer.println(s)
     }
 
     /**
@@ -52,12 +52,15 @@ class ServletWriter {
 
     }
 
-    printMultiLn(S) {
+    printMultiLn(s) {
         let index = 0;
-        while ((index = s.indexOf('\n', index) > -1)) {
+        console.log("进去了")
+        while ((index = s.indexOf('\n', index)) > -1) {
             this.javaLine++;
+            console.log(index)
             index++;
         }
+        console.log("出来了")
         this.writer.print(s);
     }
 

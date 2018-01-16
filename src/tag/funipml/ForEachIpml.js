@@ -59,8 +59,10 @@ class ForEachIpml extends TagSupport {
 
     doStartTag() {
         if (this.end != -1 && this.begin > this.end) {
+
             return
         }
+        console.log(this.SKIP_BODY,"vvvvvvvvvvvv")
         this.index = 0;
         this.count = 1;
         this.last = false;
@@ -74,13 +76,14 @@ class ForEachIpml extends TagSupport {
         if (this.hasNext()) {
             this.item = this.next();
         } else {
-            return Tag.SKIP_BODY;
+            return this.SKIP_BODY;
         }
         this.discard(this.step - 1);
 
         // 设置临时变量，比如循环中第一个object 赋值为 item
         this.exposeVariables(true);
         this.calibrateLast();
+
         return this.EVAL_BODY_INCLUDE;
     }
 
@@ -92,13 +95,13 @@ class ForEachIpml extends TagSupport {
             this.index++;
             this.item = this.next();
         } else {
-            return Tag.SKIP_BODY;
+            return this.SKIP_BODY;
         }
 
         this.discard(this.step - 1)
         this.exposeVariables(false);
         this.calibrateLast();
-        return Tag.EVAL_BODY_AGAIN;
+        return this.EVAL_BODY_AGAIN;
     }
 
     /**

@@ -39,8 +39,8 @@ class Node {
      * @abstract 抽象方法
      * @param v {Visitor}
      */
-    accept (v) {
-        v.visit (this);
+    accept (v,i) {
+        v.visit (this,i);
 
     }
 

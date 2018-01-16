@@ -2085,7 +2085,7 @@ class ServletWriter {
 
     }
 
-    printMultiLn(S) {
+    printMultiLn(s) {
         let index = 0;
         while ((index = s.indexOf('\n', index) > -1)) {
             this.javaLine++;
