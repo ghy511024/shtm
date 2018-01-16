@@ -26,7 +26,7 @@ class Parser {
      * @param parent {Node} 字符读取处理类实例
      * @return {Node.Nodes} page 对象，
      */
-    static parse(path, reader, parent) {
+    static parse(reader, parent) {
         let parser = new Parser(reader);
         let root = new Node.Root(reader.mark(), parent);
         let i = 0;

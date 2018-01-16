@@ -1,0 +1,630 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Template Engine Rendering Speed Test</title>
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/highcharts.js"></script>
+
+    <script src="lib/template-web.js"></script>
+    <script src="js/doT.min.js"></script>
+    <script src="js/ejs.min.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/mustache.min.js"></script>
+    <script src="js/pug.min.js"></script>
+    <script src="js/swig.min.js"></script>
+    <script src="../../build/shtm.js"></script>
+
+    <script>var count_x = 2, str_count = 200,str_repeat="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+
+    var config = {
+        // 列表条数
+        length: 20,
+        // 渲染次数
+        calls: 2048,
+        // 是否编码
+        escape: true
+    };
+
+    if (location.search) {
+        var param = decodeURIComponent(location.search);
+        param = param.replace(/.*\btest=({[^}]*}).*?/, '$1');
+        try {
+            config = JSON.parse(param);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+
+    // 制造测试数据
+    var data = {
+        list: []
+    };
+
+    for (var i = 0; i < config.length; i++) {
+        data.list.push({
+            index: i,
+            user: '<strong style="color:red">糖饼</strong>',
+            site: 'https://github.com/aui',
+            weibo: 'http://weibo.com/planeart',
+            QQweibo: 'http://t.qq.com/tangbin'
+        });
+    }
+    ;
+
+
+    Highcharts.setOptions({
+        colors: ['#EF6F65', '#F3AB63', '#F8D56F', '#99DD7A', '#74BBF3', '#CB93E0', '#A2A2A4', '#E1AC65', '#6AF9C4']
+    });
+
+
+    // 待测试的引擎列表
+    var testList = [
+
+        {
+            name: 'art-template',
+            tester: function () {
+                var id = config.escape ? 'template' : 'template-raw';
+                var source = document.getElementById(id).innerHTML;
+                for (var i = 0; i < count_x; i++) {
+                    source += source;
+                }
+                for (var i = 0; i < str_count; i++) {
+                    source += "str_repeat";
+                }
+                var fn = template.compile(source);
+                var html = '';
+                for (var i = 0; i < config.calls; i++) {
+                    var fn = template.compile(source);
+                    html = fn(data);
+                }
+                return html;
+            }
+        },
+
+        {
+            name: 'art-template / fast mode',
+            tester: function () {
+                var id = config.escape ? 'template-fast-mode' : 'template-fast-mode-raw';
+                var source = document.getElementById(id).innerHTML;
+                for (var i = 0; i < count_x; i++) {
+                    source += source;
+                }
+                for (var i = 0; i < str_count; i++) {
+                    source += "str_repeat";
+                }
+                var fn = template.compile(source);
+                var html = '';
+                for (var i = 0; i < config.calls; i++) {
+                    var fn = template.compile(source);
+                    html = fn(data);
+                }
+                return html;
+            }
+        },
+
+        {
+            name: 'doT',
+            tester: function () {
+                id = config.escape ? 'dot' : 'dot-raw';
+                var source = document.getElementById(id).innerHTML;
+                for (var i = 0; i < count_x; i++) {
+                    source += source;
+                }
+                for (var i = 0; i < str_count; i++) {
+                    source += "str_repeat";
+                }
+                var fn = doT.template(source);
+                var html = '';
+                for (var i = 0; i < config.calls; i++) {
+                    var fn = doT.template(source);
+                    html = fn(data);
+                }
+                return html;
+            }
+        },
+
+        {
+            name: 'ejs',
+            tester: function () {
+                var id = config.escape ? 'template' : 'template-raw';
+                var source = document.getElementById(id).innerHTML;
+                for (var i = 0; i < count_x; i++) {
+                    source += source;
+                }
+                for (var i = 0; i < str_count; i++) {
+                    source += "str_repeat";
+                }
+                var fn = ejs.compile(source);
+                var html = '';
+                for (var i = 0; i < config.calls; i++) {
+                    var fn = ejs.compile(source);
+                    html = fn(data);
+                }
+                return html;
+            }
+        },
+
+        {
+            name: 'Jade / pug',
+            tester: function () {
+                var id = config.escape ? 'pug' : 'pug-raw';
+                var source = document.getElementById(id).innerHTML;
+                for (var i = 0; i < count_x; i++) {
+                    source += source;
+                }
+                for (var i = 0; i < str_count; i++) {
+                    source += "str_repeat";
+                }
+                var pug = require('pug');
+                var fn = pug.compile(source);
+                var html = '';
+                for (var i = 0; i < config.calls; i++) {
+                    var fn = pug.compile(source);
+//                        html = fn(data);
+                }
+                return html;
+            }
+        },
+
+        {
+            name: 'Handlebars',
+            tester: function () {
+                var id = config.escape ? 'handlebars' : 'handlebars-raw';
+                var source = document.getElementById(id).innerHTML;
+                for (var i = 0; i < count_x; i++) {
+                    source += source;
+                }
+                for (var i = 0; i < str_count; i++) {
+                    source += "str_repeat";
+                }
+                var fn = Handlebars.compile(source);
+                var html = '';
+                for (var i = 0; i < config.calls; i++) {
+                    var fn = Handlebars.compile(source);
+                    html = fn(data);
+                }
+                return html;
+            }
+        },
+
+//            {
+//                name: 'Mustache',
+//                tester: function () {
+//                    var id = config.escape ? 'mustache' : 'mustache-raw';
+//                    var source = document.getElementById(id).innerHTML;
+//                    var html = '';
+//                    for (var i = 0; i < config.calls; i++) {
+//                        html = Mustache.to_html(source, data);
+//                    }
+//                    return html;
+//                }
+//            },
+
+        {
+            name: 'swig',
+            tester: function () {
+                var id = config.escape ? 'swig' : 'swig-raw';
+                var source = document.getElementById(id).innerHTML;
+                for (var i = 0; i < count_x; i++) {
+                    source += source;
+                }
+                for (var i = 0; i < str_count; i++) {
+                    source += "str_repeat";
+                }
+                var fn = swig.compile(source);
+                var html = '';
+                for (var i = 0; i < config.calls; i++) {
+                    var fn = swig.compile(source);
+                    html = fn(data);
+                }
+                return html;
+            }
+        }, {
+            name: 'shtm',
+            tester: function () {
+                var id = config.escape ? 'shtm' : 'shtm-raw';
+                var source = document.getElementById("shtm").innerHTML;
+                for (var i = 0; i < count_x; i++) {
+                    source += source;
+                }
+                for (var i = 0; i < str_count; i++) {
+                    source += "str_repeat";
+                }
+//                    var fn = swig.compile(source);
+                var html = '';
+                for (var i = 0; i < config.calls; i++) {
+                        html=  shtm.compile(null,data,null,source);
+//                    html = shtm.compile("ghy", data, null, source);
+                }
+                return html;
+            }
+        }
+    ];
+
+
+    var runTest = function (callback) {
+
+        var list = testList.filter(function (test) {
+            return !config.escape || test.supportEscape !== false;
+        });
+
+        var Timer = function () {
+            this.startTime = +new Date;
+        };
+
+        Timer.prototype.stop = function () {
+            return +new Date - this.startTime;
+        };
+
+        var colors = Highcharts.getOptions().colors;
+        var categories = [];
+
+        for (var i = 0; i < list.length; i++) {
+            categories.push(list[i].name);
+        }
+
+        var chart = new Highcharts.Chart({
+            chart: {
+                animation: {
+                    duration: 150
+                },
+                renderTo: 'container',
+                height: categories.length * 32,
+                type: 'bar'
+            },
+
+            title: false,
+
+            // subtitle: {
+            //     text: config.length + ' list × ' + config.calls + ' calls'
+            // },
+
+            xAxis: {
+                categories: categories,
+                labels: {}
+            },
+
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Time'
+                }
+            },
+
+            legend: {
+                enabled: false
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.x + '</b><br/>' +
+                        this.y + 'ms';
+                }
+
+            },
+
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function () {
+                            return this.y + 'ms';
+                        }
+                    }
+                },
+            },
+            series: [{
+                data: []
+            }]
+
+        });
+
+        var log = function (message) {
+            document.getElementById('log').innerHTML = message;
+        };
+
+        var tester = function (target) {
+
+
+            var time = new Timer;
+            var html = target.tester();
+            console.log(target.name + '------------------\n', html);
+            var endTime = time.stop();
+
+            chart.series[0].addPoint({
+                color: colors.shift(),
+                y: endTime
+            });
+
+
+            if (!list.length) {
+                log('done');
+                callback();
+                return;
+            }
+
+            target = list.shift();
+
+            log('run: ' + target.name);
+
+            setTimeout(function () {
+                tester(target);
+            }, 500);
+
+        };
+
+        var target = list.shift();
+        log('run: ' + target.name);
+        tester(target);
+
+    };
+
+    var restart = function (key, value) {
+        config[key] = value;
+        var data = JSON.stringify(config);
+        data = encodeURIComponent(data);
+        location.search = 'test=' + data;
+    }
+    </script>
+
+
+    <!-- art-template || ejs || lodash-template || underscore-template -->
+    <script id="template" type="text/tmpl">
+<ul>
+    <% for (var i = 0, l = list.length; i < l; i ++) { %>
+        <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
+    <% } %>
+</ul>
+
+
+
+    </script>
+
+    <script id="template-raw" type="text/tmpl">
+<ul>
+    <% for (var i = 0, l = list.length; i < l; i ++) { %>
+        <li>User: <%- list[i].user %> / Web Site: <%- list[i].site %></li>
+    <% } %>
+</ul>
+
+
+
+    </script>
+
+    <script id="template-fast-mode" type="text/tmpl">
+<ul>
+    <% for (var i = 0, l = $data.list.length; i < l; i ++) { %>
+        <li>User: <%= $data.list[i].user %> / Web Site: <%= $data.list[i].site %></li>
+    <% } %>
+</ul>
+
+
+
+    </script>
+
+    <script id="template-fast-mode-raw" type="text/tmpl">
+<ul>
+    <% for (var i = 0, l = $data.list.length; i < l; i ++) { %>
+        <li>User: <%- $data.list[i].user %> / Web Site: <%- $data.list[i].site %></li>
+    <% } %>
+</ul>
+
+
+
+    </script>
+
+    <!-- pug -->
+    <script id="pug" type="text/tmpl">
+ul
+    -for (var i = 0, l = list.length; i < l; i ++) {
+        li User: #{list[i].user} / Web Site: #{list[i].site}
+    -}
+
+
+
+    </script>
+
+    <script id="pug-raw" type="text/tmpl">
+ul
+    -for (var i = 0, l = list.length; i < l; i ++) {
+        li User: !{list[i].user} / Web Site: !{list[i].site}
+    -}
+
+
+
+    </script>
+
+    <!-- doT -->
+    <script id="dot" type="text/tmpl">
+<ul>
+    {{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
+        <li>User: {{!it.list[i].user}} / Web Site: {{!it.list[i].site}}</li>
+    {{ } }}
+</ul>
+
+
+
+    </script>
+    <script id="dot-raw" type="text/tmpl">
+<ul>
+    {{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
+        <li>User: {{=it.list[i].user}} / Web Site: {{=it.list[i].site}}</li>
+    {{ } }}
+</ul>
+
+
+
+    </script>
+
+    <!--Mustache -->
+    <script id="mustache" type="text/tmpl">
+<ul>
+    {{#list}}
+        <li>User: {{user}} / Web Site: {{site}}</li>
+    {{/list}}
+</ul>
+
+
+
+    </script>
+
+    <script id="mustache-raw" type="text/tmpl">
+<ul>
+    {{#list}}
+        <li>User: {{{user}}} / Web Site: {{{site}}}</li>
+    {{/list}}
+</ul>
+
+
+
+    </script>
+
+    <!--Handlebars  -->
+    <script id="handlebars" type="text/tmpl">
+<ul>
+    {{#list}}
+        <li>User: {{user}} / Web Site: {{site}}</li>
+    {{/list}}
+</ul>
+
+
+
+    </script>
+
+    <script id="handlebars-raw" type="text/tmpl">
+<ul>
+    {{#list}}
+        <li>User: {{{user}}} / Web Site: {{{site}}}</li>
+    {{/list}}
+</ul>
+
+
+
+    </script>
+
+    <!--swig  -->
+    <script id="swig" type="text/tmpl">
+<ul>
+    {% for key, value in list %}
+        <li>User: {{value.user}} / Web Site: {{value.site}}</li>
+    {% endfor %}
+</ul>
+
+
+
+    </script>
+
+    <script id="swig-raw" type="text/tmpl">
+<ul>
+    {% for key, value in list %}
+        {% autoescape false %}<li>User: {{value.user}} / Web Site: {{value.site}}</li>{% endautoescape %}
+    {% endfor %}
+</ul>
+
+
+
+    </script>
+    <script id="shtm" type="text/tmpl">
+<ul>
+   <c:forEach items="${list}" var="item">
+    <li>${item.user}/Web Site:${item.site}</li>
+   </c:forEach>
+</ul>
+
+
+
+    </script>
+
+    <style id="style">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 16px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        #app .header {
+            padding: 10px 20px;
+            background: #eee;
+        }
+
+        #app .header .item {
+            margin-bottom: 5px;
+        }
+
+        #app input[type=number] {
+            max-width: 4em;
+        }
+
+        #app ul {
+            padding-left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="app"></div>
+<script id="body" type="text/tmpl">
+    <h1>Template Engine Rendering Speed Test</h1>
+    <div class="header">
+        <div class="item">
+            <label><input type="number" value="{{length}}" onchange="restart('length', this.value)"> list</label>
+            <strong>×</strong>
+            <label><input type="number" value="{{calls}}" onchange="restart('calls', this.value)"> calls</label>
+            <label><input type="checkbox" {{if escape}}checked{{/if}} onchange="restart('escape', this.checked)"> escape</label>
+            <label><input type="checkbox" checked disabled> cache</label>
+        </div>
+        <div class="item">
+            <button id="button-start">Run Test&raquo;</button>
+            <button id="button-restart" style="display:none">Restart</button>
+            <span id="log">
+                
+            </span>
+        </div>
+    </div>
+    <div id="container" style="min-width: 400px; margin: 0 auto">
+        <ul>
+        <%
+            testList.forEach(function(test){
+                if (!escape || test.supportEscape !== false) {
+                    print('<li>', $escape(test.name), '</li>');
+                }
+            });
+        %>
+        </ul>
+    </div>
+
+
+
+</script>
+
+<script>
+    (function () {
+        var data = Object.create(config);
+        data.testList = testList;
+        document.getElementById('app').innerHTML = template('body', data);
+
+        document.getElementById('button-start').onclick = function () {
+            var elem = this;
+            this.disabled = true;
+            runTest(function () {
+                elem.style.display = 'none';
+                document.getElementById('button-restart').style.display = '';
+            });
+        };
+
+        document.getElementById('button-restart').onclick = function () {
+            location.reload();
+        };
+    })();
+</script>
+</body>
+
+</html>

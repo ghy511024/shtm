@@ -26,6 +26,25 @@ class GenerateVisitor extends Node.Visitor {
         this.compiler = compiler;
     }
 
+    visit2(n) {
+        // console.log(n.name)
+        if (n instanceof Node.IncludeAction) {
+            this._vIncludeAction(n);
+        }
+        else if (n instanceof Node.CustomTag) {
+            this._vCustomTag(n);
+        } else if (n instanceof Node.Nodes) {
+            this._vNodes(n);
+        }
+        else if (n instanceof Node.Root) {
+            this._vRoot(n);
+        } else if (n instanceof Node.TemplateText) {
+            this._vTemplateText(n);
+        } else if (n instanceof Node.ELExpression) {
+            this._vELExpression(n);
+        }
+    }
+
     /**
      * 覆盖父类visit 抽象方-----+-+法
      */
@@ -98,7 +117,13 @@ class GenerateVisitor extends Node.Visitor {
     }
 
     _vNodes(n) {
-
+        let list = n.list;
+        for (let i = 0; i < list.length; i++) {
+            let item = list[i]
+            if (item != null) {
+                this.visit2(item)
+            }
+        }
     }
 
     _vRoot(n) {
@@ -111,7 +136,12 @@ class GenerateVisitor extends Node.Visitor {
 
     _vELExpression(n) {
         this.out.print(this.pageContext.getElValue(n.text, n))
-
+    }
+    visitBody(n){
+        if (n.getBody() != null) {
+            // n.getBody().visit(this)
+            this.visit2(n.getBody())
+        }
     }
 }
 

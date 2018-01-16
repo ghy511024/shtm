@@ -1,7 +1,7 @@
 const Compiler = require("../compile/Compiler")
 const GenerateVisitor = require("./GenerateVisitor");
 const GenerateVisitor_tree = require("./GenerateVisitor_tree");
-const FileWriter = require("../../src/writer/FileWriter");
+const GenerateVisitor_for = require("./GenerateVisitor_for");
 const ServletWriter = require("../../src/writer/ServletWriter");
 const PageContext = require("../ctx/PageContext");
 
@@ -16,30 +16,28 @@ class Generator {
         this.out = out;
     }
 
-    static generateTree( page) {
+    static generateTree(page) {
         let a = new GenerateVisitor_tree()
         page.visit(a);
         console.log(JSON.stringify(a.getTree()));
     }
 
-    /**
-     * 输出到文件中，主要是调试用
-     * */
-    static generateFile(data, compiler, page, outpath) {
-        let fileWriter = new FileWriter(outpath);
-        let out = new ServletWriter(fileWriter);
-        let pageContext = new PageContext(data);
-        page.visit(new GenerateVisitor(out, pageContext, compiler));
-    }
 
     /**
      * 最终线上express用的时候，会采用字符串形式输出
      * */
-    static generateStr(data, compiler, out, page,fileName) {
-        let pageContext = new PageContext(data,fileName);
+    static generateStr(data, compiler, out, page, fileName) {
+        let pageContext = new PageContext(data, fileName);
         page.visit(new GenerateVisitor(out, pageContext, compiler));
     }
 
+    static generateFor(data, compiler, out, page, fileName) {
+        let pageContext = new PageContext(data, fileName);
+        // page.visit(new GenerateVisitor(out, pageContext, compiler));
+        let gen = new GenerateVisitor_for(out, pageContext, compiler);
+        gen.visit2(page);
+
+    }
 }
 
 module.exports = Generator;

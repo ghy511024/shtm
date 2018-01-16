@@ -39,6 +39,9 @@
 
 <h3>include 外部页面</h3>
 <p>与handbares 不同，无需设置额外的模版跟路径，即可直接在模版使用</p>
+<<<<<<< HEAD
 <jsp:include page="child.shtm"></jsp:include>
+=======
+>>>>>>> 6bd720fefa3e17e93820a265d7ece2e8b3fb2473
 </body>
 </html>

@@ -1,65 +1,64 @@
 /**
  * Created by ghy on 2017/11/17.
  */
-const Generator = require ("../generator/Generator-Api");
-const JspReader = require ("./JspReader");
-const Parser = require ("./Parser2");
-const path = require ("path");
-const FileWriter = require ("../writer/FileWriter")
-const StringWriter = require ("../writer/StringWriter");
-const ServletWriter = require ("../writer/ServletWriter")
+const Generator = require("../generator/Generator-Api");
+const JspReader = require("./JspReader");
+const Parser = require("./Parser2");
+const path = require("path");
+const StringWriter = require("../writer/StringWriter");
+const ServletWriter = require("../writer/ServletWriter")
 
 class Compiler {
-    constructor (baseDir) {
+    constructor(baseDir) {
         this.baseDir = baseDir
         this.cache = {};
     }
 
-    setBaseDir (baseDir) {
+    setBaseDir(baseDir) {
         this.baseDir = baseDir;
     }
 
-    compileTofile (filename, outPath) {
-        try {
-            this.doParserFile (filename, null, outPath);
-        }
-        catch (e) {
-            console.log (e)
-        }
-
+    /*
+     * @param isfile{Boolean} 是否是文件
+     *
+     * **/
+    compile(filename, data, fileStr) {
+        let stringWriter = new StringWriter();
+        let out = new ServletWriter(stringWriter);
+        let pageNodes = this.getPageNode(filename, null, fileStr);
+        // Generator.generateStr(data, this, out, pageNodes, filename);
+        Generator.generateFor(data, this, out, pageNodes, filename);
+        return out.toString();
     }
 
-    compile (filename, data) {
-        // let t1 = new Date ();
-        let stringWriter = new StringWriter ();
-        let out = new ServletWriter (stringWriter);
-        this.doParser (filename, null, out, data);
-        // let t1 = new Date ();
-        // console.log ("总时间", +new Date () - t1)
-        return out.toString ();
-    }
-
-    getReader (filename) {
-        let reader = new JspReader (this.baseDir, filename);
+    getReader(fileName, fileStr) {
+        let reader = new JspReader(this.baseDir, fileName, fileStr);
         return reader;
     }
 
-    getPageNode (filename, parent) {
+    getPageNode(filename, parent, fileStr) {
+        let pageNodes
 
-        let pageNodes = this.cache[filename];
-        if (pageNodes == null) {
-            let reader = this.getReader (filename);
-            pageNodes = Parser.parse (filename, reader, parent);
+        if (filename != null) {
+            pageNodes = this.cache[filename];
+            if (pageNodes == null) {
+                console.log("vvvvvvvvvvvvvvvvvv")
+                let reader = this.getReader(filename, fileStr);
+                pageNodes = Parser.parse(reader, parent);
+                this.cache[filename] = pageNodes;
+            }
+        } else {
+            console.log("dddddddddd")
+            let reader = this.getReader("", fileStr);
+            pageNodes = Parser.parse(reader, parent);
             this.cache[filename] = pageNodes;
         }
+
+
         return pageNodes;
     }
 
-    doParser (filename, parent, out, data) {
-        let pageNodes = this.getPageNode (filename, parent);
-        Generator.generateStr (data, this, out, pageNodes, filename);
-        // Generator.generateTree ( pageNodes);
-    }
 }
 
-module.exports = Compiler;
+module
+    .exports = Compiler;

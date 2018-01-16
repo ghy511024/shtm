@@ -1,6 +1,6 @@
 // var esprima = require('esprima');
 // var program = 'a>b&&c==0';
-var program = '2*a.cyl+"vv"';
+var program = '2*a.cyl+"vvs"';
 
 // var ast = esprima.parse(program);
 
