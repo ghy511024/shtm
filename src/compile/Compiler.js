@@ -10,8 +10,8 @@ const FileWriter = require ("../writer/FileWriter");
 const ServletWriter = require ("../writer/ServletWriter")
 
 // 测试
-const rundemo = require ("../runtime/rundemo")
-const ForEachIpml = require ("../tag/funipml/ForEachIpml")
+const rundemo = require ("../runtime/out_rundemo")
+const ForEachImpl = require ("../tag/funimpl/ForEachImpl")
 
 class Compiler {
     constructor (baseDir) {
@@ -41,22 +41,24 @@ class Compiler {
      *
      * **/
     compileTest (filename, data, fileStr) {
-        // let stringWriter = new StringWriter ();
-        let fileWriter = new FileWriter (path.join(__dirname,"../../test/out/ghy.js"));
-        let out = new ServletWriter (fileWriter);
+        let stringWriter = new StringWriter ();
+        let out = new ServletWriter (stringWriter);
+        // let fileWriter = new FileWriter (path.join(__dirname,"../runtime/out_rundemo.js"));
+        // let out = new ServletWriter (fileWriter);
+
         let pageNodes = this.getPageNode (filename, null, fileStr);
         if(pageNodes==null){
             console.log("获取节点错误",filename,fileStr)
             return "";
-
         }
-        Generator.generateFn (data, this, out, pageNodes, filename);
+        // Generator.generateFn (data, this, out, pageNodes, filename);
 
-        // rundemo.call (data,data, {
-        //     ForEachIpml: ForEachIpml,
-        //     out: out,
-        //     pageNodes: pageNodes
-        // })
+
+        rundemo.call (data,data, {
+            ForEachImpl: ForEachImpl,
+            out: out,
+            pageNodes: pageNodes
+        })
         return out.toString ();
     }
 

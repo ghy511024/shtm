@@ -39,11 +39,13 @@ class Generator {
         gen.visit2(page);
 
     }
+
     static generateFn(data, compiler, out, page, fileName) {
         let pageContext = new PageContext(data, fileName);
-        let gen=new GenerateVisitor_fn(out, pageContext, compiler)
+        let gen = new GenerateVisitor_fn(out, pageContext, compiler)
         page.visit(gen);
         gen.generatePostamble(page);
+        out.print("module.exports=fn");//测试的时候用
     }
 }
 

@@ -5,8 +5,8 @@ const Nodes = require ("./Nodes");
 
 class Node {
     constructor (qName, localName, attrs, start, parent) {
-        this.qName = qName;
-        this.localName = localName;
+        this.qName = qName;//full name [c:forEach]
+        this.localName = localName;// [forEach]
         this.attrs = attrs;
         // this.taglibAttrs = taglibAttrs;
         this.startMark = start;

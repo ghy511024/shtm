@@ -32,7 +32,7 @@ var T = {
         console.log (str);
     },
     t2: function () {
-        var jsppath = path.join (__dirname, "./view/demo.shtm");
+        var jsppath = path.join (__dirname, "./view/demo2.shtm");
         // var jsppath = path.join(__dirname, "./view/demo.shtm");
         // var jsppath = path.join(__dirname, "./view/mapdemo.shtm");
 
@@ -59,7 +59,7 @@ var T = {
     , t4: function () {
         var Compiler = require ("../src/compile/Compiler")
         var cp = new Compiler ();
-        var str = fs.readFileSync (path.join (__dirname, "./view/demo.shtm"), "utf-8")
+        var str = fs.readFileSync (path.join (__dirname, "./view/demo2.shtm"), "utf-8")
         let t1 = +new Date ();
         // let outstr = ""
         // for (let i = 0; i < 10000; i++) {

@@ -21,9 +21,14 @@ class Nodes {
      */
     visit (v) {
         let iter = this.list;
+        let cnum=0;
+        console.log("来访了")
         for (let i = 0; i < iter.length; i++) {
             let item = iter[i]
+            console.log(i,"本来为空")
             if (item != null) {
+                console.log(i,"不为空")
+                cnum++
                 item.accept (v,i);
             }
         }

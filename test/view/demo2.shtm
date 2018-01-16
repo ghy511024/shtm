@@ -1,7 +1,15 @@
-<c:if test="2">
-    1
-    <div>
-        2
-        <span>3</span>
-    </div>
-</c:if>
+<ul>
+    <c:forEach items="${list}" var="item">
+        <li>
+            <c:if test="${a>0||3<2"></c:if>
+            <p>${item.name}</p>
+            <ol>
+                <c:forEach items="${item.data}" var="li">
+                    <li>
+                        ${li}
+                    </li>
+                </c:forEach>
+            </ol>
+        </li>
+    </c:forEach>
+</ul>

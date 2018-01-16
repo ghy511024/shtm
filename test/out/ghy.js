@@ -1,84 +1,106 @@
-
 var fn = function (data, option) {
+    var ForEachImpl = option.ForEachImpl;
+    var IfImpl = option.IfImpl;
     with (data || {}) {
-        var ForEachIpml = option.ForEachIpml;
+
         var out = option.out;
         var pageNodes = option.pageNodes;
-        service (n)
-        function service (parent) {
-out.print("<html>\r\n<head>\r\n\r\n</head>\r\n<body>\r\n<h1>");
-out.print (title);
-out.print("</h1>\r\n\r\n");
-if(_meth_if_1(n.list[4])){return}
-if(_meth_if_1(n.list[6])){return}
-out.print("\r\n<h3>for 循环，多重嵌套</h3>\r\n<ul>\r\n    ");
-if(_meth_forEach_1(n.list[8])){return}
-out.print("\r\n</ul>\r\n\r\n<h3>for 循环 map</h3>\r\n");
-if(_meth_forEach_1(n.list[10])){return}
-out.print("\r\n\r\n<h3>map 混合使用</h3>\r\n");
-if(_meth_forEach_1(n.list[12])){return}
-out.print("\r\n\r\n<h3>include 外部页面</h3>\r\n<p>与handbares 不同，无需设置额外的模版跟路径，即可直接在模版使用</p>\r\n</body>\r\n</html>");}  
-          }
+        service(n)
+        function service(parent) {
+            out.print("<ul>\r\n    ");
+            if (_js_meth_c_forEach_1(n.list[2])) {
+                return true;
+            }
+            out.print("\r\n</ul>\r\n");
+        }
+    }
 };
 // 开始输出函数体
-function _meth_if_1(n){
- var foreachTag = new ForEachIpml ();
- var foreachTag = new ForEachIpml ();
-  try {
-foreachTag.setItems (list);
+function _js_meth_c_forEach_1(n) {
+    try {
+//c:forEach
 
-out.print("<p>show if_test1</p>\r\n");
+        let js_th_c_forEach_1 = new ForEachImpl()
+        js_th_c_forEach_1.setItems(list);
+        let each_val = js_th_c_forEach_1.doStartTag();
+        if (each_val != js_th_c_forEach_1.SKIP_BODY);
+        while (true) {
+            out.print("<li>\r\n            ");
+            if (_js_meth_c_if_1(n.list[2])) {
+                return true;
+            }
+            out.print("\r\n            <p>");
+            out.print(item.name);
+            out.print("</p>\r\n            <ol>\r\n                ");
+            if (_js_meth_c_forEach_2(n.list[6])) {
+                return true;
+            }
+            out.print("\r\n            </ol>\r\n        </li>\r\n    ");
+            let evalDoAfterBody = eachtag.doAfterBody();
+            if (evalDoAfterBody != this.EVAL_BODY_AGAIN) {
+                break;
+            }
+        }
+        if (_jspx_th_c_forEach_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+            return true;
+        }
+    }
+    catch (e) {
+        console.log(e)
+    }
+    return false;
+}
+
 // 开始输出函数体
-function _meth_if_1(n){
- var foreachTag = new ForEachIpml ();
- var foreachTag = new ForEachIpml ();
-  try {
-foreachTag.setItems (list);
+function _js_meth_c_if_1(n) {
+    try {
+//c:if
 
-out.print("<p>两个都显示</p>\r\n");
+        let js_th_c_if_1 = new IfImpl()
+        js_th_c_if_1.setTest(undefined);
+        let each_val = js_th_c_if_1.doStartTag();
+        if (each_val != js_th_c_if_1.SKIP_BODY);
+        while (true) {
+            let evalDoAfterBody = eachtag.doAfterBody();
+            if (evalDoAfterBody != this.EVAL_BODY_AGAIN) {
+                break;
+            }
+        }
+        if (_jspx_th_c_forEach_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+            return true;
+        }
+    }
+    catch (e) {
+        console.log(e)
+    }
+    return false;
+}
+
 // 开始输出函数体
-function _meth_forEach_1(n){
- var foreachTag = new ForEachIpml ();
- var foreachTag = new ForEachIpml ();
-  try {
-foreachTag.setItems (list);
+function _js_meth_c_forEach_2(n) {
+    try {
+//c:forEach
 
-out.print("<li>\r\n            <p>");
-out.print (item.name);
-out.print("</p>\r\n            <ol>\r\n                ");
-if(_meth_forEach_1(n.list[4])){return}
-out.print("\r\n            </ol>\r\n        </li>\r\n    ");
-// 开始输出函数体
-function _meth_forEach_1(n){
- var foreachTag = new ForEachIpml ();
- var foreachTag = new ForEachIpml ();
-  try {
-foreachTag.setItems (list);
-
-out.print("<li>\r\n                        ");
-out.print (li);
-out.print("\r\n                    </li>\r\n                ");
-// 开始输出函数体
-function _meth_forEach_1(n){
- var foreachTag = new ForEachIpml ();
- var foreachTag = new ForEachIpml ();
-  try {
-foreachTag.setItems (list);
-
-out.print("<p><span>");
-out.print (item.key);
-out.print(":</span><span>");
-out.print (item.value);
-out.print("</span></p>\r\n");
-// 开始输出函数体
-function _meth_forEach_1(n){
- var foreachTag = new ForEachIpml ();
- var foreachTag = new ForEachIpml ();
-  try {
-foreachTag.setItems (list);
-
-out.print("<p><span>");
-out.print (item);
-out.print(":</span><span>");
-out.print (nameMap[item]);
-out.print("</span></p>\r\n");}
+        let js_th_c_forEach_2 = new ForEachImpl()
+        js_th_c_forEach_2.setItems(item.data);
+        let each_val = js_th_c_forEach_2.doStartTag();
+        if (each_val != js_th_c_forEach_2.SKIP_BODY);
+        while (true) {
+            out.print("<li>\r\n                        ");
+            out.print(li);
+            out.print("\r\n                    </li>\r\n                ");
+            let evalDoAfterBody = eachtag.doAfterBody();
+            if (evalDoAfterBody != this.EVAL_BODY_AGAIN) {
+                break;
+            }
+        }
+        if (_jspx_th_c_forEach_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+            return true;
+        }
+    }
+    catch (e) {
+        console.log(e)
+    }
+    return false;
+}
+            
