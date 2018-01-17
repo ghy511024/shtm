@@ -1,15 +1,3 @@
-<ul>
-    <c:forEach items="${list}" var="item">
-        <li>
-            <c:if test="${if_test1||3<2}"></c:if>
-            <p>${item.name}</p>
-            <ol>
-                <c:forEach items="${item.data}" var="li">
-                    <li>
-                        ${li}
-                    </li>
-                </c:forEach>
-            </ol>
-        </li>
-    </c:forEach>
-</ul>
+<c:forEach items="${list}" var="item">
+    <li>${item.user}/Web Site:${item.site}</li>
+</c:forEach>

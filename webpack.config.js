@@ -2,7 +2,8 @@ var path = require('path');
 
 module.exports = {
     entry: {
-        "shtm": ["./src/shtm-pc.js"]
+        // "shtm": ["./src/shtm-pc-build.js"],
+        "shtm_fn": ["./src/pc-build/shtm-fn.js"],
     },
     output: {
         path: path.join(__dirname, "build"),
@@ -20,6 +21,5 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-    ]
+    plugins: []
 }

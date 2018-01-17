@@ -32,12 +32,18 @@ class ForEachIpml extends TagSupport {
     }
 
     setVar(_id) {
+        if (this.pageContext.hasValue(_id)) {
+            this.saveVar = this.pageContext.getAttribute(_id)
+        }
         this.itemId = _id;
     }
 
     exposeVariables(firstTime) {
         if (this.itemId != null) {
             if (this.getCurrent() == null) {
+                if (this.setVar != null) {
+                    this.pageContext.setAttribute(this.itemId, this.setVar)
+                }
                 this.pageContext.removeAttribute(this.itemId)
             } else if (this.deferredExpression != null) {
 
@@ -62,7 +68,6 @@ class ForEachIpml extends TagSupport {
 
             return
         }
-        console.log(this.SKIP_BODY,"vvvvvvvvvvvv")
         this.index = 0;
         this.count = 1;
         this.last = false;
@@ -109,9 +114,6 @@ class ForEachIpml extends TagSupport {
      * */
     prepare() {
         if (this.rawItems != null) {
-            if (typeof this.rawItems == "string" && this.rawItems.indexOf("${") != -1) {
-                this.rawItems = this.pageContext.getElValue(this.rawItems)
-            }
             // 数据转换
             this.rawItems = this.supportedTypeForEachIterator(this.rawItems)
             this.items = this.rawItems;

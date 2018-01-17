@@ -14,9 +14,10 @@
     <script src="js/mustache.min.js"></script>
     <script src="js/pug.min.js"></script>
     <script src="js/swig.min.js"></script>
-    <script src="../../build/shtm.js"></script>
+    <!--<script src="../../build/shtm.js"></script>-->
+    <script src="../../build/shtm_fn.js"></script>
 
-    <script>var count_x = 2, str_count = 200,str_repeat="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+    <script>var count_x = 8, str_count = 12, str_repeat = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
     var config = {
         // 列表条数
@@ -77,33 +78,33 @@
                 var fn = template.compile(source);
                 var html = '';
                 for (var i = 0; i < config.calls; i++) {
-                    var fn = template.compile(source);
+//                    var fn = template.compile(source);
                     html = fn(data);
                 }
                 return html;
             }
         },
-
-        {
-            name: 'art-template / fast mode',
-            tester: function () {
-                var id = config.escape ? 'template-fast-mode' : 'template-fast-mode-raw';
-                var source = document.getElementById(id).innerHTML;
-                for (var i = 0; i < count_x; i++) {
-                    source += source;
-                }
-                for (var i = 0; i < str_count; i++) {
-                    source += "str_repeat";
-                }
-                var fn = template.compile(source);
-                var html = '';
-                for (var i = 0; i < config.calls; i++) {
-                    var fn = template.compile(source);
-                    html = fn(data);
-                }
-                return html;
-            }
-        },
+//
+//        {
+//            name: 'art-template / fast mode',
+//            tester: function () {
+//                var id = config.escape ? 'template-fast-mode' : 'template-fast-mode-raw';
+//                var source = document.getElementById(id).innerHTML;
+//                for (var i = 0; i < count_x; i++) {
+//                    source += source;
+//                }
+//                for (var i = 0; i < str_count; i++) {
+//                    source += "str_repeat";
+//                }
+//                var fn = template.compile(source);
+//                var html = '';
+//                for (var i = 0; i < config.calls; i++) {
+////                    var fn = template.compile(source);
+////                    html = fn(data);
+//                }
+//                return html;
+//            }
+//        },
 
         {
             name: 'doT',
@@ -119,7 +120,7 @@
                 var fn = doT.template(source);
                 var html = '';
                 for (var i = 0; i < config.calls; i++) {
-                    var fn = doT.template(source);
+//                    var fn = doT.template(source);
                     html = fn(data);
                 }
                 return html;
@@ -140,7 +141,7 @@
                 var fn = ejs.compile(source);
                 var html = '';
                 for (var i = 0; i < config.calls; i++) {
-                    var fn = ejs.compile(source);
+//                    var fn = ejs.compile(source);
                     html = fn(data);
                 }
                 return html;
@@ -162,8 +163,8 @@
                 var fn = pug.compile(source);
                 var html = '';
                 for (var i = 0; i < config.calls; i++) {
-                    var fn = pug.compile(source);
-//                        html = fn(data);
+//                    var fn = pug.compile(source);
+                        html = fn(data);
                 }
                 return html;
             }
@@ -183,25 +184,25 @@
                 var fn = Handlebars.compile(source);
                 var html = '';
                 for (var i = 0; i < config.calls; i++) {
-                    var fn = Handlebars.compile(source);
+//                    var fn = Handlebars.compile(source);
                     html = fn(data);
                 }
                 return html;
             }
         },
 
-//            {
-//                name: 'Mustache',
-//                tester: function () {
-//                    var id = config.escape ? 'mustache' : 'mustache-raw';
-//                    var source = document.getElementById(id).innerHTML;
-//                    var html = '';
-//                    for (var i = 0; i < config.calls; i++) {
-//                        html = Mustache.to_html(source, data);
-//                    }
-//                    return html;
-//                }
-//            },
+            {
+                name: 'Mustache',
+                tester: function () {
+                    var id = config.escape ? 'mustache' : 'mustache-raw';
+                    var source = document.getElementById(id).innerHTML;
+                    var html = '';
+                    for (var i = 0; i < config.calls; i++) {
+                        html = Mustache.to_html(source, data);
+                    }
+                    return html;
+                }
+            },
 
         {
             name: 'swig',
@@ -222,7 +223,8 @@
                 }
                 return html;
             }
-        }, {
+        },
+        {
             name: 'shtm',
             tester: function () {
                 var id = config.escape ? 'shtm' : 'shtm-raw';
@@ -233,10 +235,11 @@
                 for (var i = 0; i < str_count; i++) {
                     source += "str_repeat";
                 }
-//                    var fn = swig.compile(source);
+                var fn = shtm.compile(source);
                 var html = '';
                 for (var i = 0; i < config.calls; i++) {
-                        html=  shtm.compile(null,data,null,source);
+//                    var fn = shtm.compile(source);
+                    html = fn(data);
 //                    html = shtm.compile("ghy", data, null, source);
                 }
                 return html;
@@ -384,6 +387,8 @@
 
 
 
+
+
     </script>
 
     <script id="template-raw" type="text/tmpl">
@@ -392,6 +397,8 @@
         <li>User: <%- list[i].user %> / Web Site: <%- list[i].site %></li>
     <% } %>
 </ul>
+
+
 
 
 
@@ -406,6 +413,8 @@
 
 
 
+
+
     </script>
 
     <script id="template-fast-mode-raw" type="text/tmpl">
@@ -414,6 +423,8 @@
         <li>User: <%- $data.list[i].user %> / Web Site: <%- $data.list[i].site %></li>
     <% } %>
 </ul>
+
+
 
 
 
@@ -428,6 +439,8 @@ ul
 
 
 
+
+
     </script>
 
     <script id="pug-raw" type="text/tmpl">
@@ -435,6 +448,8 @@ ul
     -for (var i = 0, l = list.length; i < l; i ++) {
         li User: !{list[i].user} / Web Site: !{list[i].site}
     -}
+
+
 
 
 
@@ -450,6 +465,8 @@ ul
 
 
 
+
+
     </script>
     <script id="dot-raw" type="text/tmpl">
 <ul>
@@ -457,6 +474,8 @@ ul
         <li>User: {{=it.list[i].user}} / Web Site: {{=it.list[i].site}}</li>
     {{ } }}
 </ul>
+
+
 
 
 
@@ -472,6 +491,8 @@ ul
 
 
 
+
+
     </script>
 
     <script id="mustache-raw" type="text/tmpl">
@@ -480,6 +501,8 @@ ul
         <li>User: {{{user}}} / Web Site: {{{site}}}</li>
     {{/list}}
 </ul>
+
+
 
 
 
@@ -495,6 +518,8 @@ ul
 
 
 
+
+
     </script>
 
     <script id="handlebars-raw" type="text/tmpl">
@@ -503,6 +528,8 @@ ul
         <li>User: {{{user}}} / Web Site: {{{site}}}</li>
     {{/list}}
 </ul>
+
+
 
 
 
@@ -518,6 +545,8 @@ ul
 
 
 
+
+
     </script>
 
     <script id="swig-raw" type="text/tmpl">
@@ -529,6 +558,8 @@ ul
 
 
 
+
+
     </script>
     <script id="shtm" type="text/tmpl">
 <ul>
@@ -536,6 +567,8 @@ ul
     <li>${item.user}/Web Site:${item.site}</li>
    </c:forEach>
 </ul>
+
+
 
 
 
@@ -600,6 +633,8 @@ ul
         %>
         </ul>
     </div>
+
+
 
 
 
