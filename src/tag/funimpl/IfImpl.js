@@ -1,5 +1,4 @@
 const TagSupport = require ("../TagSupport");
-const Tag = require ("../Tag");
 
 class IfIpml extends TagSupport {
     constructor () {
@@ -33,14 +32,14 @@ class IfIpml extends TagSupport {
         this.result = this.condition ();
         this.exposeVariables ();
         if (this.result)
-            return Tag.EVAL_BODY_INCLUDE;
+            return this.EVAL_BODY_INCLUDE;
         else
-            return Tag.SKIP_BODY;
+            return this.SKIP_BODY;
     }
 
 
     doAfterBody () {
-        return Tag.SKIP_BODY;
+        return this.SKIP_BODY;
     }
 
 }

@@ -1,7 +1,7 @@
 <ul>
     <c:forEach items="${list}" var="item">
         <li>
-            <c:if test="${a>0||3<2"></c:if>
+            <c:if test="${if_test1||3<2}"></c:if>
             <p>${item.name}</p>
             <ol>
                 <c:forEach items="${item.data}" var="li">

@@ -10,9 +10,8 @@ const FileWriter = require ("../writer/FileWriter");
 const ServletWriter = require ("../writer/ServletWriter")
 
 // 测试
-const rundemo = require ("../runtime/out_rundemo")
+// const rundemo = require ("../runtime/out_rundemo")
 const ForEachImpl = require ("../tag/funimpl/ForEachImpl")
-const IfImpl = require ("../tag/funimpl/IfImpl")
 
 class Compiler {
     constructor (baseDir) {
@@ -42,24 +41,14 @@ class Compiler {
      *
      * **/
     compileTest (filename, data, fileStr) {
-        let stringWriter = new StringWriter ();
-        let out = new ServletWriter (stringWriter);
-        // let fileWriter = new FileWriter (path.join(__dirname,"../runtime/out_rundemo.js"));
-        // let out = new ServletWriter (fileWriter);
-
+        let fileWriter = new FileWriter (path.join(__dirname,"../runtime/out_rundemo.js"));
+        let out = new ServletWriter (fileWriter);
         let pageNodes = this.getPageNode (filename, null, fileStr);
         if(pageNodes==null){
             console.log("获取节点错误",filename,fileStr)
             return "";
         }
-        // Generator.generateFn (data, this, out, pageNodes, filename);
-        rundemo.call (data,data, {
-            ForEachImpl: ForEachImpl,
-            IfImpl: IfImpl,
-            out: out,
-            pageNodes: pageNodes
-        })
-        return out.toString ();
+        Generator.generateFn (data, this, out, pageNodes, filename);
     }
 
     getReader (fileName, fileStr) {
@@ -80,7 +69,6 @@ class Compiler {
         } else {
             let reader = this.getReader (filename, fileStr);
             if(reader!=null){
-                console.log("bbbbbbbbbbbb")
                 pageNodes = Parser.parse (reader, parent)
             }
         }

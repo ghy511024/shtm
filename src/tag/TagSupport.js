@@ -31,6 +31,10 @@ class TagSupport extends Tag {
     doStartTag () {
 
     }
+
+    doEndTag () {
+        return this.EVAL_PAGE;
+    }
 }
 
 module.exports = TagSupport;

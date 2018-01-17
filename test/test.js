@@ -57,17 +57,20 @@ var T = {
         console.log (+new Date () - t1);
     }
     , t4: function () {
+        var Compiler = require ("../src/compile/Compiler_cfn")
+        var cp = new Compiler ();
+        var str = fs.readFileSync (path.join (__dirname, "./view/demo2.shtm"), "utf-8")
+        let outstr = cp.compileTest (null, data, str);
+        console.log (outstr);
+    }
+    , t5: function () {
         var Compiler = require ("../src/compile/Compiler")
         var cp = new Compiler ();
         var str = fs.readFileSync (path.join (__dirname, "./view/demo2.shtm"), "utf-8")
         let t1 = +new Date ();
-        // let outstr = ""
-        // for (let i = 0; i < 10000; i++) {
-        //      outstr =  jstl.compile("bbbbbbbb", data,null,str);
-        // }
         let outstr = cp.compileTest (null, data, str);
         console.log (outstr);
-        // console.log (+new Date () - t1);
     }
 }
-T.t4 ();
+// T.t4 ();
+T.t5 ();
