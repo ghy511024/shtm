@@ -17,7 +17,7 @@
     <!--<script src="../../build/shtm.js"></script>-->
     <script src="../../build/shtm_fn.js"></script>
 
-    <script>var count_x = 8, str_count = 12, str_repeat = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+    <script>var count_x = 1, str_count = 1, str_repeat = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
     var config = {
         // 列表条数
@@ -191,18 +191,18 @@
             }
         },
 
-            {
-                name: 'Mustache',
-                tester: function () {
-                    var id = config.escape ? 'mustache' : 'mustache-raw';
-                    var source = document.getElementById(id).innerHTML;
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        html = Mustache.to_html(source, data);
-                    }
-                    return html;
-                }
-            },
+//            {
+//                name: 'Mustache',
+//                tester: function () {
+//                    var id = config.escape ? 'mustache' : 'mustache-raw';
+//                    var source = document.getElementById(id).innerHTML;
+//                    var html = '';
+//                    for (var i = 0; i < config.calls; i++) {
+//                        html = Mustache.to_html(source, data);
+//                    }
+//                    return html;
+//                }
+//            },
 
         {
             name: 'swig',
@@ -218,7 +218,7 @@
                 var fn = swig.compile(source);
                 var html = '';
                 for (var i = 0; i < config.calls; i++) {
-                    var fn = swig.compile(source);
+//                    var fn = swig.compile(source);
                     html = fn(data);
                 }
                 return html;
