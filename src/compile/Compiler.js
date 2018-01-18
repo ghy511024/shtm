@@ -96,7 +96,6 @@ class Compiler {
                 pageNodes: pageNodes,
                 PageContext: PageContext
             }
-            console.log(data)
             var strs = rundemo.call(data, data, option)
             return strs;
         }

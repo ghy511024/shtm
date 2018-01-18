@@ -5,7 +5,7 @@ var option = {
     // 列表条数
     data_length: 1,
     // 渲染次数
-    calls: 1,
+    calls: 100,
     // 是否编码
     escape: true,
     // 是否缓存
@@ -14,66 +14,82 @@ var option = {
     // full_str: "    abcdefghijklmnopqrstuvwxyz,./`1234567890~!@#$%^&*()-+",
     full_str: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     // 字符串重复数量
-    str_repeat: 100,
+    str_repeat: 10,
     // 节点重复数量
     node_repeat: 1,
 }
 
-var Timer = function () {
-    this.startTime = +new Date;
-};
-
-Timer.prototype.stop = function () {
-    return +new Date - this.startTime;
-};
+var runConf = [
+    "shtm",
+    "art-template",
+    "doT",
+    "ejs",
+    "Jade",
+    "swig"
+]
 
 var T = {
     init: function () {
         this.chart = this.initChar ();
         this.initEvent ();
-
     },
-    run: function (type) {
-        var time = new Timer ();
+    runlist: [],
+    run2: function () {
+        var _this = this;
+        var ctype = this.runlist.shift ();
+        _this.run (ctype, function () {
+            setTimeout (function () {
+                if (_this.runlist.length > 0) {
+                    _this.run2 ();
+                }
+            }, 500)
+
+        })
+    }
+    ,
+    run: function (type, callback) {
+        var stime = +new Date ();
         var test = this.getTestFn (type, option)
         test ();
-        var etime = time.stop ();
+        var etime = +new Date () - stime;
+
         console.log (type, "==耗时:", etime, " ");
         var colors = Highcharts.getOptions ().colors;
         this.chart.series[0].addPoint ({
             color: colors.shift (),
             y: etime
         });
-
-    },
+        callback ();
+    }
+    ,
     initEvent: function () {
         var _this = this;
         document.getElementById ('button-start').onclick = function () {
             var elem = this;
-            _this.run ("shtm");
-            // runTest (function () {
-            //     elem.style.display = 'none';
-            //     document.getElementById ('button-restart').style.display = '';
-            // });
+            var m = 0;
+            _this.runlist = Object.assign ([], runConf);
+            _this.run2 ();
+
         };
-    },
+    }
+    ,
     layout: function () {
         document.getElementById ('app').innerHTML = fn (option);
-    },
+    }
+    ,
     initChar: function () {
-
         var chart = new Highcharts.Chart ({
             chart: {
                 animation: {
                     duration: 150
                 },
                 renderTo: 'container',
-                height: 5 * 32,
+                height: runConf.length * 32,
                 type: 'bar'
             },
             title: false,
             xAxis: {
-                categories: ["sdfsdf","ssssssssdf","shtm"],
+                categories: runConf,
                 labels: {}
             },
             yAxis: {
@@ -110,8 +126,10 @@ var T = {
             }]
         });
         return chart;
-    },
-    getTestFn(type, option){
+    }
+    ,
+    getTestFn (type, option)
+    {
         var _this = this;
         return function () {
             var str = document.getElementById (type).innerHTML;
@@ -136,7 +154,8 @@ var T = {
             // console.log("最终输出",html)
             return html;
         }
-    },
+    }
+    ,
 
     getData: function (option) {
         var data = {
@@ -149,7 +168,8 @@ var T = {
             });
         }
         return data;
-    },
+    }
+    ,
     getFn: function (type, source) {
         var fn;
         switch (type) {
@@ -180,7 +200,8 @@ var T = {
 
         }
         return fn;
-    },
+    }
+    ,
     getsource: function () {
 
     }

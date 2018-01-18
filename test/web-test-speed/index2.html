@@ -25,336 +25,11 @@
             colors: ['#EF6F65', '#F3AB63', '#F8D56F', '#99DD7A', '#74BBF3', '#CB93E0', '#A2A2A4', '#E1AC65', '#6AF9C4']
         });
 
-
-        // 待测试的引擎列表
-        var testList = [
-
-            {
-                name: 'art-template',
-                tester: function () {
-                    var id = config.escape ? 'template' : 'template-raw';
-                    var source = document.getElementById (id).innerHTML;
-                    for (var i = 0; i < count_x; i++) {
-                        source += source;
-                    }
-                    for (var i = 0; i < str_count; i++) {
-                        source += str_repeat;
-                    }
-                    var fn = template.compile (source);
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache === false) {
-                            fn = template.compile (source)
-                        }
-
-
-                        html = fn (data);
-                    }
-                    return html;
-                }
-            },
-//
-            {
-                name: 'art-template / fast mode',
-                tester: function () {
-                    var id = config.escape ? 'template-fast-mode' : 'template-fast-mode-raw';
-                    var source = document.getElementById (id).innerHTML;
-                    for (var i = 0; i < count_x; i++) {
-                        source += source;
-                    }
-                    for (var i = 0; i < str_count; i++) {
-                        source += str_repeat;
-                    }
-                    var fn = template.compile (source);
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache === false) {
-                            fn = template.compile (source)
-                        }
-                        html = fn (data);
-                    }
-                    return html;
-                }
-            },
-
-            {
-                name: 'doT',
-                tester: function () {
-                    id = config.escape ? 'dot' : 'dot-raw';
-                    var source = document.getElementById (id).innerHTML;
-                    for (var i = 0; i < count_x; i++) {
-                        source += source;
-                    }
-                    for (var i = 0; i < str_count; i++) {
-                        source += str_repeat;
-                    }
-                    var fn = doT.template (source);
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache === false) {
-                            fn = doT.template (source)
-                        }
-                        html = fn (data);
-                    }
-                    return html;
-                }
-            },
-
-            {
-                name: 'ejs',
-                tester: function () {
-                    var id = config.escape ? 'template' : 'template-raw';
-                    var source = document.getElementById (id).innerHTML;
-                    for (var i = 0; i < count_x; i++) {
-                        source += source;
-                    }
-                    for (var i = 0; i < str_count; i++) {
-                        source += str_repeat;
-                    }
-                    var fn = ejs.compile (source);
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache === false) {
-                            fn = ejs.compile (source)
-                        }
-                        html = fn (data);
-                    }
-                    return html;
-                }
-            },
-
-            {
-                name: 'Jade / pug',
-                tester: function () {
-                    var id = config.escape ? 'pug' : 'pug-raw';
-                    var source = document.getElementById (id).innerHTML;
-                    for (var i = 0; i < count_x; i++) {
-                        source += source;
-                    }
-                    for (var i = 0; i < str_count; i++) {
-                        source += str_repeat;
-                    }
-                    var pug = require ('pug');
-                    var fn = pug.compile (source);
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache === false) {
-                            fn = pug.compile (source)
-                        }
-                        html = fn (data);
-                    }
-                    return html;
-                }
-            },
-
-            {
-                name: 'Handlebars',
-                tester: function () {
-                    var id = config.escape ? 'handlebars' : 'handlebars-raw';
-                    var source = document.getElementById (id).innerHTML;
-                    for (var i = 0; i < count_x; i++) {
-                        source += source;
-                    }
-                    for (var i = 0; i < str_count; i++) {
-                        source += str_repeat;
-                    }
-                    var fn = Handlebars.compile (source);
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache === false) {
-                            fn = Handlebars.compile (source)
-                        }
-                        html = fn (data);
-                    }
-                    return html;
-                }
-            },
-
-//            {
-//                name: 'Mustache',
-//                tester: function () {
-//                    var id = config.escape ? 'mustache' : 'mustache-raw';
-//                    var source = document.getElementById(id).innerHTML;
-//                    var html = '';
-//                    for (var i = 0; i < config.calls; i++) {
-//                        html = Mustache.to_html(source, data);
-//                    }
-//                    return html;
-//                }
-//            },
-
-            {
-                name: 'swig',
-                tester: function () {
-                    var id = config.escape ? 'swig' : 'swig-raw';
-                    var source = document.getElementById (id).innerHTML;
-                    for (var i = 0; i < count_x; i++) {
-                        source += source;
-                    }
-                    for (var i = 0; i < str_count; i++) {
-                        source += str_repeat;
-                    }
-                    var fn = swig.compile (source);
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache === false) {
-                            fn = swig.compile (source)
-                        }
-                        html = fn (data);
-                    }
-                    return html;
-                }
-            },
-            {
-                name: 'shtm',
-                tester: function () {
-                    var id = config.escape ? 'shtm' : 'shtm-raw';
-                    var source = document.getElementById ("shtm").innerHTML;
-                    for (var i = 0; i < count_x; i++) {
-                        source += source;
-                    }
-                    for (var i = 0; i < str_count; i++) {
-                        source += str_repeat;
-                    }
-                    var fn = shtm.compile (source);
-                    var html = '';
-                    for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache === false) {
-                            fn = shtm.compile (source)
-                        }
-                        html = fn (data);
-                    }
-                    return html;
-                }
-            }
-        ];
-
-
-        var runTest = function (callback) {
-
-            var list = testList.filter (function (test) {
-                return !config.escape || test.supportEscape !== false;
-            });
-
-            var Timer = function () {
-                this.startTime = +new Date;
-            };
-
-            Timer.prototype.stop = function () {
-                return +new Date - this.startTime;
-            };
-
-            var colors = Highcharts.getOptions ().colors;
-            var categories = [];
-
-            for (var i = 0; i < list.length; i++) {
-                categories.push (list[i].name);
-            }
-
-            var chart = new Highcharts.Chart ({
-                chart: {
-                    animation: {
-                        duration: 150
-                    },
-                    renderTo: 'container',
-                    height: categories.length * 32,
-                    type: 'bar'
-                },
-
-                title: false,
-
-                // subtitle: {
-                //     text: config.length + ' list × ' + config.calls + ' calls'
-                // },
-
-                xAxis: {
-                    categories: categories,
-                    labels: {}
-                },
-
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Time'
-                    }
-                },
-
-                legend: {
-                    enabled: false
-                },
-
-                tooltip: {
-                    formatter: function () {
-                        return '<b>' + this.x + '</b><br/>' +
-                            this.y + 'ms';
-                    }
-
-                },
-
-                credits: {
-                    enabled: false
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true,
-                            formatter: function () {
-                                return this.y + 'ms';
-                            }
-                        }
-                    },
-                },
-                series: [{
-                    data: []
-                }]
-
-            });
-
-            var log = function (message) {
-                document.getElementById ('log').innerHTML = message;
-            };
-
-            var tester = function (target) {
-                var time = new Timer;
-                var html = target.tester ();
-//                console.log (target.name + '------------------\n', html);
-                var endTime = time.stop ();
-
-                chart.series[0].addPoint ({
-                    color: colors.shift (),
-                    y: endTime
-                });
-
-                if (!list.length) {
-                    callback ();
-                    return;
-                }
-
-                target = list.shift ();
-
-                setTimeout (function () {
-                    tester (target);
-                }, 500);
-
-            };
-
-            var target = list.shift ();
-            log ('run: ' + target.name);
-            tester (target);
-
-        };
-
-        var restart = function (key, value) {
-            config[key] = value;
-            var data = JSON.stringify (config);
-            data = encodeURIComponent (data);
-            location.search = 'test=' + data;
-        }
     </script>
 
 
     <!-- art-template || ejs || lodash-template || underscore-template -->
-    <script id="template" type="text/tmpl">
+    <script id="art-template" type="text/tmpl">
 <ul>
     <% for (var i = 0, l = list.length; i < l; i ++) { %>
         <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
@@ -363,36 +38,17 @@
 
 
     </script>
-
-    <script id="template-raw" type="text/tmpl">
+    <script id="ejs" type="text/tmpl">
 <ul>
     <% for (var i = 0, l = list.length; i < l; i ++) { %>
-        <li>User: <%- list[i].user %> / Web Site: <%- list[i].site %></li>
+        <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
     <% } %>
 </ul>
-
     </script>
 
-    <script id="template-fast-mode" type="text/tmpl">
-<ul>
-    <% for (var i = 0, l = $data.list.length; i < l; i ++) { %>
-        <li>User: <%= $data.list[i].user %> / Web Site: <%= $data.list[i].site %></li>
-    <% } %>
-</ul>
-
-    </script>
-
-    <script id="template-fast-mode-raw" type="text/tmpl">
-<ul>
-    <% for (var i = 0, l = $data.list.length; i < l; i ++) { %>
-        <li>User: <%- $data.list[i].user %> / Web Site: <%- $data.list[i].site %></li>
-    <% } %>
-</ul>
-
-    </script>
 
     <!-- pug -->
-    <script id="pug" type="text/tmpl">
+    <script id="Jade" type="text/tmpl">
 ul
     -for (var i = 0, l = list.length; i < l; i ++) {
         li User: #{list[i].user} / Web Site: #{list[i].site}
@@ -400,27 +56,11 @@ ul
 
     </script>
 
-    <script id="pug-raw" type="text/tmpl">
-ul
-    -for (var i = 0, l = list.length; i < l; i ++) {
-        li User: !{list[i].user} / Web Site: !{list[i].site}
-    -}
-
-    </script>
-
     <!-- doT -->
-    <script id="dot" type="text/tmpl">
+    <script id="doT" type="text/tmpl">
 <ul>
     {{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
         <li>User: {{!it.list[i].user}} / Web Site: {{!it.list[i].site}}</li>
-    {{ } }}
-</ul>
-
-    </script>
-    <script id="dot-raw" type="text/tmpl">
-<ul>
-    {{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
-        <li>User: {{=it.list[i].user}} / Web Site: {{=it.list[i].site}}</li>
     {{ } }}
 </ul>
 
