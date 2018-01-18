@@ -53,13 +53,13 @@ var T = {
             outstr = jstl.compile ("bbbbbbbb", data, null, str);
         }
         // let outstr = jstl.compile(null, data,null,str);
-        // console.log (outstr);
+        console.log (outstr);
         console.log (+new Date () - t1);
     }
     , t4: function () {
         var Compiler = require ("../src/compile/Compiler_cfn")
         var cp = new Compiler ();
-        var str = fs.readFileSync (path.join (__dirname, "./view/demo2.shtm"), "utf-8")
+        var str = fs.readFileSync (path.join (__dirname, "./view/demo.shtm"), "utf-8")
         let outstr = cp.compileTest (null, data, str);
         console.log (outstr);
     }
@@ -70,13 +70,15 @@ var T = {
         let t1 = +new Date ();
         let outstr;
         var fn=cp.compileFn (null, data, str);
-        for (let i = 0; i < 2048; i++) {
+        // for (let i = 0; i < 10000; i++) {
+        //     // var fn=cp.compileFn (null, data, str);
             outstr = fn(data);
-        }
+        // }
         // let outstr = cp.compileTest (null, data, str);
-        // console.log (outstr);
+        console.log (outstr);
         console.log (+new Date () - t1);
     }
 }
-T.t4 ();
-// T.t5 ();
+// T.t3 ();
+// T.t4 ();
+T.t5 ();

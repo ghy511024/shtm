@@ -13,9 +13,10 @@ class ServletWriter {
         this.indent = 0;
         this.vertual_indent = 0;
         this.javaLine = 1;
-        if (writer instanceof Writer) {
-            this.writer = writer;
-        }
+        // if (writer instanceof Writer) {
+        //     this.writer = writer;
+        // }
+        this.writer = writer;
     }
 
     pushIndent() {

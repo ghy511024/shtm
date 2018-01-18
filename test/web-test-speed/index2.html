@@ -17,46 +17,8 @@
     <!--<script src="../../build/shtm.js"></script>-->
     <script src="../../build/shtm_fn.js"></script>
 
+
     <script>
-        var count_x =4, str_count = 60, str_repeat = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-        var myConf={
-            cache:false
-        }
-        var config = {
-            // 列表条数
-            length: 20,
-            // 渲染次数
-            calls: 2048,
-            // 是否编码
-            escape: true,
-        };
-
-        if (location.search) {
-            var param = decodeURIComponent (location.search);
-            param = param.replace (/.*\btest=({[^}]*}).*?/, '$1');
-            try {
-                config = JSON.parse (param);
-            } catch (e) {
-                console.error (e);
-            }
-        }
-
-
-        // 制造测试数据
-        var data = {
-            list: []
-        };
-
-        for (var i = 0; i < config.length; i++) {
-            data.list.push ({
-                index: i,
-                user: '<strong style="color:red">糖饼</strong>',
-                site: 'https://github.com/aui',
-                weibo: 'http://weibo.com/planeart',
-                QQweibo: 'http://t.qq.com/tangbin'
-            });
-        }
-        ;
 
 
         Highcharts.setOptions ({
@@ -81,9 +43,11 @@
                     var fn = template.compile (source);
                     var html = '';
                     for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache===false) {
+                        if (myConf.cache === false) {
                             fn = template.compile (source)
                         }
+
+
                         html = fn (data);
                     }
                     return html;
@@ -104,7 +68,7 @@
                     var fn = template.compile (source);
                     var html = '';
                     for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache===false) {
+                        if (myConf.cache === false) {
                             fn = template.compile (source)
                         }
                         html = fn (data);
@@ -127,7 +91,7 @@
                     var fn = doT.template (source);
                     var html = '';
                     for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache===false) {
+                        if (myConf.cache === false) {
                             fn = doT.template (source)
                         }
                         html = fn (data);
@@ -150,7 +114,7 @@
                     var fn = ejs.compile (source);
                     var html = '';
                     for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache===false) {
+                        if (myConf.cache === false) {
                             fn = ejs.compile (source)
                         }
                         html = fn (data);
@@ -174,7 +138,7 @@
                     var fn = pug.compile (source);
                     var html = '';
                     for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache===false) {
+                        if (myConf.cache === false) {
                             fn = pug.compile (source)
                         }
                         html = fn (data);
@@ -197,7 +161,7 @@
                     var fn = Handlebars.compile (source);
                     var html = '';
                     for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache===false) {
+                        if (myConf.cache === false) {
                             fn = Handlebars.compile (source)
                         }
                         html = fn (data);
@@ -233,7 +197,7 @@
                     var fn = swig.compile (source);
                     var html = '';
                     for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache===false) {
+                        if (myConf.cache === false) {
                             fn = swig.compile (source)
                         }
                         html = fn (data);
@@ -255,7 +219,7 @@
                     var fn = shtm.compile (source);
                     var html = '';
                     for (var i = 0; i < config.calls; i++) {
-                        if (myConf.cache===false) {
+                        if (myConf.cache === false) {
                             fn = shtm.compile (source)
                         }
                         html = fn (data);
@@ -351,8 +315,6 @@
             };
 
             var tester = function (target) {
-
-
                 var time = new Timer;
                 var html = target.tester ();
 //                console.log (target.name + '------------------\n', html);
@@ -363,16 +325,12 @@
                     y: endTime
                 });
 
-
                 if (!list.length) {
-                    log ('done');
                     callback ();
                     return;
                 }
 
                 target = list.shift ();
-
-                log ('run: ' + target.name);
 
                 setTimeout (function () {
                     tester (target);
@@ -404,15 +362,6 @@
 </ul>
 
 
-
-
-
-
-
-
-
-
-
     </script>
 
     <script id="template-raw" type="text/tmpl">
@@ -421,16 +370,6 @@
         <li>User: <%- list[i].user %> / Web Site: <%- list[i].site %></li>
     <% } %>
 </ul>
-
-
-
-
-
-
-
-
-
-
 
     </script>
 
@@ -441,16 +380,6 @@
     <% } %>
 </ul>
 
-
-
-
-
-
-
-
-
-
-
     </script>
 
     <script id="template-fast-mode-raw" type="text/tmpl">
@@ -459,16 +388,6 @@
         <li>User: <%- $data.list[i].user %> / Web Site: <%- $data.list[i].site %></li>
     <% } %>
 </ul>
-
-
-
-
-
-
-
-
-
-
 
     </script>
 
@@ -479,16 +398,6 @@ ul
         li User: #{list[i].user} / Web Site: #{list[i].site}
     -}
 
-
-
-
-
-
-
-
-
-
-
     </script>
 
     <script id="pug-raw" type="text/tmpl">
@@ -496,16 +405,6 @@ ul
     -for (var i = 0, l = list.length; i < l; i ++) {
         li User: !{list[i].user} / Web Site: !{list[i].site}
     -}
-
-
-
-
-
-
-
-
-
-
 
     </script>
 
@@ -517,16 +416,6 @@ ul
     {{ } }}
 </ul>
 
-
-
-
-
-
-
-
-
-
-
     </script>
     <script id="dot-raw" type="text/tmpl">
 <ul>
@@ -534,16 +423,6 @@ ul
         <li>User: {{=it.list[i].user}} / Web Site: {{=it.list[i].site}}</li>
     {{ } }}
 </ul>
-
-
-
-
-
-
-
-
-
-
 
     </script>
 
@@ -555,16 +434,6 @@ ul
     {{/list}}
 </ul>
 
-
-
-
-
-
-
-
-
-
-
     </script>
 
     <script id="mustache-raw" type="text/tmpl">
@@ -573,16 +442,6 @@ ul
         <li>User: {{{user}}} / Web Site: {{{site}}}</li>
     {{/list}}
 </ul>
-
-
-
-
-
-
-
-
-
-
 
     </script>
 
@@ -594,16 +453,6 @@ ul
     {{/list}}
 </ul>
 
-
-
-
-
-
-
-
-
-
-
     </script>
 
     <script id="handlebars-raw" type="text/tmpl">
@@ -612,16 +461,6 @@ ul
         <li>User: {{{user}}} / Web Site: {{{site}}}</li>
     {{/list}}
 </ul>
-
-
-
-
-
-
-
-
-
-
 
     </script>
 
@@ -633,16 +472,6 @@ ul
     {% endfor %}
 </ul>
 
-
-
-
-
-
-
-
-
-
-
     </script>
 
     <script id="swig-raw" type="text/tmpl">
@@ -652,16 +481,6 @@ ul
     {% endfor %}
 </ul>
 
-
-
-
-
-
-
-
-
-
-
     </script>
     <script id="shtm" type="text/tmpl">
 <ul>
@@ -669,16 +488,6 @@ ul
     <li>${item.user}/Web Site:${item.site}</li>
    </c:forEach>
 </ul>
-
-
-
-
-
-
-
-
-
-
 
     </script>
 
@@ -713,67 +522,69 @@ ul
 
 <div id="app"></div>
 <script id="body" type="text/tmpl">
-    <h1>Template Engine Rendering Speed Test</h1>
+    <h1>模版性能测试</h1>
     <div class="header">
         <div class="item">
-            <label><input type="number" value="{{length}}" onchange="restart('length', this.value)"> list</label>
+            <label><input type="number" value="${data_length}" name="data_length"> (数据长度)</label>
             <strong>×</strong>
-            <label><input type="number" value="{{calls}}" onchange="restart('calls', this.value)"> calls</label>
-            <label><input type="checkbox" {{if escape}}checked{{/if}} onchange="restart('escape', this.checked)"> escape</label>
-            <label><input type="checkbox" checked disabled> cache</label>
+            <label><input type="number" value="${calls}"> （执行次数）</label>
+            <label><input type="number" value="${node_repeat}" name="node_repeat"> 节点重复次数</label>
+            <label><input type="number" value="${str_repeat}" name="str_repeat"> 文本填充次数</label>
+            <label><input type="checkbox" <c> > cache</label>
         </div>
         <div class="item">
             <button id="button-start">Run Test&raquo;</button>
             <button id="button-restart" style="display:none">Restart</button>
             <span id="log">
-                
+
             </span>
         </div>
     </div>
     <div id="container" style="min-width: 400px; margin: 0 auto">
         <ul>
-        <%
-            testList.forEach(function(test){
-                if (!escape || test.supportEscape !== false) {
-                    print('<li>', $escape(test.name), '</li>');
-                }
-            });
-        %>
+        <c:forEach items="${option.testList}" var="item">
+        <li>${item}</li>
+        </c:forEach>
         </ul>
     </div>
 
-
-
-
-
-
-
-
-
-
-
 </script>
-
 <script>
     (function () {
-        var data = Object.create (config);
-        data.testList = testList;
-        document.getElementById ('app').innerHTML = template ('body', data);
+        var option = {
+            // 列表条数
+            data_length: 20,
+            // 渲染次数
+            calls: 2048,
+            // 是否编码
+            escape: true,
+            // 是否缓存
+            cache: false,
+            // 填充字符串
+            full_str: "    abcdefghijklmnopqrstuvwxyz,./`1234567890~!@#$%^&*()-+",
+            // 字符串重复数量
+            str_repeat: 100,
+            // 节点重复数量
+            node_repeat: 100,
+        }
+        var fn = shtm.compile (document.getElementById ('body').innerHTML);
+        console.log (fn (option))
+        document.getElementById ('app').innerHTML = fn (option);
+//        document.getElementById ('button-start').onclick = function () {
+//            var elem = this;
+////            this.disabled = true;
+//            runTest (function () {
+//                elem.style.display = 'none';
+//                document.getElementById ('button-restart').style.display = '';
+//            });
+//        };
 
-        document.getElementById ('button-start').onclick = function () {
-            var elem = this;
-            this.disabled = true;
-            runTest (function () {
-                elem.style.display = 'none';
-                document.getElementById ('button-restart').style.display = '';
-            });
-        };
-
-        document.getElementById ('button-restart').onclick = function () {
-            location.reload ();
-        };
+//        document.getElementById ('button-restart').onclick = function () {
+//            location.reload ();
+//        };
     }) ();
 </script>
+<script src="main.js"></script>
 </body>
 
 </html>

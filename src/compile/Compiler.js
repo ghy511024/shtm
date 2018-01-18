@@ -78,8 +78,8 @@ class Compiler {
         Generator.generateFn(data, this, fn_out, pageNodes, filename);
 
         var fnstr1 = fn_out.toString();
+        // console.log(fnstr1,",,,,,,,,")
         var fnstr = rundemo_str;
-        console.log(fnstr1.length, fnstr.length)
         var rundemo = new Function('data, option', fnstr1);
         var option = {
             ForEachImpl: ForEachImpl,
@@ -96,6 +96,7 @@ class Compiler {
                 pageNodes: pageNodes,
                 PageContext: PageContext
             }
+            console.log(data)
             var strs = rundemo.call(data, data, option)
             return strs;
         }

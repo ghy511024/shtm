@@ -248,8 +248,10 @@ class GenerateVisitor extends Node.Visitor {
             let buffer = this.methodsBuffered[i];
             this.out.printMultiLn(buffer.toString());
         }
+
         this.out.printil("}");// with 函数结尾
-        this.out.printil("");// with 函数结尾
+        this.out.printil("return str;");// with 函数结尾
+
     }
 
     /**

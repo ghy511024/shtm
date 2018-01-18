@@ -92,13 +92,13 @@ class ForEachIpml extends TagSupport {
             this.index++;
             this.item = this.next();
         } else {
-            return Tag.SKIP_BODY;
+            return this.SKIP_BODY;
         }
 
         this.discard(this.step - 1)
         this.exposeVariables(false);
         this.calibrateLast();
-        return Tag.EVAL_BODY_AGAIN;
+        return this.EVAL_BODY_AGAIN;
     }
 
     /**

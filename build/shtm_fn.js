@@ -1545,9 +1545,10 @@ class ServletWriter {
         this.indent = 0;
         this.vertual_indent = 0;
         this.javaLine = 1;
-        if (writer instanceof Writer) {
-            this.writer = writer;
-        }
+        // if (writer instanceof Writer) {
+        //     this.writer = writer;
+        // }
+        this.writer = writer;
     }
 
     pushIndent() {
@@ -1630,10 +1631,10 @@ const ServletWriter = __webpack_require__(13)
 
 // 测试
 // const rundemo = require("../runtime/out_rundemo")
-const rundemo_str = __webpack_require__(46)
+const rundemo_str = __webpack_require__(45)
 const ForEachImpl = __webpack_require__(21)
 const IfImpl = __webpack_require__(22)
-const PageContext = __webpack_require__(45)
+const PageContext = __webpack_require__(46)
 
 class Compiler {
     constructor(baseDir) {
@@ -1697,8 +1698,8 @@ class Compiler {
         Generator.generateFn(data, this, fn_out, pageNodes, filename);
 
         var fnstr1 = fn_out.toString();
+        // console.log(fnstr1,",,,,,,,,")
         var fnstr = rundemo_str;
-        console.log(fnstr1.length, fnstr.length)
         var rundemo = new Function('data, option', fnstr1);
         var option = {
             ForEachImpl: ForEachImpl,
@@ -1715,6 +1716,7 @@ class Compiler {
                 pageNodes: pageNodes,
                 PageContext: PageContext
             }
+            console.log(data)
             var strs = rundemo.call(data, data, option)
             return strs;
         }
@@ -2067,13 +2069,13 @@ class ForEachIpml extends TagSupport {
             this.index++;
             this.item = this.next();
         } else {
-            return Tag.SKIP_BODY;
+            return this.SKIP_BODY;
         }
 
         this.discard(this.step - 1)
         this.exposeVariables(false);
         this.calibrateLast();
-        return Tag.EVAL_BODY_AGAIN;
+        return this.EVAL_BODY_AGAIN;
     }
 
     /**
@@ -2529,47 +2531,63 @@ module.exports = Writer;
 /**
  * Created by ghy on 2017/12/1.
  */
-const Writer = __webpack_require__(23);
+const lineSeparator = "\n";
+const Writer = __webpack_require__ (23);
 
-class StringWriter extends Writer {
-    constructor() {
-        super();
+class StringWriter  {
+    constructor () {
+        // super ();
         this.str = "";
     }
-
-    _write_str(s) {
+    print(s) {
+        this.str += s;
+        // if (s == null) {
+        //     s = "";
+        // }
+        // this.write(s);
+    }
+    println(x) {
+        if (x != null) {
+            this.print(x);
+        }
+        this.write(lineSeparator);
+    }
+    write(s) {
         this.str += s;
     }
+    // _write_str (s) {
+    //     this.str += s;
+    // }
+    //
+    // _write_num (s) {
+    //     this.str += s;
+    // }
+    //
+    // _write_bol (s) {
+    //     this.str += s;
+    // }
+    //
+    // _write_obj (s) {
+    //     try {
+    //         this.str += JSON.stringify (s);
+    //     }
+    //     catch (e) {
+    //         this.str += "[Object]";
+    //     }
+    //
+    // }
+    //
+    // _write_arr (s) {
+    //     console.log (s)
+    //     try {
+    //         this.str += JSON.stringify (s);
+    //     }
+    //     catch (e) {
+    //         this.str += "[Array]";
+    //     }
+    // }
 
-    _write_num(s) {
-        this.str += s;
-    }
-
-    _write_bol(s) {
-        this.str += s;
-    }
-
-    _write_obj(s) {
-        try {
-            this.str += JSON.stringify(s);
-        }
-        catch (e) {
-            this.str += "[Object]";
-        }
-
-    }
-
-    _write_arr(s) {
-        console.log(s)
-        try {
-            this.str += JSON.stringify(s);
-        }
-        catch (e) {
-            this.str += "[Array]";
-        }
-    }
-
-    toString() {
+    toString () {
         return this.str;
     }
 }
@@ -10495,8 +10513,10 @@ class GenerateVisitor extends Node.Visitor {
             let buffer = this.methodsBuffered[i];
             this.out.printMultiLn(buffer.toString());
         }
+
         this.out.printil("}");// with 函数结尾
-        this.out.printil("");// with 函数结尾
+        this.out.printil("return str;");// with 函数结尾
+
     }
 
     /**
@@ -11039,79 +11059,6 @@ module.exports = Parser;
 
 /***/ }),
 /* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const PAGE_SCOPE = 1;
-const REQUEST_SCOPE = 2;
-const SESSION_SCOPE = 3;
-const APPLICATION_SCOPE = 4;
-
-const PAGE = "node.jstl.jsPage";
-const REQUEST = "node.jstl.jsRequest";
-const SESSION = "node.jstl.jsSession";
-
-const ELparser = __webpack_require__(17);
-const path = __webpack_require__(2);
-
-class PageContext {
-    constructor(data, filPath) {
-        if (filPath != null) {
-            this.fileDir = filPath.slice(0, filPath.lastIndexOf(path.join("/")));
-        }
-        this.data = data;
-        this.attributes = {};
-        this.isNametableInitialized = false;
-    }
-
-    setAttribute(name, attribute) {
-        if (attribute != null) {
-            if (!this.isNametableInitialized) {
-                this.initializePageScopeNameTable();
-            }
-            this.data[name] = attribute;
-        } else {
-            this.data[name] = null;
-        }
-
-    }
-
-    hasValue(itemName) {
-        return this.data[itemName] != null;
-    }
-
-    getAttribute(name) {
-        if (!this.isNametableInitialized) {
-            this.initializePageScopeNameTable();
-        }
-        return this.data[name];
-    }
-
-    initializePageScopeNameTable() {
-        // 留着以后扩展吧，暂时用不到
-        this.isNametableInitialized = true;
-        this.setAttribute(PAGE, {})
-        this.setAttribute(REQUEST, {})
-        this.setAttribute(SESSION, {})
-    }
-
-    /**
-     * 使用词法解析
-     * */
-    getElValue(exp, node) {
-        let tmpData = Object.assign({}, this.attributes, this.data)
-        let exp_str;
-        let reg = /\$\{(.*?)\}/gi
-        exp.replace(reg, function (_, $1) {
-            exp_str = $1;
-        })
-        return ELparser.getValue(exp_str, tmpData);
-    }
-}
-
-module.exports = PageContext;
-
-/***/ }),
-/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = `var ForEachImpl = option.ForEachImpl;
@@ -11200,6 +11147,79 @@ let evalDoAfterBody = js_th_c_forEach_2.doAfterBody();
             }
             }
 `
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const PAGE_SCOPE = 1;
+const REQUEST_SCOPE = 2;
+const SESSION_SCOPE = 3;
+const APPLICATION_SCOPE = 4;
+
+const PAGE = "node.jstl.jsPage";
+const REQUEST = "node.jstl.jsRequest";
+const SESSION = "node.jstl.jsSession";
+
+const ELparser = __webpack_require__(17);
+const path = __webpack_require__(2);
+
+class PageContext {
+    constructor(data, filPath) {
+        if (filPath != null) {
+            this.fileDir = filPath.slice(0, filPath.lastIndexOf(path.join("/")));
+        }
+        this.data = data;
+        this.attributes = {};
+        this.isNametableInitialized = false;
+    }
+
+    setAttribute(name, attribute) {
+        if (attribute != null) {
+            if (!this.isNametableInitialized) {
+                this.initializePageScopeNameTable();
+            }
+            this.data[name] = attribute;
+        } else {
+            this.data[name] = null;
+        }
+
+    }
+
+    hasValue(itemName) {
+        return this.data[itemName] != null;
+    }
+
+    getAttribute(name) {
+        if (!this.isNametableInitialized) {
+            this.initializePageScopeNameTable();
+        }
+        return this.data[name];
+    }
+
+    initializePageScopeNameTable() {
+        // 留着以后扩展吧，暂时用不到
+        this.isNametableInitialized = true;
+        this.setAttribute(PAGE, {})
+        this.setAttribute(REQUEST, {})
+        this.setAttribute(SESSION, {})
+    }
+
+    /**
+     * 使用词法解析
+     * */
+    getElValue(exp, node) {
+        let tmpData = Object.assign({}, this.attributes, this.data)
+        let exp_str;
+        let reg = /\$\{(.*?)\}/gi
+        exp.replace(reg, function (_, $1) {
+            exp_str = $1;
+        })
+        return ELparser.getValue(exp_str, tmpData);
+    }
+}
+
+module.exports = PageContext;
 
 /***/ })
 /******/ ]);
