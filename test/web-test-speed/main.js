@@ -1,24 +1,3 @@
-/**
- * Created by ghy on 2018/1/18.
- */
-var option = {
-    // 列表条数
-    data_length: 1,
-    // 渲染次数
-    calls: 100,
-    // 是否编码
-    escape: true,
-    // 是否缓存
-    cache: false,
-    // 填充字符串
-    // full_str: "    abcdefghijklmnopqrstuvwxyz,./`1234567890~!@#$%^&*()-+",
-    full_str: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    // 字符串重复数量
-    str_repeat: 10,
-    // 节点重复数量
-    node_repeat: 1,
-}
-
 var runConf = [
     "shtm",
     "art-template",
@@ -34,20 +13,20 @@ var T = {
         this.initEvent ();
     },
     runlist: [],
-    run2: function () {
+    go_run: function (option) {
         var _this = this;
         var ctype = this.runlist.shift ();
-        _this.run (ctype, function () {
+        _this.run (ctype, option, function () {
             setTimeout (function () {
                 if (_this.runlist.length > 0) {
-                    _this.run2 ();
+                    _this.go_run (option);
                 }
             }, 500)
 
         })
     }
     ,
-    run: function (type, callback) {
+    run: function (type, option, callback) {
         var stime = +new Date ();
         var test = this.getTestFn (type, option)
         test ();
@@ -65,11 +44,28 @@ var T = {
     initEvent: function () {
         var _this = this;
         document.getElementById ('button-start').onclick = function () {
+            this.disabled = true;
             var elem = this;
             var m = 0;
             _this.runlist = Object.assign ([], runConf);
-            _this.run2 ();
 
+            var obj = _this.getObj ();
+            var tmp_obj = Object.assign ({}, window.option, obj);
+            var hash = Tool.objTourl (tmp_obj);
+            window.location.hash = hash;
+            _this.go_run (tmp_obj);
+
+        };
+        document.getElementById ('button-restart').onclick = function () {
+            var obj = _this.getObj ();
+            var tmp_obj = Object.assign ({}, window.option, obj);
+            var hash = Tool.objTourl (tmp_obj);
+            window.location.hash=hash;
+            window.location.reload ();
+        };
+        document.getElementById ('button-reset').onclick = function () {
+            window.location.hash = null;
+            window.location.reload ();
         };
     }
     ,
@@ -128,6 +124,16 @@ var T = {
         return chart;
     }
     ,
+    getObj: function () {
+        var obj = {}
+        obj["data_length"] = Number (document.getElementById ("data_length").value) || 1;
+        obj["calls"] = Number (document.getElementById ("calls").value) || 1;
+        obj["node_repeat"] = Number (document.getElementById ("node_repeat").value) || 1;
+        obj["str_repeat"] = Number (document.getElementById ("str_repeat").value) || 1;
+        obj["data_length"] = Number (document.getElementById ("data_length").value) || 1;
+        obj["cache"] = document.getElementById ("cache").checked?true:false;
+        return obj;
+    },
     getTestFn (type, option)
     {
         var _this = this;
@@ -201,9 +207,6 @@ var T = {
         }
         return fn;
     }
-    ,
-    getsource: function () {
 
-    }
 }
 T.init ();

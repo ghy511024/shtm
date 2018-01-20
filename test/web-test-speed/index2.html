@@ -17,10 +17,7 @@
     <!--<script src="../../build/shtm.js"></script>-->
     <script src="../../build/shtm_fn.js"></script>
 
-
     <script>
-
-
         Highcharts.setOptions ({
             colors: ['#EF6F65', '#F3AB63', '#F8D56F', '#99DD7A', '#74BBF3', '#CB93E0', '#A2A2A4', '#E1AC65', '#6AF9C4']
         });
@@ -37,6 +34,8 @@
 </ul>
 
 
+
+
     </script>
     <script id="ejs" type="text/tmpl">
 <ul>
@@ -44,6 +43,8 @@
         <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
     <% } %>
 </ul>
+
+
     </script>
 
 
@@ -53,6 +54,8 @@ ul
     -for (var i = 0, l = list.length; i < l; i ++) {
         li User: #{list[i].user} / Web Site: #{list[i].site}
     -}
+
+
 
     </script>
 
@@ -64,6 +67,8 @@ ul
     {{ } }}
 </ul>
 
+
+
     </script>
 
     <!--Mustache -->
@@ -74,6 +79,8 @@ ul
     {{/list}}
 </ul>
 
+
+
     </script>
 
     <script id="mustache-raw" type="text/tmpl">
@@ -82,6 +89,8 @@ ul
         <li>User: {{{user}}} / Web Site: {{{site}}}</li>
     {{/list}}
 </ul>
+
+
 
     </script>
 
@@ -93,6 +102,8 @@ ul
     {{/list}}
 </ul>
 
+
+
     </script>
 
     <script id="handlebars-raw" type="text/tmpl">
@@ -101,6 +112,8 @@ ul
         <li>User: {{{user}}} / Web Site: {{{site}}}</li>
     {{/list}}
 </ul>
+
+
 
     </script>
 
@@ -112,6 +125,8 @@ ul
     {% endfor %}
 </ul>
 
+
+
     </script>
 
     <script id="swig-raw" type="text/tmpl">
@@ -121,6 +136,8 @@ ul
     {% endfor %}
 </ul>
 
+
+
     </script>
     <script id="shtm" type="text/tmpl">
 <ul>
@@ -128,6 +145,8 @@ ul
     <li>${item.user}/Web Site:${item.site}</li>
    </c:forEach>
 </ul>
+
+
 
     </script>
 
@@ -149,7 +168,8 @@ ul
         }
 
         #app input[type=number] {
-            max-width: 4em;
+            max-width: 80px;
+            padding: 5px;
         }
 
         #app ul {
@@ -165,19 +185,19 @@ ul
     <h1>模版性能测试</h1>
     <div class="header">
         <div class="item">
-            <label><input type="number" value="${data_length}" name="data_length"> (数据长度)</label>
+        <form id=form>
+            <label>数据长度:<input type="number" value="${data_length}" id="data_length"></label>
             <strong>×</strong>
-            <label><input type="number" value="${calls}"> （执行次数）</label>
-            <label><input type="number" value="${node_repeat}" name="node_repeat"> 节点重复次数</label>
-            <label><input type="number" value="${str_repeat}" name="str_repeat"> 文本填充次数</label>
-            <label><input type="checkbox" <c> > cache</label>
+            <label>执行次数:<input type="number" value="${calls}" id="calls"></label>
+            <label>节点重复次数:<input type="number" value="${node_repeat}" id="node_repeat"> </label>
+            <label>文本填充次数:<input type="number" value="${str_repeat}" id="str_repeat"> </label>
+            <label>cache 缓存：<input type="checkbox" <c:if test="${cache==true}">checked</c:if> id="cache"> </label>
+            </form>
         </div>
         <div class="item">
             <button id="button-start">Run Test&raquo;</button>
-            <button id="button-restart" style="display:none">Restart</button>
-            <span id="log">
-
-            </span>
+            <button id="button-restart">重来</button>
+            <button id="button-reset">重置为默认</button>
         </div>
     </div>
     <div id="container" style="min-width: 400px; margin: 0 auto">
@@ -188,40 +208,61 @@ ul
         </ul>
     </div>
 
+
+
 </script>
 <script>
-    (function () {
-        var option = {
-            // 列表条数
-            data_length: 20,
-            // 渲染次数
-            calls: 2048,
-            // 是否编码
-            escape: true,
-            // 是否缓存
-            cache: false,
-            // 填充字符串
-            full_str: "    abcdefghijklmnopqrstuvwxyz,./`1234567890~!@#$%^&*()-+",
-            // 字符串重复数量
-            str_repeat: 100,
-            // 节点重复数量
-            node_repeat: 100,
+    window.option = {
+        // 列表条数
+        data_length: 200,
+        // 渲染次数
+        calls: 100,
+        // 是否编码
+        escape: true,
+        // 是否缓存
+        cache: false,
+        // 填充字符串
+        full_str: " <div></div>span>abcdefghijklmnopqrstuvwx",
+        // 字符串重复数量
+        str_repeat: 500,
+        // 节点重复数量
+        node_repeat: 2,
+        cache: true,
+    };
+    window.Tool = {
+        objTourl: function (obj) {
+            var hash="";
+            for (var key in obj) {
+                if(key=="full_str"){
+                    continue;
+                }
+                hash += hash.length===0 ? "" : "&";
+                hash += key + "=" + obj[key]
+            }
+            return hash;
+        },
+        urlToObj: function (hash) {
+            var obj = {};
+            var array = hash.split ("&") || [];
+            for (var i = 0; i < array.length; i++) {
+                console.log(array[i])
+                var item=(array[i]||"").split("=")
+                if (item[0] && item[1]) {
+                    if(item[0]=="cache"){
+                        item[1]= item[1]=="true"
+                    }
+                    obj[item[0]] = item[1];
+                }
+            }
+            return obj;
         }
+    };
+    (function () {
         var fn = shtm.compile (document.getElementById ('body').innerHTML);
-        console.log (fn (option))
-        document.getElementById ('app').innerHTML = fn (option);
-//        document.getElementById ('button-start').onclick = function () {
-//            var elem = this;
-////            this.disabled = true;
-//            runTest (function () {
-//                elem.style.display = 'none';
-//                document.getElementById ('button-restart').style.display = '';
-//            });
-//        };
-
-//        document.getElementById ('button-restart').onclick = function () {
-//            location.reload ();
-//        };
+        var hashoption=Tool.urlToObj((window.location.hash||"").replace("#",""));
+        window.option=Object.assign(window.option,hashoption)
+        console.log(hashoption,"...");
+        document.getElementById ('app').innerHTML = fn (window.option);
     }) ();
 </script>
 <script src="main.js"></script>
