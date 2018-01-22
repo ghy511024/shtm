@@ -40,29 +40,43 @@ class Compiler {
     }
 
     /*
-     * @param isfile{Boolean} 是否是文件
+     * 改进版本的 生成fn
      *
      * **/
-    compileTest(filename, data, fileStr) {
-        let stringWriter = new StringWriter();
-        let out = new ServletWriter(stringWriter);
-        // let fileWriter = new FileWriter (path.join(__dirname,"../runtime/out_rundemo.js"));
-        // let out = new ServletWriter (fileWriter);
+
+    compileFn_c(filename, data, fileStr) {
+        let fn_stringWriter = new StringWriter();
+        let fn_out = new ServletWriter(fn_stringWriter);
+
 
         let pageNodes = this.getPageNode(filename, null, fileStr);
         if (pageNodes == null) {
             console.log("获取节点错误", filename, fileStr)
-            return "";
         }
-        // Generator.generateFn (data, this, out, pageNodes, filename);
-        rundemo.call(data, data, {
+
+        Generator.generateFn_c(data, this, fn_out, pageNodes, filename);
+
+        var fnstr1 = fn_out.toString();
+        // console.log("c_fn============")
+        // console.log(fnstr1)
+        var rundemo = new Function('data, option', fnstr1);
+        var option = {
             ForEachImpl: ForEachImpl,
             IfImpl: IfImpl,
-            out: out,
             pageNodes: pageNodes,
             PageContext: PageContext
-        })
-        return out.toString();
+        }
+        return function (data) {
+            var option = {
+                ForEachImpl: ForEachImpl,
+                IfImpl: IfImpl,
+                out: null,
+                pageNodes: pageNodes,
+                PageContext: PageContext
+            }
+            var strs = rundemo.call(data, data, option)
+            return strs;
+        }
     }
 
     compileFn(filename, data, fileStr) {
@@ -78,7 +92,8 @@ class Compiler {
         Generator.generateFn(data, this, fn_out, pageNodes, filename);
 
         var fnstr1 = fn_out.toString();
-        // console.log(fnstr1,",,,,,,,,")
+        // console.log("fn============")
+        // console.log(fnstr1)
         var fnstr = rundemo_str;
         var rundemo = new Function('data, option', fnstr1);
         var option = {
@@ -87,7 +102,6 @@ class Compiler {
             pageNodes: pageNodes,
             PageContext: PageContext
         }
-        var map = {}
         return function (data) {
             var option = {
                 ForEachImpl: ForEachImpl,

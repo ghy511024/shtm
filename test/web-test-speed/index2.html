@@ -16,6 +16,7 @@
     <script src="js/swig.min.js"></script>
     <!--<script src="../../build/shtm.js"></script>-->
     <script src="../../build/shtm_fn.js"></script>
+    <script src="../../build/shtm_fn_c.js"></script>
 
     <script>
         Highcharts.setOptions ({
@@ -145,9 +146,14 @@ ul
     <li>${item.user}/Web Site:${item.site}</li>
    </c:forEach>
 </ul>
+    </script>
 
-
-
+    <script id="shtm_c" type="text/tmpl">
+<ul>
+   <c:forEach items="${list}" var="item">
+    <li>${item.user}/Web Site:${item.site}</li>
+   </c:forEach>
+</ul>
     </script>
 
     <style id="style">

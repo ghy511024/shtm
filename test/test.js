@@ -65,20 +65,48 @@ var T = {
     }
     , t5: function () {
         var Compiler = require ("../src/compile/Compiler")
-        var cp = new Compiler ();
+        var cp = new Compiler ();git
         var str = fs.readFileSync (path.join (__dirname, "./view/demo.shtm"), "utf-8")
         let t1 = +new Date ();
         let outstr;
-        var fn=cp.compileFn (null, data, str);
+        var fn = cp.compileFn (null, data, str);
         // for (let i = 0; i < 10000; i++) {
         //     // var fn=cp.compileFn (null, data, str);
-            outstr = fn(data);
+        outstr = fn (data);
         // }
         // let outstr = cp.compileTest (null, data, str);
         console.log (outstr);
         console.log (+new Date () - t1);
     }
+    /**
+     *
+     *
+     * */
+    , t6: function () {
+        var Compiler = require ("../src/compile/Compiler_cfn")
+        var cp = new Compiler ();
+        var str = fs.readFileSync (path.join (__dirname, "./view/demo.shtm"), "utf-8")
+        let t1 = +new Date ();
+        cp.compileModuleFile (null, data, str);
+        console.log ("compile time:", +new Date () - t1);
+    },
+    t7: function () {
+        var Compiler = require ("../src/compile/Compiler_cfn")
+        var cp = new Compiler ();
+        var str = fs.readFileSync (path.join (__dirname, "./view/demo.shtm"), "utf-8")
+        var fn = cp.compileFnByFile (null, data, str);
+        let outstr;
+        let t1 = +new Date ();
+        for (let i = 0; i < 10000; i++) {
+            // var fn = cp.compileFn (null, data, str);
+            outstr = fn (data);
+        }
+        // console.log(outstr)
+        console.log ("compile time:", +new Date () - t1);
+    }
 }
 // T.t3 ();
 // T.t4 ();
-T.t5 ();
+// T.t5 ();
+T.t6 ();
+// T.t7 ();

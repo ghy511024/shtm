@@ -12,6 +12,8 @@ const ServletWriter = require ("../writer/ServletWriter")
 // 测试
 // const rundemo = require ("../runtime/out_rundemo")
 const ForEachImpl = require ("../tag/funimpl/ForEachImpl")
+const IfImpl = require("../tag/funimpl/IfImpl")
+const PageContext = require("../ctx/PageContext_fn")
 
 class Compiler {
     constructor (baseDir) {
@@ -40,16 +42,56 @@ class Compiler {
      * @param isfile{Boolean} 是否是文件
      *
      * **/
-    compileTest (filename, data, fileStr) {
-        let fileWriter = new FileWriter (path.join(__dirname,"../runtime/out_rundemo.js"));
+    compileFile (filename, data, fileStr) {
+        let fileWriter = new FileWriter (path.join (__dirname, "../runtime/out_rundemo.js"));
         let out = new ServletWriter (fileWriter);
         let pageNodes = this.getPageNode (filename, null, fileStr);
-        if(pageNodes==null){
-            console.log("获取节点错误",filename,fileStr)
+        if (pageNodes == null) {
+            console.log ("获取节点错误", filename, fileStr)
             return "";
         }
         Generator.generateFn (data, this, out, pageNodes, filename);
     }
+
+    /*
+     * @param isfile{Boolean} 是否是文件
+     *
+     * **/
+    compileModuleFile (filename, data, fileStr) {
+        let fileWriter = new FileWriter (path.join (__dirname, "../runtime/out_module.js"));
+        let out = new ServletWriter (fileWriter);
+        let pageNodes = this.getPageNode (filename, null, fileStr);
+        if (pageNodes == null) {
+            console.log ("获取节点错误", filename, fileStr)
+            return "";
+        }
+        Generator.generateFnAsModule (data, this, out, pageNodes, filename);
+    }
+
+    compileFnByFile (filename, data, fileStr) {
+
+        let pageNodes = this.getPageNode(filename, null, fileStr);
+        var rundemo = require ("../runtime/out_module");
+        // var rundemo = require ("../runtime/out_module_bk");
+        var option = {
+            ForEachImpl: ForEachImpl,
+            IfImpl: IfImpl,
+            pageNodes: pageNodes,
+            PageContext: PageContext
+        }
+        return function (data) {
+            var option = {
+                ForEachImpl: ForEachImpl,
+                IfImpl: IfImpl,
+                out: null,
+                pageNodes: pageNodes,
+                PageContext: PageContext
+            }
+            var strs = rundemo.call (data, data, option)
+            return strs;
+        }
+    }
+
 
     getReader (fileName, fileStr) {
         let reader = new JspReader (this.baseDir, fileName, fileStr);
@@ -68,7 +110,7 @@ class Compiler {
             }
         } else {
             let reader = this.getReader (filename, fileStr);
-            if(reader!=null){
+            if (reader != null) {
                 pageNodes = Parser.parse (reader, parent)
             }
         }

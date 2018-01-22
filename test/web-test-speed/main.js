@@ -1,4 +1,5 @@
 var runConf = [
+    "shtm_c",
     "shtm",
     "art-template",
     "doT",
@@ -80,7 +81,7 @@ var T = {
                     duration: 150
                 },
                 renderTo: 'container',
-                height: runConf.length * 32,
+                height: runConf.length * 50,
                 type: 'bar'
             },
             title: false,
@@ -157,7 +158,7 @@ var T = {
                 }
                 html = fn (data);
             }
-            // console.log("最终输出",html)
+            // console.log(type,"=== 输出:\n",html)
             return html;
         }
     }
@@ -181,6 +182,10 @@ var T = {
         switch (type) {
             case "shtm":
                 fn = fn = shtm.compile (source)
+                break;
+            case "shtm_c":
+                fn = fn = shtm_c.compile (source)
+                // fn = fn = shtm.compile (source)
                 break;
             case "art-template":
                 fn = template.compile (source);

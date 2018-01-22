@@ -1,9 +1,9 @@
-const Compiler = require ("./compile/Compiler")
+const Compiler = require("./compile/Compiler")
 
 class SHTM {
-    constructor () {
-        this.cp = new Compiler ();
-        this.__express = this._express.bind (this);//express 插件
+    constructor() {
+        this.cp = new Compiler();
+        this.__express = this._express.bind(this);//express 插件
     }
 
     /**
@@ -22,22 +22,22 @@ class SHTM {
      'view engine': 'ptl' }
      *
      * */
-    compileFile (fileName, options, cb, fileStr) {
+    compileFile(fileName, options, cb, fileStr) {
         let retstr;
         try {
             let baseDir = (options.settings || {}).views;
             if (baseDir != null && this.cp.baseDir == null) {
-                this.cp.setBaseDir (baseDir);
+                this.cp.setBaseDir(baseDir);
             }
-            retstr = this.cp.compile (fileName, options, fileStr);
+            retstr = this.cp.compile(fileName, options, fileStr);
             if (typeof cb === "function") {
-                cb (null, retstr);
+                cb(null, retstr);
             }
         }
         catch (e) {
             retstr = e;
             if (typeof cb === "function") {
-                cb (e);
+                cb(e);
             }
         }
         finally {
@@ -45,19 +45,16 @@ class SHTM {
         }
     }
 
-    /**
-     * 网页测性能用
-     * */
-    compile (fileStr) {
-        return this.cp.compileFn (null, null, fileStr);
+    compile(fileStr) {
+        return this.cp.compileFn_c(null, null, fileStr);
     }
 
-    setBaseDir (baseDir) {
-        this.cp.setBaseDir (baseDir);
+    setBaseDir(baseDir) {
+        this.cp.setBaseDir(baseDir);
     }
 
-    _express (filename, options, cb) {
-        this.compileFile (filename, options, cb)
+    _express(filename, options, cb) {
+        this.compileFile(filename, options, cb)
     }
 }
-module.exports = new SHTM ();
+module.exports = new SHTM();
