@@ -14,6 +14,7 @@ const ServletWriter = require ("../writer/ServletWriter")
 const ForEachImpl = require ("../tag/funimpl/ForEachImpl")
 const IfImpl = require("../tag/funimpl/IfImpl")
 const PageContext = require("../ctx/PageContext_fn")
+const Mark = require("./Mark")
 
 class Compiler {
     constructor (baseDir) {
@@ -67,6 +68,20 @@ class Compiler {
         }
         Generator.generateFnAsModule (data, this, out, pageNodes, filename);
     }
+    /*
+     * @param isfile{Boolean} 是否是文件
+     *
+     * **/
+    compileModuleFile3 (filename, data, fileStr) {
+        let fileWriter = new FileWriter (path.join (__dirname, "../runtime/out_module.js"));
+        let out = new ServletWriter (fileWriter);
+        let pageNodes = this.getPageNode (filename, null, fileStr);
+        if (pageNodes == null) {
+            console.log ("获取节点错误", filename, fileStr)
+            return "";
+        }
+        Generator.generateFnAsModule3 (data, this, out, pageNodes, filename);
+    }
 
     compileFnByFile (filename, data, fileStr) {
 
@@ -85,7 +100,8 @@ class Compiler {
                 IfImpl: IfImpl,
                 out: null,
                 pageNodes: pageNodes,
-                PageContext: PageContext
+                PageContext: PageContext,
+                Mark: Mark
             }
             var strs = rundemo.call (data, data, option)
             return strs;

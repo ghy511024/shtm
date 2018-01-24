@@ -1,3 +1,5 @@
+=========before==========
 <c:forEach items="${list}" var="item">
-    <li>${item.user}/Web Site:${item.site}</li>
+    <li>${item.name}/Web Site:${item.site}</li>
 </c:forEach>
+=========after==========

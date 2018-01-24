@@ -15,7 +15,7 @@ var extension = function extension(module, flnm) {
         filename: filename
     });
 
-    module._compile(imports + '\n' + 'module.exports = template.compile(' + options + ');', filename);
+    module._compile(imports + '\n' + 'module.exports = template.compileTofn(' + options + ');', filename);
 };
 
 module.exports = extension;

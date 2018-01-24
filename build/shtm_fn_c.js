@@ -60,17 +60,17 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 48);
+/******/ 	return __webpack_require__(__webpack_require__.s = 49);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Node = __webpack_require__(2);
+const Node = __webpack_require__(3);
 const CustomTag = __webpack_require__(28);
 const TemplateText = __webpack_require__(29);
-const Nodes = __webpack_require__(18);
+const Nodes = __webpack_require__(19);
 const Root = __webpack_require__(30);
 const ELExpression = __webpack_require__(31);
 const IncludeAction = __webpack_require__(32);
@@ -322,76 +322,10 @@ var substr = 'ab'.substr(-1) === 'b'
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Created by ghy on 2017/11/17.
- */
-const Nodes = __webpack_require__ (18);
-
-class Node {
-    constructor (qName, localName, attrs, start, parent) {
-        this.qName = qName;//full name [c:forEach]
-        this.localName = localName;// [forEach]
-        this.attrs = attrs;
-        // this.taglibAttrs = taglibAttrs;
-        this.startMark = start;
-        this.isDummy = (start == null);
-        this.addToParent (parent);
-        this.name = "node";
-    }
-
-    addToParent (parent) {
-        if (parent != null) {
-            this.parent == parent;
-            let parentBody = parent.body;
-            if (parentBody == null) {
-                parentBody = new Nodes ();
-                parent.body = parentBody;
-            }
-            parentBody.add (this);
-        }
-    }
-
-    static getCustomTag () {
-
-    }
-
-    getBody () {
-        return this.body;
-    }
-
-    /**
-     * @abstract 抽象方法
-     * @param v {Visitor}
-     */
-    accept (v,i) {
-        v.visit (this,i);
-
-    }
-
-}
-
-Node.prototype = {
-    body: null,//<Nodes>
-    parent: null,//<node>
-    text: "",// 文本内容
-    qName: "",
-    startMark: null,
-    localName: "",
-    beginJSLine: 0,
-    endJSLine: 0,
-    root: null,
-    taglibAttrs: null,
-}
-module.exports = Node;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
  * Created by ghy on 2018/1/11.
  */
 const Node = __webpack_require__ (0);
-const Mark = __webpack_require__ (7);
+const Mark = __webpack_require__ (8);
 
 class jspErr {
     constructor () {
@@ -443,6 +377,72 @@ module.exports = jspErr;
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Created by ghy on 2017/11/17.
+ */
+const Nodes = __webpack_require__ (19);
+
+class Node {
+    constructor (qName, localName, attrs, start, parent) {
+        this.qName = qName;//full name [c:forEach]
+        this.localName = localName;// [forEach]
+        this.attrs = attrs;
+        // this.taglibAttrs = taglibAttrs;
+        this.startMark = start;
+        this.isDummy = (start == null);
+        this.addToParent (parent);
+        this.name = "node";
+    }
+
+    addToParent (parent) {
+        if (parent != null) {
+            this.parent = parent;
+            let parentBody = parent.body;
+            if (parentBody == null) {
+                parentBody = new Nodes ();
+                parent.body = parentBody;
+            }
+            parentBody.add (this);
+        }
+    }
+
+    static getCustomTag () {
+
+    }
+
+    getBody () {
+        return this.body;
+    }
+
+    /**
+     * @abstract 抽象方法
+     * @param v {Visitor}
+     */
+    accept (v,i) {
+        v.visit (this,i);
+
+    }
+
+}
+
+Node.prototype = {
+    body: null,//<Nodes>
+    parent: null,//<node>
+    text: "",// 文本内容
+    qName: "",
+    startMark: null,
+    localName: "",
+    beginJSLine: 0,
+    endJSLine: 0,
+    root: null,
+    taglibAttrs: null,
+}
+module.exports = Node;
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
@@ -477,7 +477,7 @@ const PAGE = "node.jstl.jsPage";
 const REQUEST = "node.jstl.jsRequest";
 const SESSION = "node.jstl.jsSession";
 
-const ELparser = __webpack_require__(19);
+const ELparser = __webpack_require__(20);
 const path = __webpack_require__(1);
 
 class PageContext {
@@ -546,176 +546,6 @@ class Visit {
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
-
-/**
- * 标记类，辅助字符串输入操作
- * @author ghy
- * @date 20171117
- *
- */
-class Mark {
-    constructor (reader, stream, fileid, name, baseDir, encoding) {
-        this.reader = reader;
-        this.baseDir = baseDir;
-        this.stream = stream;
-        this.fileId = fileid;
-        this.encoding = encoding;
-        this.name = name;
-        this.col = 1;
-        this.line = 1;
-        this.cursor = 0;
-        this.includeStack = [];
-        this.line_cursor_map = { 1: 0 };
-    }
-
-    getIncludeMark (inCursor, inLine, inCol, inFileid, name, inBaseDir, inEncoding, inStream) {
-        let mark = new Mark (null, inStream, inFileid, name, inBaseDir, inEncoding);
-        mark.col = inCol;
-        mark.cursor = inCursor;
-        mark.line = inLine;
-        return mark;
-    }
-
-    /**
-     * 判断两个mark 是否相等
-     * @param mark {Mark}
-     * @return {Boolean}
-     */
-    equals (mark) {
-        if (mark instanceof Mark) {
-            return this.reader == mark.reader && this.fileId == mark.fileId
-                && this.cursor == mark.cursor && this.line == mark.line
-                && this.col == mark.col;
-        }
-        return false;
-    }
-
-    // get one from other
-    copyMark () {
-
-    }
-
-    static newMark (inMark) {
-        let mark = new Mark (inMark.reader, inMark.stream, inMark.fileId, inMark.baseDir, inMark.encoding);
-        mark.line = inMark.line;
-        mark.col = inMark.col;
-        mark.cursor = inMark.cursor;
-        mark.line_cursor_map = inMark.line_cursor_map;
-        for (let i = 0; i < inMark.includeStack.length; i++) {
-            mark.includeStack.push (inMark.includeStack[i]);
-        }
-        return mark;
-    }
-
-// 涉及到
-    resetLine (line) {
-        this.line = line;
-        this.col = 1;
-        this.cursor = this.line_cursor_map[line] != null ? this.line_cursor_map[line] : this.cursor;
-    }
-
-
-    /**
-     * 文件流压栈操作
-     * @param inStream {Array<Char>} new stream for mark
-     * @param inFileid {Integer}
-     * @param name {String}
-     * @param inBaseDir {String}
-     * @param inEncoding {String}
-     * @returns null
-     */
-    pushStream (inStream, inFileid, name, inBaseDir, inEncoding) {
-        // 当前文件mark压栈
-        this.includeStack.push (this.getIncludeMark (this.cursor, this.line, this.fileId, this.fileName, this.baseDir, this.encoding, this.stream))
-        this.cursor = 0;
-        this.line = 1;
-        this.col = 1;
-        this.fileId = inFileid;
-        this.fileName = name;
-        this.baseDir = inBaseDir;
-        this.encoding = inEncoding;
-        this.stream = inStream;
-
-    }
-
-    popStream () {
-
-    }
-
-    showP () {
-
-    }
-
-
-    getInfo () {
-        return "(" + this.line + "-" + this.col + "-" + this.cursor + ")";
-    }
-}
-
-Mark.prototype = {
-    reader: null,
-    cursor: 1,
-    line: 1,
-    col: 0,
-    fileId: 0,
-    fileName: 0,
-    includeStack: [],
-    stream: null,//Buffer
-    encoding: "utf-8",
-    fileName: "",
-    baseDir: "",
-}
-
-module.exports = Mark;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const PageContext = __webpack_require__ (5);
-const Tag = __webpack_require__ (4);
-
-class TagSupport extends Tag {
-    constructor () {
-        super ();
-        this.pageContext = null;
-        this.parent = null;
-        this.id = null;
-        this.values = {};
-    }
-
-    setPageContext (pageContext) {
-        this.pageContext = pageContext;
-    }
-
-    setValue (key, value) {
-        // java jstl tagSuport.java 中采用hashtable 实现，线程安全，node 单线程不考虑
-        this.values[key] = value;
-
-    }
-
-    getValue (key) {
-        return this.values[key]
-    }
-
-    /**
-     * @abstract
-     *
-     * */
-    doStartTag () {
-
-    }
-
-    doEndTag () {
-        return this.EVAL_PAGE;
-    }
-}
-
-module.exports = TagSupport;
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -724,12 +554,12 @@ module.exports = TagSupport;
 
 
 const Node = __webpack_require__ (0);
-const JspReader = __webpack_require__ (10);
-const Ut = __webpack_require__ (11);
-const Mark = __webpack_require__ (7);
-const Attributes = __webpack_require__ (22)
-const TagInfo = __webpack_require__ (12);
-const jerr = __webpack_require__ (3);
+const JspReader = __webpack_require__ (12);
+const Ut = __webpack_require__ (13);
+const Mark = __webpack_require__ (8);
+const Attributes = __webpack_require__ (23)
+const TagInfo = __webpack_require__ (14);
+const jerr = __webpack_require__ (2);
 
 const JSP_BODY_CONTENT_PARAM = "JSP_BODY_CONTENT_PARAM"
 
@@ -1110,7 +940,419 @@ class Parser {
 module.exports = Parser;
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+/**
+ * 标记类，辅助字符串输入操作
+ * @author ghy
+ * @date 20171117
+ *
+ */
+class Mark {
+    constructor (reader, stream, fileid, name, baseDir, encoding) {
+        this.reader = reader;
+        this.baseDir = baseDir;
+        this.stream = stream;
+        this.fileId = fileid;
+        this.encoding = encoding;
+        this.name = name;
+        this.col = 1;
+        this.line = 1;
+        this.cursor = 0;
+        this.includeStack = [];
+        this.line_cursor_map = { 1: 0 };
+    }
+
+    getIncludeMark (inCursor, inLine, inCol, inFileid, name, inBaseDir, inEncoding, inStream) {
+        let mark = new Mark (null, inStream, inFileid, name, inBaseDir, inEncoding);
+        mark.col = inCol;
+        mark.cursor = inCursor;
+        mark.line = inLine;
+        return mark;
+    }
+
+    /**
+     * 判断两个mark 是否相等
+     * @param mark {Mark}
+     * @return {Boolean}
+     */
+    equals (mark) {
+        if (mark instanceof Mark) {
+            return this.reader == mark.reader && this.fileId == mark.fileId
+                && this.cursor == mark.cursor && this.line == mark.line
+                && this.col == mark.col;
+        }
+        return false;
+    }
+
+    // get one from other
+    copyMark () {
+
+    }
+
+    static newMark (inMark) {
+        let mark = new Mark (inMark.reader, inMark.stream, inMark.fileId, inMark.baseDir, inMark.encoding);
+        mark.line = inMark.line;
+        mark.col = inMark.col;
+        mark.cursor = inMark.cursor;
+        mark.line_cursor_map = inMark.line_cursor_map;
+        for (let i = 0; i < inMark.includeStack.length; i++) {
+            mark.includeStack.push (inMark.includeStack[i]);
+        }
+        return mark;
+    }
+
+// 涉及到
+    resetLine (line) {
+        this.line = line;
+        this.col = 1;
+        this.cursor = this.line_cursor_map[line] != null ? this.line_cursor_map[line] : this.cursor;
+    }
+
+
+    /**
+     * 文件流压栈操作
+     * @param inStream {Array<Char>} new stream for mark
+     * @param inFileid {Integer}
+     * @param name {String}
+     * @param inBaseDir {String}
+     * @param inEncoding {String}
+     * @returns null
+     */
+    pushStream (inStream, inFileid, name, inBaseDir, inEncoding) {
+        // 当前文件mark压栈
+        this.includeStack.push (this.getIncludeMark (this.cursor, this.line, this.fileId, this.fileName, this.baseDir, this.encoding, this.stream))
+        this.cursor = 0;
+        this.line = 1;
+        this.col = 1;
+        this.fileId = inFileid;
+        this.fileName = name;
+        this.baseDir = inBaseDir;
+        this.encoding = inEncoding;
+        this.stream = inStream;
+
+    }
+
+    popStream () {
+
+    }
+
+    showP () {
+
+    }
+
+
+    getInfo () {
+        return "(" + this.line + "-" + this.col + "-" + this.cursor + ")";
+    }
+}
+
+Mark.prototype = {
+    reader: null,
+    cursor: 1,
+    line: 1,
+    col: 0,
+    fileId: 0,
+    fileName: 0,
+    includeStack: [],
+    stream: null,//Buffer
+    encoding: "utf-8",
+    fileName: "",
+    baseDir: "",
+}
+
+module.exports = Mark;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const PageContext = __webpack_require__ (5);
+const Tag = __webpack_require__ (4);
+
+class TagSupport extends Tag {
+    constructor () {
+        super ();
+        this.pageContext = null;
+        this.parent = null;
+        this.id = null;
+        this.values = {};
+    }
+
+    setPageContext (pageContext) {
+        this.pageContext = pageContext;
+    }
+
+    setValue (key, value) {
+        // java jstl tagSuport.java 中采用hashtable 实现，线程安全，node 单线程不考虑
+        this.values[key] = value;
+
+    }
+
+    getValue (key) {
+        return this.values[key]
+    }
+
+    /**
+     * @abstract
+     *
+     * */
+    doStartTag () {
+
+    }
+
+    doEndTag () {
+        return this.EVAL_PAGE;
+    }
+}
+
+module.exports = TagSupport;
+
+/***/ }),
 /* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const TagSupport = __webpack_require__ (9);
+
+
+class ForEachIpml extends TagSupport {
+    constructor () {
+        super ();
+        this.items = null;
+        this.index = 0;
+        this.count = 1;
+        this.end = -1;
+        this.begin = 0;
+        this.step = 1;
+        this.item = null;
+        this.last = false;
+        this.statusId = null;
+        this.all_len = 0;
+        this.cindex = 0;// 当前索引
+        // console.log("foreach 被创建。。。")
+    }
+
+    hasNext () {
+        return this.items != null && this.all_len > this.cindex;
+        // return this.items != null && this.items.length > 0;
+    }
+
+    next () {
+        // return this.items.shift();
+        return this.items[this.cindex++];
+    }
+
+    setItems (o) {
+        if (o == null) {
+            this.rawItems = [];
+        } else {
+            this.all_len = o.length;
+            this.rawItems = o;
+        }
+        this.cindex = 0;
+    }
+
+    setVar (_id) {
+        if (this.pageContext.hasValue (_id)) {
+            this.saveVar = this.pageContext.getAttribute (_id)
+        }
+        this.itemId = _id;
+    }
+
+    exposeVariables (firstTime) {
+
+        if (this.itemId != null) {
+            if (this.getCurrent () == null) {
+                if (this.setVar != null) {
+                    this.pageContext.setAttribute (this.itemId, this.setVar)
+                }
+                this.pageContext.removeAttribute (this.itemId)
+            } else if (this.deferredExpression != null) {
+
+            } else {
+                this.pageContext.setAttribute (this.itemId, this.getCurrent ())
+            }
+        }
+    }
+
+    discard (n) {
+        let oldIndex = this.index;
+        while (n-- > 0 && !this.atEnd () && this.hasNext ()) {
+            this.index++;
+            this.next ();
+        }
+        this.index = oldIndex;
+    }
+
+    doStartTag () {
+        if (this.end != -1 && this.begin > this.end) {
+
+            return
+        }
+        this.index = 0;
+        this.count = 1;
+        this.last = false;
+        this.iteratedExpression = null;
+        this.deferredExpression = null;
+
+        // 将设置的 ${list} el 表达式赋值给 pagecontext
+        this.prepare ();
+        // 设置了开始标签，直接从开始标签起步
+        this.discardIgnoreSubset (this.begin);
+        if (this.hasNext ()) {
+            this.item = this.next ();
+        } else {
+            return this.SKIP_BODY;
+        }
+        this.discard (this.step - 1);
+
+        // 设置临时变量，比如循环中第一个object 赋值为 item
+        this.exposeVariables (true);
+        this.calibrateLast ();
+
+        return this.EVAL_BODY_INCLUDE;
+    }
+
+
+    doAfterBody () {
+        this.index += this.step - 1;
+        this.count++;
+        if (this.hasNext () && !this.atEnd ()) {
+            this.index++;
+            this.item = this.next ();
+        } else {
+            return this.SKIP_BODY;
+        }
+
+        this.discard (this.step - 1)
+        this.exposeVariables (false);
+        this.calibrateLast ();
+        return this.EVAL_BODY_AGAIN;
+    }
+
+    /**
+     * 将 rawItems 转换设置为items
+     * */
+    prepare () {
+        if (this.rawItems != null) {
+            // 数据转换
+            this.rawItems = this.supportedTypeForEachIterator (this.rawItems)
+            this.items = this.rawItems;
+
+        } else {
+            // 没有items 就使用begin ,end
+            this.items = this.beginEndForEachIterator ();
+        }
+
+    }
+
+    discardIgnoreSubset (n) {
+        while (n-- > 0 && this.hasNext ()) {
+            this.next ();
+        }
+    }
+
+    atEnd () {
+        return ((this.end != -1) && (this.begin + this.index >= this.end));
+    }
+
+    calibrateLast () {
+        this.last = !this.hasNext () || this.atEnd () || (this.end != -1 && (this.begin + this.index + this.step > end));
+    }
+
+    beginEndForEachIterator () {
+        let ia = [];
+        for (let i = 0; i <= this.end; i++) {
+            ia[i] = i;
+        }
+        return ia;
+    }
+
+    getCurrent () {
+        return this.item;
+    }
+
+    /**
+     * 遍历数据类型转换
+     * @param o{Object}
+     * */
+    supportedTypeForEachIterator (o) {
+        let ret = o;
+        // if (o instanceof Array) {
+        //     ret = Object.assign([], o);
+        // } else if (typeof o == "object") {
+        //     for (let key in o) {
+        //         if (typeof o[key] !== "function") {
+        //             let obj = {key: key, value: o[key]};
+        //             ret.push(obj);
+        //         }
+        //     }
+        // } else if (typeof o == "string") {
+        //     ret = o.split(",")
+        // } else {
+        //
+        // }
+        return ret;
+    }
+}
+
+module.exports = ForEachIpml;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const TagSupport = __webpack_require__ (9);
+
+class IfIpml extends TagSupport {
+    constructor () {
+        super ();
+        this.test = false;
+        this.result = false;
+        this.var;
+    }
+
+    setTest (el) {
+
+        if (typeof el == "boolean") {
+            this.test = el;
+        } else if (typeof el == "string") {
+            this.test = this.pageContext.getElValue (el);
+        }
+    }
+
+    exposeVariables (firstTime) {
+        if (this.var != null) {
+            this.pageContext.setAttribute (this.var, this.result);
+        }
+    }
+
+
+    condition () {
+        return this.test;
+    }
+
+    doStartTag () {
+        this.result = this.condition ();
+        this.exposeVariables ();
+        if (this.result)
+            return this.EVAL_BODY_INCLUDE;
+        else
+            return this.SKIP_BODY;
+    }
+
+
+    doAfterBody () {
+        return this.SKIP_BODY;
+    }
+
+}
+
+module.exports = IfIpml;
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1119,9 +1361,9 @@ module.exports = Parser;
 const path = __webpack_require__(1);
 // const fs = require("fs");
 
-const Ut = __webpack_require__(11);
-const Mark = __webpack_require__(7);
-const TagInfo = __webpack_require__(12);
+const Ut = __webpack_require__(13);
+const Mark = __webpack_require__(8);
+const TagInfo = __webpack_require__(14);
 
 class JspReader {
     constructor(baseDir, fname, str) {
@@ -1453,7 +1695,7 @@ JspReader.prototype = {
 module.exports = JspReader;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports) {
 
 /**
@@ -1492,7 +1734,7 @@ var Ut = {
 module.exports = Ut;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports) {
 
 class TagInfo {
@@ -1527,249 +1769,33 @@ TagInfo.prototype = {
 module.exports = TagInfo;
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const TagSupport = __webpack_require__ (8);
-
-
-class ForEachIpml extends TagSupport {
-    constructor () {
-        super ();
-        this.items = null;
-        this.index = 0;
-        this.count = 1;
-        this.end = -1;
-        this.begin = 0;
-        this.step = 1;
-        this.item = null;
-        this.last = false;
-        this.statusId = null;
-        this.all_len = 0;
-        this.cindex = 0;// 当前索引
-        // console.log("foreach 被创建。。。")
-    }
-
-    hasNext () {
-        return this.items != null && this.all_len > this.cindex;
-        // return this.items != null && this.items.length > 0;
-    }
-
-    next () {
-        // return this.items.shift();
-        return this.items[this.cindex++];
-    }
-
-    setItems (o) {
-        if (o == null) {
-            this.rawItems = [];
-        } else {
-            this.all_len = o.length;
-            this.rawItems = o;
-        }
-        this.cindex = 0;
-    }
-
-    setVar (_id) {
-        if (this.pageContext.hasValue (_id)) {
-            this.saveVar = this.pageContext.getAttribute (_id)
-        }
-        this.itemId = _id;
-    }
-
-    exposeVariables (firstTime) {
-
-        if (this.itemId != null) {
-            if (this.getCurrent () == null) {
-                if (this.setVar != null) {
-                    this.pageContext.setAttribute (this.itemId, this.setVar)
-                }
-                this.pageContext.removeAttribute (this.itemId)
-            } else if (this.deferredExpression != null) {
-
-            } else {
-                this.pageContext.setAttribute (this.itemId, this.getCurrent ())
-            }
-        }
-    }
-
-    discard (n) {
-        let oldIndex = this.index;
-        while (n-- > 0 && !this.atEnd () && this.hasNext ()) {
-            this.index++;
-            this.next ();
-        }
-        this.index = oldIndex;
-    }
-
-    doStartTag () {
-        if (this.end != -1 && this.begin > this.end) {
-
-            return
-        }
-        this.index = 0;
-        this.count = 1;
-        this.last = false;
-        this.iteratedExpression = null;
-        this.deferredExpression = null;
-
-        // 将设置的 ${list} el 表达式赋值给 pagecontext
-        this.prepare ();
-        // 设置了开始标签，直接从开始标签起步
-        this.discardIgnoreSubset (this.begin);
-        if (this.hasNext ()) {
-            this.item = this.next ();
-        } else {
-            return this.SKIP_BODY;
-        }
-        this.discard (this.step - 1);
-
-        // 设置临时变量，比如循环中第一个object 赋值为 item
-        this.exposeVariables (true);
-        this.calibrateLast ();
-
-        return this.EVAL_BODY_INCLUDE;
-    }
-
-
-    doAfterBody () {
-        this.index += this.step - 1;
-        this.count++;
-        if (this.hasNext () && !this.atEnd ()) {
-            this.index++;
-            this.item = this.next ();
-        } else {
-            return this.SKIP_BODY;
-        }
-
-        this.discard (this.step - 1)
-        this.exposeVariables (false);
-        this.calibrateLast ();
-        return this.EVAL_BODY_AGAIN;
-    }
-
-    /**
-     * 将 rawItems 转换设置为items
-     * */
-    prepare () {
-        if (this.rawItems != null) {
-            // 数据转换
-            this.rawItems = this.supportedTypeForEachIterator (this.rawItems)
-            this.items = this.rawItems;
-
-        } else {
-            // 没有items 就使用begin ,end
-            this.items = this.beginEndForEachIterator ();
-        }
-
-    }
-
-    discardIgnoreSubset (n) {
-        while (n-- > 0 && this.hasNext ()) {
-            this.next ();
-        }
-    }
-
-    atEnd () {
-        return ((this.end != -1) && (this.begin + this.index >= this.end));
-    }
-
-    calibrateLast () {
-        this.last = !this.hasNext () || this.atEnd () || (this.end != -1 && (this.begin + this.index + this.step > end));
-    }
-
-    beginEndForEachIterator () {
-        let ia = [];
-        for (let i = 0; i <= this.end; i++) {
-            ia[i] = i;
-        }
-        return ia;
-    }
-
-    getCurrent () {
-        return this.item;
-    }
-
-    /**
-     * 遍历数据类型转换
-     * @param o{Object}
-     * */
-    supportedTypeForEachIterator (o) {
-        let ret = o;
-        // if (o instanceof Array) {
-        //     ret = Object.assign([], o);
-        // } else if (typeof o == "object") {
-        //     for (let key in o) {
-        //         if (typeof o[key] !== "function") {
-        //             let obj = {key: key, value: o[key]};
-        //             ret.push(obj);
-        //         }
-        //     }
-        // } else if (typeof o == "string") {
-        //     ret = o.split(",")
-        // } else {
-        //
-        // }
-        return ret;
-    }
-}
-
-module.exports = ForEachIpml;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const TagSupport = __webpack_require__ (8);
-
-class IfIpml extends TagSupport {
-    constructor () {
-        super ();
-        this.test = false;
-        this.result = false;
-        this.var;
-    }
-
-    setTest (el) {
-
-        if (typeof el == "boolean") {
-            this.test = el;
-        } else if (typeof el == "string") {
-            this.test = this.pageContext.getElValue (el);
-        }
-    }
-
-    exposeVariables (firstTime) {
-        if (this.var != null) {
-            this.pageContext.setAttribute (this.var, this.result);
-        }
-    }
-
-
-    condition () {
-        return this.test;
-    }
-
-    doStartTag () {
-        this.result = this.condition ();
-        this.exposeVariables ();
-        if (this.result)
-            return this.EVAL_BODY_INCLUDE;
-        else
-            return this.SKIP_BODY;
-    }
-
-
-    doAfterBody () {
-        return this.SKIP_BODY;
-    }
-
-}
-
-module.exports = IfIpml;
-
-/***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Created by ghy on 2017/12/1.
+ */
+
+const ServletWriter = __webpack_require__ (16);
+const StringWriter = __webpack_require__ (25);
+class GenBuffer {
+    constructor () {
+        this.stringWriter = new StringWriter ();
+        this.out = new ServletWriter (this.stringWriter);
+    }
+
+    getOut () {
+        return this.out;
+    }
+
+    toString () {
+        return this.out.toString ();
+    }
+}
+module.exports = GenBuffer;
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const TAB_WIDTH = 2;
@@ -1857,26 +1883,26 @@ class ServletWriter {
 module.exports = ServletWriter;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Created by ghy on 2017/11/17.
  */
 const Generator = __webpack_require__(26);
-const JspReader = __webpack_require__(10);
-const Parser = __webpack_require__(42);
+const JspReader = __webpack_require__(12);
+const Parser = __webpack_require__(43);
 const path = __webpack_require__(1);
 const StringWriter = __webpack_require__(25);
 // const FileWriter = require("../writer/FileWriter");
-const ServletWriter = __webpack_require__(15)
+const ServletWriter = __webpack_require__(16)
 
 // 测试
 // const rundemo = require("../runtime/out_rundemo")
-const rundemo_str = __webpack_require__(43)
-const ForEachImpl = __webpack_require__(13)
-const IfImpl = __webpack_require__(14)
-const PageContext = __webpack_require__(44)
+const rundemo_str = __webpack_require__(44)
+const ForEachImpl = __webpack_require__(10)
+const IfImpl = __webpack_require__(11)
+const PageContext = __webpack_require__(45)
 
 class Compiler {
     constructor(baseDir) {
@@ -1917,10 +1943,7 @@ class Compiler {
         }
 
         Generator.generateFn_c(data, this, fn_out, pageNodes, filename);
-
         var fnstr1 = fn_out.toString();
-        // console.log("c_fn============")
-        // console.log(fnstr1)
         var rundemo = new Function('data, option', fnstr1);
         var option = {
             ForEachImpl: ForEachImpl,
@@ -1940,7 +1963,38 @@ class Compiler {
             return strs;
         }
     }
+    compileFn_d(filename, data, fileStr) {
+        let fn_stringWriter = new StringWriter();
+        let fn_out = new ServletWriter(fn_stringWriter);
 
+
+        let pageNodes = this.getPageNode(filename, null, fileStr);
+        if (pageNodes == null) {
+            console.log("获取节点错误", filename, fileStr)
+        }
+
+        Generator.generateFn_d(data, this, fn_out, pageNodes, filename);
+        var fnstr1 = fn_out.toString();
+        var rundemo = new Function('data, option', fnstr1);
+        var option = {
+            ForEachImpl: ForEachImpl,
+            IfImpl: IfImpl,
+            pageNodes: pageNodes,
+            PageContext: PageContext
+        }
+        return function (data) {
+            var option = {
+                ForEachImpl: ForEachImpl,
+                IfImpl: IfImpl,
+                out: null,
+                pageNodes: pageNodes,
+                PageContext: PageContext
+            }
+            // console.log(rundemo.toString())
+            var strs = rundemo.call(data, data, option)
+            return strs;
+        }
+    }
     compileFn(filename, data, fileStr) {
         let fn_stringWriter = new StringWriter();
         let fn_out = new ServletWriter(fn_stringWriter);
@@ -2007,7 +2061,7 @@ module
     .exports = Compiler;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -2020,10 +2074,10 @@ const visit_TemplateText = __webpack_require__(6);
 const PageContext = __webpack_require__(5);
 
 // tag 解析实现类
-const ForEachIpml = __webpack_require__(20);
-const IfIpml = __webpack_require__(21);
-const Parser = __webpack_require__(9);
-const jerr = __webpack_require__(3);
+const ForEachIpml = __webpack_require__(21);
+const IfIpml = __webpack_require__(22);
+const Parser = __webpack_require__(7);
+const jerr = __webpack_require__(2);
 const path = __webpack_require__(1)
 
 class GenerateVisitor extends Node.Visitor {
@@ -2139,36 +2193,38 @@ GenerateVisitor.prototype = {
 module.exports = GenerateVisitor;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Node = __webpack_require__ (2);
+const Node = __webpack_require__(3);
 
 class Nodes {
 
-    constructor (root) {
+    constructor(root) {
         this.root = root;
         this.list = [];
         this.list.push(root);
         this.name = "nodes"
+
     }
 
-    add (n) {
-        this.list.push (n);
+    add(n) {
+        this.list.push(n);
         this.root = null;
     }
+
 
     /**
      * 设计模式之 访问模式
      * @abstract
      * @param v {Visitor}
      */
-    visit (v) {
+    visit(v) {
         let iter = this.list;
         for (let i = 0; i < iter.length; i++) {
             let item = iter[i]
             if (item != null) {
-                item.accept (v,i);
+                item.accept(v, i);
             }
         }
     }
@@ -2184,7 +2240,7 @@ Nodes.prototype = {
 module.exports = Nodes;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -2192,7 +2248,7 @@ module.exports = Nodes;
  */
 
 const AstCompiler = __webpack_require__(34);
-const jerr = __webpack_require__(3);
+const jerr = __webpack_require__(2);
 
 class ELparser {
     static getValue(el, ctx, node) {
@@ -2227,10 +2283,10 @@ class ELparser {
 module.exports = ELparser;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const TagSupport = __webpack_require__(8);
+const TagSupport = __webpack_require__(9);
 
 
 class ForEachIpml extends TagSupport {
@@ -2405,10 +2461,10 @@ class ForEachIpml extends TagSupport {
 module.exports = ForEachIpml;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const TagSupport = __webpack_require__ (8);
+const TagSupport = __webpack_require__ (9);
 const Tag = __webpack_require__ (4);
 
 class IfIpml extends TagSupport {
@@ -2458,7 +2514,7 @@ class IfIpml extends TagSupport {
 module.exports = IfIpml;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 /*
@@ -2497,32 +2553,6 @@ class Attributes {
 }
 
 module.exports = Attributes;
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Created by ghy on 2017/12/1.
- */
-
-const ServletWriter = __webpack_require__ (15);
-const StringWriter = __webpack_require__ (25);
-class GenBuffer {
-    constructor () {
-        this.stringWriter = new StringWriter ();
-        this.out = new ServletWriter (this.stringWriter);
-    }
-
-    getOut () {
-        return this.out;
-    }
-
-    toString () {
-        return this.out.toString ();
-    }
-}
-module.exports = GenBuffer;
 
 /***/ }),
 /* 24 */
@@ -2645,7 +2675,7 @@ module.exports = StringWriter;
 /***/ (function(module, exports, __webpack_require__) {
 
 const Generator = __webpack_require__(27);
-const GenerateVisitor = __webpack_require__(17);
+const GenerateVisitor = __webpack_require__(18);
 
 Generator.GenerateVisitor = GenerateVisitor;
 
@@ -2655,14 +2685,15 @@ module.exports = Generator;
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Compiler = __webpack_require__ (16)
-const GenerateVisitor = __webpack_require__ (17);
+const Compiler = __webpack_require__ (17)
+const GenerateVisitor = __webpack_require__ (18);
 const GenerateVisitor_tree = __webpack_require__ (37);
 const GenerateVisitor_for = __webpack_require__ (38);
 const GenerateVisitor_fn = __webpack_require__ (39);// 原始版本
 const GenerateVisitor_fn2 = __webpack_require__ (41);// 改进版本
+const GenerateVisitor_fn3 = __webpack_require__ (42);// 改进第三版版本
 
-const ServletWriter = __webpack_require__ (15);
+const ServletWriter = __webpack_require__ (16);
 const PageContext = __webpack_require__ (5);
 
 /**
@@ -2713,10 +2744,26 @@ class Generator {
         gen.generatePostamble (page);
     }
 
+    static generateFn_d (data, compiler, out, page, fileName) {
+        let pageContext = new PageContext (data, fileName);
+        let gen = new GenerateVisitor_fn3 (out, pageContext, compiler)
+        page.visit (gen);
+        gen.generatePostamble (page);
+    }
+
     static generateFnAsModule (data, compiler, out, page, fileName) {
         let pageContext = new PageContext (data, fileName);
         out.print ("var fn = function (data, option) {");//测试的时候用
         let gen = new GenerateVisitor_fn2 (out, pageContext, compiler)
+        page.visit (gen);
+        gen.generatePostamble (page);
+        out.print ("};module.exports=fn");//测试的时候用
+    }
+
+    static generateFnAsModule3 (data, compiler, out, page, fileName) {
+        let pageContext = new PageContext (data, fileName);
+        out.print ("var fn = function (data, option) {");//测试的时候用
+        let gen = new GenerateVisitor_fn3 (out, pageContext, compiler)
         page.visit (gen);
         gen.generatePostamble (page);
         out.print ("};module.exports=fn");//测试的时候用
@@ -2729,15 +2776,25 @@ module.exports = Generator;
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Node = __webpack_require__ (2);
+const Node = __webpack_require__(3);
 
 class CustomTag extends Node {
-    constructor (qName, prefix, localName, uri, attrs, start, parent) {
-        super (qName, localName, attrs, start, parent);
+    constructor(qName, prefix, localName, uri, attrs, start, parent) {
+        super(qName, localName, attrs, start, parent);
 
         this.prefix = prefix;
         this.uri = uri;
         this.name = "customTag"
+        this.outstr = "\"";
+
+    }
+
+    write(s) {
+        this.outstr += s;
+    }
+
+    toString() {
+        return (this.outstr+"\";");
     }
 }
 
@@ -2771,13 +2828,14 @@ module.exports = CustomTag;
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Node = __webpack_require__(2);
+const Node = __webpack_require__(3);
 
 class TemplateText extends Node {
     constructor(text, start, parent) {
         super(null, null, null, start, parent);
         this.text = text;
         this.name = "TemplateText"
+
     }
 }
 
@@ -2787,7 +2845,7 @@ module.exports = TemplateText;
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Node = __webpack_require__ (2);
+const Node = __webpack_require__ (3);
 
 class Root extends Node {
     constructor() {
@@ -2805,7 +2863,7 @@ module.exports = Root;
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Node = __webpack_require__(2);
+const Node = __webpack_require__(3);
 
 class ELExpression extends Node {
     constructor(text, start, parent) {
@@ -2826,7 +2884,7 @@ module.exports = ELExpression;
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Node = __webpack_require__(2);
+const Node = __webpack_require__(3);
 
 class IncludeAction extends Node {
     constructor(attr, start, parent) {
@@ -10090,10 +10148,10 @@ const visit_TemplateText = __webpack_require__(6);
 const PageContext = __webpack_require__(5);
 
 // tag 解析实现类
-const ForEachIpml = __webpack_require__(20);
-const IfIpml = __webpack_require__(21);
-const Parser = __webpack_require__(9);
-const jerr = __webpack_require__(3);
+const ForEachIpml = __webpack_require__(21);
+const IfIpml = __webpack_require__(22);
+const Parser = __webpack_require__(7);
+const jerr = __webpack_require__(2);
 const path = __webpack_require__(1)
 
 class GenerateVisitor extends Node.Visitor {
@@ -10252,12 +10310,12 @@ const visit_TemplateText = __webpack_require__(6);
 const PageContext = __webpack_require__(5);
 
 // tag 解析实现类
-const ForEachImpl = __webpack_require__(13);
-const IfImpl = __webpack_require__(14);
-const Parser = __webpack_require__(9);
-const jerr = __webpack_require__(3);
+const ForEachImpl = __webpack_require__(10);
+const IfImpl = __webpack_require__(11);
+const Parser = __webpack_require__(7);
+const jerr = __webpack_require__(2);
 const path = __webpack_require__(1)
-const GenBuffer = __webpack_require__(23);
+const GenBuffer = __webpack_require__(15);
 
 class GenerateVisitor extends Node.Visitor {
     constructor(out, pageContext, compiler) {
@@ -10621,12 +10679,12 @@ const visit_TemplateText = __webpack_require__(6);
 const PageContext = __webpack_require__(5);
 
 // tag 解析实现类
-const ForEachImpl = __webpack_require__(13);
-const IfImpl = __webpack_require__(14);
-const Parser = __webpack_require__(9);
-const jerr = __webpack_require__(3);
+const ForEachImpl = __webpack_require__(10);
+const IfImpl = __webpack_require__(11);
+const Parser = __webpack_require__(7);
+const jerr = __webpack_require__(2);
 const path = __webpack_require__(1)
-const GenBuffer = __webpack_require__(23);
+const GenBuffer = __webpack_require__(15);
 
 class GenerateVisitor extends Node.Visitor {
     constructor(out, pageContext, compiler) {
@@ -10944,17 +11002,361 @@ module.exports = GenerateVisitor;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
+ * 字符串直出
+ * */
+
+const Node = __webpack_require__(0);
+const Tag = __webpack_require__(4);
+const visit_TemplateText = __webpack_require__(6);
+const PageContext = __webpack_require__(5);
+
+// tag 解析实现类
+const ForEachImpl = __webpack_require__(10);
+const IfImpl = __webpack_require__(11);
+const Parser = __webpack_require__(7);
+const jerr = __webpack_require__(2);
+const path = __webpack_require__(1)
+const GenBuffer = __webpack_require__(15);
+
+class GenerateVisitor extends Node.Visitor {
+    constructor(out, pageContext, compiler) {
+        super();
+        this.out = out;
+        if (pageContext instanceof PageContext) {
+            this.pageContext = pageContext;
+        }
+        this.tagVarNumbers = {};
+        this.out = out;
+        this.compiler = compiler;
+        this.methodsBuffered = [];
+    }
+
+    /**
+     * 覆盖父类visit 抽象方-----+-+法
+     */
+    visit(n, i) {
+        if (n instanceof Node.IncludeAction) {
+            this._vIncludeAction(n);
+        }
+        else if (n instanceof Node.CustomTag) {
+            this._vCustomTag(n, i);
+        } else if (n instanceof Node.Nodes) {
+            this._vNodes(n);
+        }
+        else if (n instanceof Node.Root) {
+            this._vRoot(n, i);
+        } else if (n instanceof Node.TemplateText) {
+            this._vTemplateText(n);
+        } else if (n instanceof Node.ELExpression) {
+            this._vELExpression(n);
+        }
+    }
+
+    /**
+     * 打印根目录
+     * */
+    _vRoot(n, i) {
+        this.out.print(`
+    var ForEachImpl = option.ForEachImpl;
+    var IfImpl = option.IfImpl;
+    var pageContext = new option.PageContext(data);
+    var str="";
+    let foreachImpl = new ForEachImpl ();
+    let ifImpl = new IfImpl ();
+    foreachImpl.setPageContext(pageContext);
+    ifImpl.setPageContext(pageContext);
+    with (data || {}) {
+// console.log("ghy");
+        var out = option.out;
+        var pageNodes = option.pageNodes;
+        service (pageNodes.list[${i}])
+        function service (n) {`)
+
+        this.visitBody(n);
+
+        this.out.print(` };`)
+    }
+
+    /**
+     * 技巧处理，存缓存，然后回退打印父类
+     */
+    _vCustomTag(n, i) {
+        let outSave = null;
+        let baseVar = this.createTagVarName(n.qName, n.prefix, n.localName)
+        let tagEvalVar = "_js_eval_" + baseVar;
+        let tagHandlerVar = "js_th_" + baseVar;
+        let tagPushBodyCountVar = "_js_push_body_count_" + baseVar;
+        let tagMethod = "_js_meth_" + baseVar;
+
+        this.out.println();
+        this.out.print(`if(${tagMethod}(n.body.list[${i}])){return true;}`)
+
+        let genBuffer = new GenBuffer();
+        this.methodsBuffered.push(genBuffer);
+        outSave = this.out;// 存档
+        this.out = genBuffer.getOut();
+        this.out.println()
+        // this.out.print("// 开始输出函数体");
+        this.out.println()
+        this.out.println(`function ${tagMethod}(n){`)
+        this.out.println(`  try {`)
+        this.generateCustomStart(n, tagHandlerVar);
+        this.visitBody(n);
+        this.out.println("str+="+n.toString())
+        // console.log(n.toString(),"jjjjjjjjj")
+        this.generateCustomEnd(n, tagHandlerVar);
+        this.out = outSave;
+    }
+
+    /**
+     * include 实现，
+     * */
+    _vIncludeAction(n) {
+        if (this.pageContext.fileDir == null) {
+            return;
+        }
+        let pageNodes = this.compiler.getPageNode(path.join(this.pageContext.fileDir, n.attrs.getValue("page")), null);
+        if (pageNodes == null) {
+            jerr.err("GetnnerateVisitor.visitInclude err")
+            return;
+        }
+        pageNodes.visit(this);
+    }
+
+    _vNodes(n) {
+
+    }
+
+
+    /**
+     * 打印普通文本
+     * */
+    _vTemplateText(n) {
+        let text = n.text || "";
+        if (text.length == 0) {
+            return;
+        }
+        if (text.length < 3) {
+            for (let i = 0; i < text.length; i++) {
+                let ch = text[i];
+                this.out.printin("str+=" + this.quote(ch) + ";")
+            }
+            return;
+        }
+        this.out.println();
+        // let sb = "str+=\"";
+        // let sb = "\"";
+        let sb = "";
+        let count = 1024;
+        for (let i = 0; i < text.length; i++) {
+            let ch = text[i];
+            --count;
+            switch (ch) {
+                case '"':
+                    sb += '\\\"';
+                    break;
+                case '\\':
+                    sb += '\\\\';
+                    break;
+                case '\r':
+                    sb += '\\r';
+                    break;
+                case '\n':
+                    sb += '\\n';
+                    break;
+                case '\t':
+                    sb += '\\t';
+                    break;
+                case '$':
+                    if ((i + 1 < text.length()) && (text.charAt(i + 1) == '{')) {
+                        sb += '\\\\';
+                    }
+                    sb += ch;
+                    break;
+                default:
+                    sb += ch;
+            }
+        }
+        // sb += "\";";
+        // console.log(n.parent==null);
+        if( n.parent.write){
+            n.parent.write(sb);
+        }else{
+            this.out.print("str+=\""+sb+"\";")
+        }
+        // console.log(n.parent)
+
+
+    }
+
+    /**
+     * 打印el 表达式
+     *
+     * */
+    _vELExpression(n) {
+        // this.out.print (this.pageContext.getElValue (n.text, n))
+        n.parent.write("\"+" + this.getAfterElexpress(n.text) + "+\"");
+        // this.out.print("str+=" + this.getAfterElexpress(n.text) + ";")
+    }
+
+    /**
+     * 自定义函数，foreach,if 等输出函数体头部
+     * @param n {Node}
+     * @param tagHandlerVar {String} 变量名
+     * */
+    generateCustomStart(n, tagHandlerVar) {
+        this.out.println("//" + n.qName);
+        let implName = this.getImplMethName(n)
+        this.out.println(`let ${tagHandlerVar} =${implName};`)
+        this.generateSetters(n, tagHandlerVar);
+        this.out.print(`
+        let each_val = ${tagHandlerVar}.doStartTag();
+        if (each_val != ${tagHandlerVar}.SKIP_BODY){
+         while (true) {`);
+    }
+
+    generateSetters(n, tagHandlerVar) {
+        // this.out.print(`${tagHandlerVar}.setPageContext(pageContext);`);//
+        if (n.localName == "forEach") {
+            let valName = this.getAfterElexpress(n.attrs.getValue("items"));
+            this.out.print(`${tagHandlerVar}.setItems(${valName});`);//
+            this.out.print(`${tagHandlerVar}.setVar("${n.attrs.getValue("var")}");`);//
+        }
+        else if (n.localName == "if") {
+            let valName = this.getAfterElexpress(n.attrs.getValue("test"));
+            this.out.print(`${tagHandlerVar}.setTest(${valName});`);//
+        }
+    }
+
+    generateCustomEnd(n, tagHandlerVar) {
+        this.out.print(`let evalDoAfterBody = ${tagHandlerVar}.doAfterBody();
+                    if (evalDoAfterBody != ${tagHandlerVar}.EVAL_BODY_AGAIN) {
+                        break;
+                    }
+                }
+            }
+            if (${tagHandlerVar}.doEndTag() == ${tagHandlerVar}.SKIP_PAGE) {
+            return true;
+        }
+      }
+      catch(e){
+      console.log(e)
+      }
+         return false;}
+            `)
+    }
+
+    /**
+     * 输出结束代码
+     *
+     * */
+    generatePostamble(n) {
+        this.genCommonPostamble();
+    }
+
+    /**
+     * 输出缓存区间的的，代码
+     * */
+    genCommonPostamble() {
+        for (let i = 0; i < this.methodsBuffered.length; i++) {
+            let buffer = this.methodsBuffered[i];
+            this.out.printMultiLn(buffer.toString());
+        }
+
+        this.out.printil("}");// with 函数结尾
+        this.out.printil("return str;");// with 函数结尾
+
+    }
+
+    /**
+     * 传入node ，根据node 类型返回对应的tagimpul 实例函数名
+     * @param n {Node}
+     * */
+    getImplMethName(n) {
+        let implName = "";
+        if (n.localName == "forEach") {
+            implName = "foreachImpl";
+        } else if (n.localName == "if") {
+            implName = "ifImpl";
+        }
+        return implName;
+    }
+
+    /**
+     * @param c ${Char}
+     * */
+    quote(c) {
+        let str = "";
+        str += '\'';
+        if (c == '\'') {
+            str += '\\\''
+        } else if (c == '\\') {
+            str += '\\\\'
+        }
+        else if (c == '\n') {
+            str += '\\n'
+        }
+        else if (c == '\r') {
+            str += '\\r'
+        }
+        else {
+            str += c;
+        }
+        str += '\'';
+        return str;
+    }
+
+    getAfterElexpress(exp) {
+        let exp_str;
+        let reg = /\$\{(.*?)\}/gi
+        exp.replace(reg, function (_, $1) {
+            exp_str = $1;
+        })
+        return exp_str
+    }
+
+    createTagVarName(fullName, prefix, shortName) {
+        let varName;
+        varName = prefix + "_" + shortName + "_"
+        if (this.tagVarNumbers[fullName] != null) {
+            let i = Number(this.tagVarNumbers[fullName]) || 0;
+            varName = varName + (i + 1);
+            this.tagVarNumbers[fullName] = i + 1;
+        } else {
+            varName = varName + 1;
+            this.tagVarNumbers[fullName] = 1;
+        }
+        return varName;
+    }
+}
+
+GenerateVisitor.prototype = {
+    tagVarNumbers: {},
+    parent: "",
+    isFragment: "",
+    methodNesting: 0,
+    arrayCount: 0,
+    textMap: {},
+}
+
+module.exports = GenerateVisitor;
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
  * Created by ghy on 2017/11/17.
  */
 
 
 const Node = __webpack_require__(0);
-const JspReader = __webpack_require__(10);
-const Ut = __webpack_require__(11);
-const Mark = __webpack_require__(7);
-const Attributes = __webpack_require__(22)
-const TagInfo = __webpack_require__(12);
-const jerr = __webpack_require__(3);
+const JspReader = __webpack_require__(12);
+const Ut = __webpack_require__(13);
+const Mark = __webpack_require__(8);
+const Attributes = __webpack_require__(23)
+const TagInfo = __webpack_require__(14);
+const jerr = __webpack_require__(2);
 
 const JSP_BODY_CONTENT_PARAM = "JSP_BODY_CONTENT_PARAM"
 
@@ -11343,7 +11745,7 @@ class Parser {
 module.exports = Parser;
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = `var ForEachImpl = option.ForEachImpl;
@@ -11434,7 +11836,7 @@ let evalDoAfterBody = js_th_c_forEach_2.doAfterBody();
 `
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const PAGE_SCOPE = 1;
@@ -11446,7 +11848,7 @@ const PAGE = "node.jstl.jsPage";
 const REQUEST = "node.jstl.jsRequest";
 const SESSION = "node.jstl.jsSession";
 
-const ELparser = __webpack_require__(19);
+const ELparser = __webpack_require__(20);
 const path = __webpack_require__(1);
 
 class PageContext {
@@ -11507,26 +11909,26 @@ class PageContext {
 module.exports = PageContext;
 
 /***/ }),
-/* 45 */,
 /* 46 */,
 /* 47 */,
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(49);
-
-
-/***/ }),
+/* 48 */,
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-window.shtm_c = __webpack_require__(50);
+module.exports = __webpack_require__(50);
+
 
 /***/ }),
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Compiler = __webpack_require__(16)
+window.shtm_c = __webpack_require__(51);
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Compiler = __webpack_require__(17)
 
 class SHTM {
     constructor() {
@@ -11557,7 +11959,7 @@ class SHTM {
             if (baseDir != null && this.cp.baseDir == null) {
                 this.cp.setBaseDir(baseDir);
             }
-            retstr = this.cp.compile(fileName, options, fileStr);
+            retstr = this.cp.compileTofn(fileName, options, fileStr);
             if (typeof cb === "function") {
                 cb(null, retstr);
             }

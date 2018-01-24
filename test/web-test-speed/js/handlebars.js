@@ -2830,7 +2830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  compileProgram: function compileProgram(program) {
 	    var childCompiler = new this.compiler(),
 	        // eslint-disable-line new-cap
-	    result = childCompiler.compile(program, this.options),
+	    result = childCompiler.compileTofn(program, this.options),
 	        guid = this.guid++;
 
 	    this.usePartial = this.usePartial || result.usePartial;
@@ -3223,7 +3223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  var ast = env.parse(input, options),
-	      environment = new env.Compiler().compile(ast, options);
+	      environment = new env.Compiler().compileTofn(ast, options);
 	  return new env.JavaScriptCompiler().compile(environment, options);
 	}
 
@@ -3245,7 +3245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function compileInput() {
 	    var ast = env.parse(input, options),
-	        environment = new env.Compiler().compile(ast, options),
+	        environment = new env.Compiler().compileTofn(ast, options),
 	        templateSpec = new env.JavaScriptCompiler().compile(environment, options, undefined, true);
 	    return env.template(templateSpec);
 	  }
@@ -3906,7 +3906,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // On stack, after: program(guid), ...
 	  //
 	  // Push a program expression onto the stack. This takes
-	  // a compile-time guid and converts it into a runtime-accessible
+	  // a compileTofn-time guid and converts it into a runtime-accessible
 	  // expression.
 	  pushProgram: function pushProgram(guid) {
 	    if (guid != null) {
@@ -3971,12 +3971,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // On stack, after: result of disambiguation
 	  //
 	  // This operation is used when an expression like `{{foo}}`
-	  // is provided, but we don't know at compile-time whether it
+	  // is provided, but we don't know at compileTofn-time whether it
 	  // is a helper or a path.
 	  //
 	  // This operation emits more code than the other options,
 	  // and can be avoided by passing the `knownHelpers` and
-	  // `knownHelpersOnly` flags at compile-time.
+	  // `knownHelpersOnly` flags at compileTofn-time.
 	  invokeAmbiguous: function invokeAmbiguous(name, helperCall) {
 	    this.useRegister('helper');
 

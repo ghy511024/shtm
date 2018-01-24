@@ -1575,7 +1575,7 @@ class JSTL {
             if (baseDir != null && this.cp.baseDir == null) {
                 this.cp.setBaseDir(baseDir);
             }
-            retstr = this.cp.compile(str, options);
+            retstr = this.cp.compileTofn(str, options);
             if (typeof cb === "function") {
                 cb(null, retstr);
             }
@@ -1595,7 +1595,7 @@ class JSTL {
         if (isFile) {
             return this.compileFile(str, options, cb)
         } else {
-            return this.cp.compile(str, options);
+            return this.cp.compileTofn(str, options);
         }
     }
 
