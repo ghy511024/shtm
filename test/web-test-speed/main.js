@@ -1,7 +1,7 @@
 var runConf = [
-    "shtm_c",
-    "shtm",
     "art-template",
+    // "shtm_c",
+    "shtm",
     "doT",
     "ejs",
     "Jade",
