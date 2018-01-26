@@ -17,9 +17,10 @@
     <!--<script src="../../build/shtm.js"></script>-->
     <script src="../../build/shtm_fn.js"></script>
     <script src="../../build/shtm_fn_c.js"></script>
+    <script src="../../build/shtm_fn_d.js"></script>
 
     <script>
-        Highcharts.setOptions ({
+        Highcharts.setOptions({
             colors: ['#EF6F65', '#F3AB63', '#F8D56F', '#99DD7A', '#74BBF3', '#CB93E0', '#A2A2A4', '#E1AC65', '#6AF9C4']
         });
 
@@ -37,6 +38,7 @@
 
 
 
+
     </script>
     <script id="ejs" type="text/tmpl">
 <ul>
@@ -44,6 +46,7 @@
         <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
     <% } %>
 </ul>
+
 
 
     </script>
@@ -55,6 +58,7 @@ ul
     -for (var i = 0, l = list.length; i < l; i ++) {
         li User: #{list[i].user} / Web Site: #{list[i].site}
     -}
+
 
 
 
@@ -70,6 +74,7 @@ ul
 
 
 
+
     </script>
 
     <!--Mustache -->
@@ -82,6 +87,7 @@ ul
 
 
 
+
     </script>
 
     <script id="mustache-raw" type="text/tmpl">
@@ -90,6 +96,7 @@ ul
         <li>User: {{{user}}} / Web Site: {{{site}}}</li>
     {{/list}}
 </ul>
+
 
 
 
@@ -105,6 +112,7 @@ ul
 
 
 
+
     </script>
 
     <script id="handlebars-raw" type="text/tmpl">
@@ -113,6 +121,7 @@ ul
         <li>User: {{{user}}} / Web Site: {{{site}}}</li>
     {{/list}}
 </ul>
+
 
 
 
@@ -128,6 +137,7 @@ ul
 
 
 
+
     </script>
 
     <script id="swig-raw" type="text/tmpl">
@@ -139,6 +149,7 @@ ul
 
 
 
+
     </script>
     <script id="shtm" type="text/tmpl">
 <ul>
@@ -146,6 +157,7 @@ ul
     <li>${item.user}/Web Site:${item.site}</li>
    </c:forEach>
 </ul>
+
     </script>
 
     <script id="shtm_c" type="text/tmpl">
@@ -154,6 +166,16 @@ ul
     <li>${item.user}/Web Site:${item.site}</li>
    </c:forEach>
 </ul>
+
+    </script>
+
+    <script id="shtm_d" type="text/tmpl">
+<ul>
+   <c:forEach items="${list}" var="item">
+    <li>${item.user}/Web Site:${item.site}</li>
+   </c:forEach>
+</ul>
+
     </script>
 
     <style id="style">
@@ -216,46 +238,45 @@ ul
 
 
 
+
 </script>
 <script>
     window.option = {
         // 列表条数
-        data_length: 200,
+        data_length: 1000,
         // 渲染次数
-        calls: 200,
+        calls: 100,
         // 是否编码
         escape: true,
-        // 是否缓存
-        cache: false,
         // 填充字符串
         full_str: " <div></div>span>abcdefghijklmnopqrstuvwx",
         // 字符串重复数量
-        str_repeat: 100,
+        str_repeat: 10,
         // 节点重复数量
         node_repeat: 2,
-        cache: false,
+        cache: true,
     };
     window.Tool = {
         objTourl: function (obj) {
-            var hash="";
+            var hash = "";
             for (var key in obj) {
-                if(key=="full_str"){
+                if (key == "full_str") {
                     continue;
                 }
-                hash += hash.length===0 ? "" : "&";
+                hash += hash.length === 0 ? "" : "&";
                 hash += key + "=" + obj[key]
             }
             return hash;
         },
         urlToObj: function (hash) {
             var obj = {};
-            var array = hash.split ("&") || [];
+            var array = hash.split("&") || [];
             for (var i = 0; i < array.length; i++) {
                 console.log(array[i])
-                var item=(array[i]||"").split("=")
+                var item = (array[i] || "").split("=")
                 if (item[0] && item[1]) {
-                    if(item[0]=="cache"){
-                        item[1]= item[1]=="true"
+                    if (item[0] == "cache") {
+                        item[1] = item[1] == "true"
                     }
                     obj[item[0]] = item[1];
                 }
@@ -264,12 +285,12 @@ ul
         }
     };
     (function () {
-        var fn = shtm.compile (document.getElementById ('body').innerHTML);
-        var hashoption=Tool.urlToObj((window.location.hash||"").replace("#",""));
-        window.option=Object.assign(window.option,hashoption)
-        console.log(hashoption,"...");
-        document.getElementById ('app').innerHTML = fn (window.option);
-    }) ();
+        var fn = shtm.compile(document.getElementById('body').innerHTML);
+        var hashoption = Tool.urlToObj((window.location.hash || "").replace("#", ""));
+        window.option = Object.assign(window.option, hashoption)
+        console.log(hashoption, "...");
+        document.getElementById('app').innerHTML = fn(window.option);
+    })();
 </script>
 <script src="main.js"></script>
 </body>

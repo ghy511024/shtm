@@ -182,7 +182,7 @@ class GenerateVisitor extends Node.Visitor {
         }
         // sb += "\";";
         // console.log(n.parent==null);
-        if (n.parent.write&&false) {
+        if (n.parent.write) {
             n.parent.write(sb);
         } else {
             this.out.print("str+=\"" + sb + "\";")
@@ -197,10 +197,11 @@ class GenerateVisitor extends Node.Visitor {
      *
      * */
     _vELExpression(n) {
-        if (n.parent.write&&false) {
+        // this.out.print (this.pageContext.getElValue (n.text, n))
+        if (n.parent.write) {
             n.parent.write("\"+(" + this.getAfterElexpress(n.text) + "||\"\")+\"");
         } else {
-            this.out.print("str+=("+ this.getAfterElexpress(n.text)+"||\"\")")
+            this.out.print("("+this.pageContext.getElValue(n.text, n)+"||\"\")")
         }
 
         // n.parent.write("\"+" + this.getAfterElexpress(n.text) + "+\"");

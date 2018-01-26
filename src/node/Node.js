@@ -17,7 +17,7 @@ class Node {
 
     addToParent (parent) {
         if (parent != null) {
-            this.parent == parent;
+            this.parent = parent;
             let parentBody = parent.body;
             if (parentBody == null) {
                 parentBody = new Nodes ();

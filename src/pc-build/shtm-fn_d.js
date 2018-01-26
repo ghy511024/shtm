@@ -1,0 +1,1 @@
+window.shtm_d = require('../shtm_fn3');

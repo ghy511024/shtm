@@ -15,11 +15,11 @@ const rundemo_str = require("../runtime/str_rundemo")
 const ForEachImpl = require("../tag/funimpl/ForEachImpl")
 const IfImpl = require("../tag/funimpl/IfImpl")
 const PageContext = require("../ctx/PageContext_fn")
+const Mark = require("./Mark")
 
 class Compiler {
     constructor(baseDir) {
         this.baseDir = baseDir
-        this.cache = {};
     }
 
     setBaseDir(baseDir) {
@@ -27,39 +27,15 @@ class Compiler {
     }
 
     /*
-     * @param isfile{Boolean} 是否是文件
+     * @return 执行函数
      *
      * **/
-    compile(filename, data, fileStr) {
-        let stringWriter = new StringWriter();
-        let out = new ServletWriter(stringWriter);
-        let pageNodes = this.getPageNode(filename, null, fileStr);
-        // Generator.generateStr(data, this, out, pageNodes, filename);
-        Generator.generateFor(data, this, out, pageNodes, filename);
-        return out.toString();
-    }
-
-    /*
-     * 改进版本的 生成fn
-     *
-     * **/
-
-    compileFn_c(filename, data, fileStr) {
-        let fn_stringWriter = new StringWriter();
-        let fn_out = new ServletWriter(fn_stringWriter);
+    compileTofn(fileStr) {
 
 
-        let pageNodes = this.getPageNode(filename, null, fileStr);
-        if (pageNodes == null) {
-            console.log("获取节点错误", filename, fileStr)
-        }
-
-        Generator.generateFn_c(data, this, fn_out, pageNodes, filename);
-
-        var fnstr1 = fn_out.toString();
-        // console.log("c_fn============")
-        // console.log(fnstr1)
-        var rundemo = new Function('data, option', fnstr1);
+        let pageNodes = this.getPageNode(null, null, fileStr);
+        var fnstr = this.getFnStr(pageNodes);
+        var rundemo = new Function('data, option', fnstr);
         var option = {
             ForEachImpl: ForEachImpl,
             IfImpl: IfImpl,
@@ -72,74 +48,31 @@ class Compiler {
                 IfImpl: IfImpl,
                 out: null,
                 pageNodes: pageNodes,
-                PageContext: PageContext
+                PageContext: PageContext,
+                Mark: Mark
             }
             var strs = rundemo.call(data, data, option)
             return strs;
         }
     }
 
-    compileFn(filename, data, fileStr) {
+    getFnStr(pageNodes) {
         let fn_stringWriter = new StringWriter();
         let fn_out = new ServletWriter(fn_stringWriter);
-
-
-        let pageNodes = this.getPageNode(filename, null, fileStr);
-        if (pageNodes == null) {
-            console.log("获取节点错误", filename, fileStr)
-        }
-
-        Generator.generateFn(data, this, fn_out, pageNodes, filename);
-
-        var fnstr1 = fn_out.toString();
-        // console.log("fn============")
-        // console.log(fnstr1)
-        var fnstr = rundemo_str;
-        var rundemo = new Function('data, option', fnstr1);
-        var option = {
-            ForEachImpl: ForEachImpl,
-            IfImpl: IfImpl,
-            pageNodes: pageNodes,
-            PageContext: PageContext
-        }
-        return function (data) {
-            var option = {
-                ForEachImpl: ForEachImpl,
-                IfImpl: IfImpl,
-                out: null,
-                pageNodes: pageNodes,
-                PageContext: PageContext
-            }
-            var strs = rundemo.call(data, data, option)
-            return strs;
-        }
-    }
-
-    getReader(fileName, fileStr) {
-        let reader = new JspReader(this.baseDir, fileName, fileStr);
-        return reader;
+        Generator.generateFn( this, fn_out, pageNodes);
+        let fnstr = fn_out.toString();
+        return fnstr;
     }
 
     getPageNode(filename, parent, fileStr) {
-        let pageNodes
-
-        if (filename != null) {
-            pageNodes = this.cache[filename];
-            if (pageNodes == null) {
-                let reader = this.getReader(filename, fileStr);
-                pageNodes = Parser.parse(reader, parent);
-                this.cache[filename] = pageNodes;
-            }
-        } else {
-            let reader = this.getReader(filename, fileStr);
-            if (reader != null) {
-                pageNodes = Parser.parse(reader, parent)
-            }
+        let pageNodes;
+        let reader = new JspReader(fileStr);
+        if (reader != null) {
+            pageNodes = Parser.parse(reader, parent)
         }
         return pageNodes;
     }
 
 }
 
-module
-    .exports = Compiler;
+module.exports = Compiler;

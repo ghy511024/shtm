@@ -1,6 +1,7 @@
 var runConf = [
     "art-template",
-    // "shtm_c",
+    "shtm_d",
+    "shtm_c",
     "shtm",
     "doT",
     "ejs",
@@ -10,17 +11,17 @@ var runConf = [
 
 var T = {
     init: function () {
-        this.chart = this.initChar ();
-        this.initEvent ();
+        this.chart = this.initChar();
+        this.initEvent();
     },
     runlist: [],
     go_run: function (option) {
         var _this = this;
-        var ctype = this.runlist.shift ();
-        _this.run (ctype, option, function () {
-            setTimeout (function () {
+        var ctype = this.runlist.shift();
+        _this.run(ctype, option, function () {
+            setTimeout(function () {
                 if (_this.runlist.length > 0) {
-                    _this.go_run (option);
+                    _this.go_run(option);
                 }
             }, 500)
 
@@ -28,54 +29,55 @@ var T = {
     }
     ,
     run: function (type, option, callback) {
-        var stime = +new Date ();
-        var test = this.getTestFn (type, option)
-        test ();
-        var etime = +new Date () - stime;
+        var stime = +new Date();
+        var fn = this.getTestFn(type, option)
 
-        console.log (type, "==耗时:", etime, " ");
-        var colors = Highcharts.getOptions ().colors;
-        this.chart.series[0].addPoint ({
-            color: colors.shift (),
+        fn();
+        var etime = +new Date() - stime;
+
+        console.log(type, "==耗时:", etime, " ");
+        var colors = Highcharts.getOptions().colors;
+        this.chart.series[0].addPoint({
+            color: colors.shift(),
             y: etime
         });
-        callback ();
+        callback();
     }
     ,
     initEvent: function () {
         var _this = this;
-        document.getElementById ('button-start').onclick = function () {
+        document.getElementById('button-start').onclick = function () {
             this.disabled = true;
             var elem = this;
             var m = 0;
-            _this.runlist = Object.assign ([], runConf);
+            _this.runlist = Object.assign([], runConf);
 
-            var obj = _this.getObj ();
-            var tmp_obj = Object.assign ({}, window.option, obj);
-            var hash = Tool.objTourl (tmp_obj);
+            var obj = _this.getObj();
+            var tmp_obj = Object.assign({}, window.option, obj);
+            var hash = Tool.objTourl(tmp_obj);
             window.location.hash = hash;
-            _this.go_run (tmp_obj);
+            _this.go_run(tmp_obj);
 
         };
-        document.getElementById ('button-restart').onclick = function () {
-            var obj = _this.getObj ();
-            var tmp_obj = Object.assign ({}, window.option, obj);
-            var hash = Tool.objTourl (tmp_obj);
-            window.location.hash=hash;
-            window.location.reload ();
+        document.getElementById('button-restart').onclick = function () {
+            var obj = _this.getObj();
+            var tmp_obj = Object.assign({}, window.option, obj);
+            var hash = Tool.objTourl(tmp_obj);
+            window.location.hash = hash;
+            window.location.reload();
         };
-        document.getElementById ('button-reset').onclick = function () {
+        document.getElementById('button-reset').onclick = function () {
             window.location.hash = null;
-            window.location.reload ();
+            window.location.reload();
         };
     }
     ,
     layout: function () {
-        document.getElementById ('app').innerHTML = fn (option);
+        document.getElementById('app').innerHTML = fn(option);
     }
     ,
     initChar: function () {
-        var chart = new Highcharts.Chart ({
+        var chart = new Highcharts.Chart({
             chart: {
                 animation: {
                     duration: 150
@@ -127,21 +129,21 @@ var T = {
     ,
     getObj: function () {
         var obj = {}
-        obj["data_length"] = Number (document.getElementById ("data_length").value) || 1;
-        obj["calls"] = Number (document.getElementById ("calls").value) || 1;
-        obj["node_repeat"] = Number (document.getElementById ("node_repeat").value) || 1;
-        obj["str_repeat"] = Number (document.getElementById ("str_repeat").value) || 1;
-        obj["data_length"] = Number (document.getElementById ("data_length").value) || 1;
-        obj["cache"] = document.getElementById ("cache").checked?true:false;
+        obj["data_length"] = Number(document.getElementById("data_length").value) || 1;
+        obj["calls"] = Number(document.getElementById("calls").value) || 1;
+        obj["node_repeat"] = Number(document.getElementById("node_repeat").value) || 1;
+        obj["str_repeat"] = Number(document.getElementById("str_repeat").value) || 1;
+        obj["data_length"] = Number(document.getElementById("data_length").value) || 1;
+        obj["cache"] = document.getElementById("cache").checked ? true : false;
         return obj;
     },
     getTestFn (type, option)
     {
         var _this = this;
         return function () {
-            var str = document.getElementById (type).innerHTML;
+            var str = document.getElementById(type).innerHTML;
             var source = str;
-            var data = _this.getData (option);
+            var data = _this.getData(option);
             for (var i = 0; i < option.node_repeat; i++) {
                 source += str;
             }
@@ -150,13 +152,15 @@ var T = {
             }
             var fn, html = type + "####:";
             if (option.cache !== false) {
-                fn = _this.getFn (type, source);
+                fn = _this.getFn(type, source);
             }
+            console.log(option.cache, "bbbbb", option.cache === false)
             for (var i = 0; i < option.calls; i++) {
                 if (option.cache === false) {
-                    fn = _this.getFn (type, source);
+
+                    fn = _this.getFn(type, source);
                 }
-                html = fn (data);
+                html = fn(data);
             }
             // console.log(type,"=== 输出:\n",html)
             return html;
@@ -169,7 +173,7 @@ var T = {
             list: []
         };
         for (var i = 0; i < option.data_length; i++) {
-            data.list.push ({
+            data.list.push({
                 index: i,
                 user: '<strong style="color:red">老王' + i + '</strong>',
             });
@@ -181,27 +185,29 @@ var T = {
         var fn;
         switch (type) {
             case "shtm":
-                fn = fn = shtm.compile (source)
+                fn = shtm.compile(source)
                 break;
             case "shtm_c":
-                fn = fn = shtm_c.compile (source)
-                // fn = fn = shtm.compile (source)
+                fn = shtm_c.compile(source)
+                break;
+            case "shtm_d":
+                fn = shtm_d.compile(source)
                 break;
             case "art-template":
-                fn = template.compile (source);
+                fn = template.compile(source);
                 break;
             case "doT":
-                fn = doT.template (source);
+                fn = doT.template(source);
                 break;
             case "ejs":
-                fn = fn = ejs.compile (source)
+                fn = fn = ejs.compile(source)
                 break;
             case "Jade":
-                var pug = require ('pug');
-                fn = pug.compile (source);
+                var pug = require('pug');
+                fn = pug.compile(source);
                 break;
             case "swig":
-                fn = swig.compile (source);
+                fn = swig.compile(source);
                 break;
 
             default:
@@ -214,4 +220,4 @@ var T = {
     }
 
 }
-T.init ();
+T.init();
