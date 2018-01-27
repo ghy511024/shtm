@@ -40,10 +40,9 @@ class Generator {
         gen.generatePostamble(page);
     }
 
-    static generateFnAsModule(data, compiler, out, page, fileName) {
-        let pageContext = new PageContext(data, fileName);
+    static generateFnAsModule( compiler, out, page,) {
         out.print("var fn = function (data, option) {");//测试的时候用
-        let gen = new GenerateVisitor_fn3(out, pageContext, compiler)
+        let gen = new GenerateVisitor(out, null, compiler)
         page.visit(gen);
         gen.generatePostamble(page);
         out.print("};module.exports=fn");//测试的时候用

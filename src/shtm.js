@@ -52,7 +52,7 @@ class SHTM {
     }
 
     compileStringTofn(fileStr) {
-        return this.cp.compileTofn(fileStr)
+        return this.cp.getFnByTmpStr(fileStr)
     }
 
     setBaseDir(baseDir) {

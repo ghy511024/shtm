@@ -13,6 +13,27 @@ class Node {
         this.isDummy = (start == null);
         this.addToParent (parent);
         this.name = "node";
+        this.buffer = "";
+    }
+
+    /**
+     * 写入buffer,进入缓冲
+     * */
+    write (s) {
+        this.buffer += s;
+    }
+
+    getBuffer () {
+        return this.buffer;
+    }
+
+    /**
+     * 输出缓冲
+     * */
+    flush () {
+        var buffer = this.buffer;
+        this.buffer = "";
+        return buffer;
     }
 
     addToParent (parent) {
@@ -39,8 +60,8 @@ class Node {
      * @abstract 抽象方法
      * @param v {Visitor}
      */
-    accept (v,i) {
-        v.visit (this,i);
+    accept (v, i) {
+        v.visit (this, i);
 
     }
 

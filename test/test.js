@@ -28,7 +28,7 @@ var T = {
             num1: "1",
 
         }
-        let str = cp.compileTofn("x1.jsp", data)
+        let str = cp.getFnByTmpStr("x1.jsp", data)
         console.log(str);
     },
     t2: function () {
@@ -40,7 +40,7 @@ var T = {
         for (let i = 0; i < 10; i++) {
             jstl.compile(jsppath, data);
         }
-        // let str = jstl.compileTofn(jsppath, data);
+        // let str = jstl.getFnByTmpStr(jsppath, data);
         // console.log(str);
         console.log(+new Date() - t1);
     }
@@ -52,7 +52,7 @@ var T = {
         for (let i = 0; i < 1000; i++) {
             outstr = jstl.compile("bbbbbbbb", data, null, str);
         }
-        // let outstr = jstl.compileTofn(null, data,null,str);
+        // let outstr = jstl.getFnByTmpStr(null, data,null,str);
         console.log(outstr);
         console.log(+new Date() - t1);
     }
@@ -89,7 +89,7 @@ var T = {
         var str = fs.readFileSync(path.join(__dirname, "./view/demo2.shtm"), "utf-8")
         let t1 = +new Date();
         cp.compileModuleFile(null, data, str);
-        console.log("compileTofn time:", +new Date() - t1);
+        console.log("getFnByTmpStr time:", +new Date() - t1);
     },
     t7: function () {
         var Compiler = require("../src/compile/Compiler_cfn")
@@ -103,7 +103,7 @@ var T = {
         outstr = fn(data);
         // }
         console.log(outstr);
-        console.log("compileTofn time:", +new Date() - t1);
+        console.log("getFnByTmpStr time:", +new Date() - t1);
     },
     t8: function () {
         var Compiler = require("../src/compile/Compiler_cfn")
@@ -111,7 +111,7 @@ var T = {
         var str = fs.readFileSync(path.join(__dirname, "./view/demo2.shtm"), "utf-8")
         let t1 = +new Date();
         cp.compileModuleFile3(null, data, str);
-        console.log("compileTofn time:", +new Date() - t1);
+        console.log("getFnByTmpStr time:", +new Date() - t1);
     }
 }
 // T.t3 ();

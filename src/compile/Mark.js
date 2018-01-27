@@ -93,11 +93,6 @@ class Mark {
 
     }
 
-    showP () {
-
-    }
-
-
     getInfo () {
         return "(" + this.line + "-" + this.col + "-" + this.cursor + ")";
     }

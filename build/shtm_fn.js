@@ -11956,7 +11956,7 @@ class SHTM {
             if (baseDir != null && this.cp.baseDir == null) {
                 this.cp.setBaseDir (baseDir);
             }
-            retstr = this.cp.compileTofn (fileName, options, fileStr);
+            retstr = this.cp.getFnByTmpStr (fileName, options, fileStr);
             if (typeof cb === "function") {
                 cb (null, retstr);
             }

@@ -10,14 +10,6 @@ class CustomTag extends Node {
         this.outstr = "\"";
 
     }
-
-    write(s) {
-        this.outstr += s;
-    }
-
-    toString() {
-        return (this.outstr+"\";");
-    }
 }
 
 CustomTag.prototype = {

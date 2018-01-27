@@ -15,27 +15,24 @@ class ForEachIpml extends TagSupport {
         this.statusId = null;
         this.all_len = 0;
         this.cindex = 0;// 当前索引
-        // console.log("foreach 被创建。。。")
     }
 
     hasNext () {
-        return this.items != null && this.all_len > this.cindex;
-        // return this.items != null && this.items.length > 0;
+        // return this.items != null && this.all_len > this.cindex;
+        return this.items != null && this.items.length > 0;
     }
 
     next () {
-        // return this.items.shift();
-        return this.items[this.cindex++];
+        return this.items.shift ();
+        // return this.items[this.cindex++];
     }
 
     setItems (o) {
         if (o == null) {
             this.rawItems = [];
         } else {
-            this.all_len = o.length;
             this.rawItems = o;
         }
-        this.cindex = 0;
     }
 
     setVar (_id) {
@@ -77,12 +74,14 @@ class ForEachIpml extends TagSupport {
         }
         this.index = 0;
         this.count = 1;
+        this.cindex = 0;// 重置游标
         this.last = false;
         this.iteratedExpression = null;
         this.deferredExpression = null;
 
-        // 将设置的 ${list} el 表达式赋值给 pagecontext
-        this.prepare ();
+        this.prepare ();// 数据转换
+        this.all_len = this.items.length;// 重置长度
+
         // 设置了开始标签，直接从开始标签起步
         this.discardIgnoreSubset (this.begin);
         if (this.hasNext ()) {
@@ -104,6 +103,7 @@ class ForEachIpml extends TagSupport {
         this.index += this.step - 1;
         this.count++;
         if (this.hasNext () && !this.atEnd ()) {
+
             this.index++;
             this.item = this.next ();
         } else {
@@ -163,21 +163,21 @@ class ForEachIpml extends TagSupport {
      * @param o{Object}
      * */
     supportedTypeForEachIterator (o) {
-        let ret = o;
-        // if (o instanceof Array) {
-        //     ret = Object.assign([], o);
-        // } else if (typeof o == "object") {
-        //     for (let key in o) {
-        //         if (typeof o[key] !== "function") {
-        //             let obj = {key: key, value: o[key]};
-        //             ret.push(obj);
-        //         }
-        //     }
-        // } else if (typeof o == "string") {
-        //     ret = o.split(",")
-        // } else {
-        //
-        // }
+        let ret = [];
+        if (o instanceof Array) {
+            ret = Object.assign ([], o);
+        } else if (typeof o == "object") {
+            for (let key in o) {
+                if (typeof o[key] !== "function") {
+                    let obj = { key: key, value: o[key] };
+                    ret.push (obj);
+                }
+            }
+        } else if (typeof o == "string") {
+            ret = o.split (",")
+        } else {
+
+        }
         return ret;
     }
 }

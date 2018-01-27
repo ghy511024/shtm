@@ -28,7 +28,7 @@ class JspReader {
     }
 
     showP(msg) {
-        console.log(msg, this.current.line, this.current.col, this.current.cursor)
+        console.log(msg, this.current.line, this.current.col, this.current.cursor,":end")
     }
 
     matches(str) {
@@ -101,7 +101,7 @@ class JspReader {
     }
 
     // 强验证
-    getTextline(start, endLine) {
+    getTextline(start , endLine) {
         if (start.line > endLine) {
             return null;
         }
@@ -164,6 +164,7 @@ class JspReader {
 
     matchesETag(tagName) {
         let mark = this.mark();
+        // console.log("开始匹配结束标签",tagName)
         if (!this.matches("</" + tagName)) {
             return false;
         }
