@@ -34,8 +34,6 @@ var T = {
 
         fn();
         var etime = +new Date() - stime;
-
-        console.log(type, "==耗时:", etime, " ");
         var colors = Highcharts.getOptions().colors;
         this.chart.series[0].addPoint({
             color: colors.shift(),
@@ -154,15 +152,13 @@ var T = {
             if (option.cache !== false) {
                 fn = _this.getFn(type, source);
             }
-            console.log(option.cache, "bbbbb", option.cache === false)
             for (var i = 0; i < option.calls; i++) {
                 if (option.cache === false) {
-
                     fn = _this.getFn(type, source);
                 }
                 html = fn(data);
             }
-            // console.log(type,"=== 输出:\n",html)
+            // console.log(type,"=================== 输出:\n",html)
             return html;
         }
     }

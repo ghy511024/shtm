@@ -4,7 +4,7 @@
     中间有 ${maps[item.key]}些文字
     <li>${item.name}/Web Site:${item.site} li 里面的文字</li>
 
-    <c:if test="${if_test12}">哦啦啦</c:if>
+    <c:if test="${if_test1}">哦啦啦</c:if>
     后面有些文字 ${item.key}
     <c:forEach items="${maps}" var="map">
         <span>${map.key}-->${map.value}.....</span>

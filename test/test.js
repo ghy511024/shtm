@@ -57,7 +57,7 @@ var T = {
         console.log(+new Date() - t1);
     }
     , t4: function () {
-        var Compiler = require("../src/compile/Compiler_cfn")
+        var Compiler = require("../src/compile/Compiler_pc")
         var cp = new Compiler();
         var str = fs.readFileSync(path.join(__dirname, "./view/demo.shtm"), "utf-8")
         let outstr = cp.compileTest(null, data, str);
@@ -84,7 +84,7 @@ var T = {
      *
      * */
     , t6: function () {
-        var Compiler = require("../src/compile/Compiler_cfn")
+        var Compiler = require("../src/compile/Compiler_pc")
         var cp = new Compiler();
         var str = fs.readFileSync(path.join(__dirname, "./view/demo2.shtm"), "utf-8")
         let t1 = +new Date();
@@ -92,7 +92,7 @@ var T = {
         console.log("getFnByTmpStr time:", +new Date() - t1);
     },
     t7: function () {
-        var Compiler = require("../src/compile/Compiler_cfn")
+        var Compiler = require("../src/compile/Compiler_pc")
         var cp = new Compiler();
         var str = fs.readFileSync(path.join(__dirname, "./view/demo2.shtm"), "utf-8")
         var fn = cp.compileFnByFile(null, data, str);
@@ -106,7 +106,7 @@ var T = {
         console.log("getFnByTmpStr time:", +new Date() - t1);
     },
     t8: function () {
-        var Compiler = require("../src/compile/Compiler_cfn")
+        var Compiler = require("../src/compile/Compiler_pc")
         var cp = new Compiler();
         var str = fs.readFileSync(path.join(__dirname, "./view/demo2.shtm"), "utf-8")
         let t1 = +new Date();

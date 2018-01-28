@@ -1,0 +1,4 @@
+
+<h3>include 外部页面</h3>
+<c:include page="child.shtm"></c:include>
+<p>与handbares 不同，无需设置额外的模版跟路径，即可直接在模版使用</p>

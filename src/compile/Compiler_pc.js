@@ -6,7 +6,6 @@ const JspReader = require("./JspReader");
 const Parser = require("./Parser2");
 const path = require("path");
 const StringWriter = require("../writer/StringWriter");
-// const FileWriter = require("../writer/FileWriter");
 const ServletWriter = require("../writer/ServletWriter")
 
 // 测试
@@ -17,34 +16,7 @@ const PageContext = require("../ctx/PageContext_fn")
 const Mark = require("./Mark")
 
 class Compiler {
-    constructor(baseDir) {
-        this.baseDir = baseDir
-    }
-
-    setBaseDir(baseDir) {
-        this.baseDir = baseDir;
-    }
-
-    /*
-     *
-     *
-     * **/
-
-    getFnByFile(fileName) {
-        var baseDir = fileName.slice(0, fileName.lastIndexOf(path.join("/")));
-        console.log(baseDir, "ghy。。。。。。。");
-        let tmpstr = fs.readFileSync(fileName, "utf-8");
-        var fnstr = this.getFnStrByTmpStr(tmpstr);
-
-        return this.getFnByFnStr(tmpstr, fnstr)
-
-    }
-
-
-    getFnByTmpStr(tmpstr) {
-        var fnstr = this.getFnStrByTmpStr(tmpstr);
-        return this.getFnByFnStr(tmpstr, fnstr)
-
+    constructor() {
     }
 
     /**
@@ -52,14 +24,12 @@ class Compiler {
      * @return {fnction}
      *
      * */
-    getFnByFnStr(tmpstr, fnstr) {
-        let pageNodes = this.getPageNode(null, null, tmpstr);
-        if (fnstr == null) {
-            console.log("lalala============", tmpstr)
-            fnstr = this.getFnStrByTmpStr(tmpstr);
+    getFnByStr(tmpstr) {
 
-        }
+        let pageNodes = this.getPageNode(tmpstr, null);
+        let fnstr = this.getFnStrByPageNode(pageNodes);
         var rundemo = new Function('data, option', fnstr);
+
         var option = {
             ForEachImpl: ForEachImpl,
             IfImpl: IfImpl,
@@ -81,26 +51,16 @@ class Compiler {
         }
     }
 
-    getFnStrByTmpStr(tmpstr) {
-        let pageNodes = this.getPageNode(null, null, tmpstr);
+    getFnStrByPageNode(pageNodes) {
         let fn_stringWriter = new StringWriter();
         let fn_out = new ServletWriter(fn_stringWriter);
         Generator.generateFn(this, fn_out, pageNodes);
         let fnstr = fn_out.toString();
+
         return fnstr;
     }
 
-
-    getModuleFnStr(tmpstr) {
-        let pageNodes = this.getPageNode(null, null, tmpstr);
-        let fn_stringWriter = new StringWriter();
-        let fn_out = new ServletWriter(fn_stringWriter);
-        Generator.generateFnAsModule(this, fn_out, pageNodes);
-        let fnstr = fn_out.toString();
-        return fnstr;
-    }
-
-    getPageNode(filename, parent, fileStr) {
+    getPageNode(fileStr, parent) {
         let pageNodes;
         let reader = new JspReader(fileStr);
         if (reader != null) {
