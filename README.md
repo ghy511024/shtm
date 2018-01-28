@@ -4,12 +4,9 @@
 var data={a:1,b:{x1:1},c:{key:"x1"}}
 
 // 模版
-// 普通变量
-<span>${a}</span>
-// 属性读取
-<span>${b.x1}</span>
-// 组合属性读取
-<span>${b[c.key]}</span>
+<span>普通变量:${a}</span>
+<span>属性读取:${b.x1}</span>
+<span>组合属性读取:${b[c.key]}</span>
 ```
 
 ### if 判断
@@ -22,8 +19,8 @@ var data={
     }
 
 // 模版
-<c:if test="${!test1&&test2&&test3>0||(test4+1)=3}">
- <p>hello world</p>
+<c:if test="${!test1&&test2&&test3>0||(test4+1)==3}">
+ <p>hello shtm</p>
 </c:if>
 ```
 
@@ -31,31 +28,31 @@ var data={
 ```
 var data={
     list:[{name:"李雷"}],
-    list2:{key1,"value1",key2:"value2"},
-    list3:"key1,key2,key3"
+    list1:{key1,"value1",key2:"value2"},
+    list2:"key1,key2,key3"
     }
 
 // 模版
-    <p>数组list 输出</p>
     <c:forEach items="${list}" var="item">
         <span>
-            <span>${item}</span>
+            <span>数组list：${item}</span>
         </span>
     </c:forEach>
-    <p>map 遍历输出</p>
+
     <c:forEach items="${list1}" var="item">
          <span>
-             <span>${item.key}:${item.value}</span>
+             <span>map遍历：${item.key}:${item.value}</span>
          </span>
     </c:forEach>
-    <p>字符串 循环输出，（暂且只支持逗号分割的字符串）</p>
-    <c:forEach items="${list3}" var="item">
+
+    <c:forEach items="${list2}" var="item">
           <span>
-             <span>${item}</span>
+             <span>字符串 循环输出： ${item}</span>
           </span>
     </c:forEach>
 
 ```
+* 字符串目前只支持逗号分隔的字符串遍历
 
 ### 嵌套
 ```
@@ -67,13 +64,31 @@ var data={
     }
 
 // 模版
-<ul>
+
     <c:forEach items="${list}" var="item">
           <p>name:${item.name}</p>
           <c:forEach items="${item.list2}" var="val">
-                <span>val</span>
+                <span>${val}</span>
            </c:forEach>
     </c:forEach>
-</ul>
+
+```
+
+### 引用外部模板
+
+```
+├─common
+│  └─header.shtm
+├─page1.shtm
+├─child.shtm
+
+
+//page1.shtm
+
+<c:include page="../common/header.shtm"></c:include>
+
+<div class="main">
+<c:include page="child.shtm"></c:include>
+</div>
 
 ```
