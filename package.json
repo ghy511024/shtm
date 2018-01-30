@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "./src/shtm.js",
   "scripts": {
-    "travis": "npm run cover:init && npm run cover:all && npm run cover:test",
+    "travis": "npm run cover:all && npm run cover:test",
     "cover": "npm run cover:init && npm run cover:all && npm run cover:report",
     "cover:test": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "cover:init": "rimraf coverage",
