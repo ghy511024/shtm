@@ -4,11 +4,11 @@
   "license": "MIT",
   "main": "./src/shtm.js",
   "scripts": {
-    "travis": "npm run cover:all && npm run cover:test",
+    "travis": "npm run cover:init && npm run cover:all&&npm run cover:test",
     "cover": "npm run cover:init && npm run cover:all && npm run cover:report",
     "cover:test": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
-    "cover:init": "rimraf coverage",
-    "cover:all": "node --max-old-space-size=4096 --harmony --trace-deprecation ./node_modules/istanbul/lib/cli.js cover --report none node_modules/jasmine-node/bin/jasmine-node spec/",
+    "cover:init": "rimraf ./coverage",
+    "cover:all": "node --max-old-space-size=4096 --harmony --trace-deprecation ./node_modules/istanbul/lib/cli.js cover  node_modules/jasmine-node/bin/jasmine-node spec/ --report lcovonly",
     "cover:report": "istanbul report",
     "cover:report-min": "istanbul report --report lcovonly"
   },
