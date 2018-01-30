@@ -1,20 +1,21 @@
 /**
  * Created by ghy on 2017/11/17.
  */
-const Compiler = require ("../src/compile/Compiler")
-const shtm = require ("../src/shtm");
-const path = require ("path");
-const fs = require ("fs");
+const Compiler_node = require("../src/compile/Compiler_node")
+const shtm = require("../src/shtm");
+const shtm_pc = require("../src/shtm-pc");
+const path = require("path");
+const fs = require("fs");
 let data = {
     title: "smart html template",
     if_test1: true,
     if_test2: false,
     list: [
-        { name: "北京", data: ["朝阳", "海淀"], key: "key1" },
-        { name: "四川", data: ["新都", "龙泉", "天府广场"], key: "key2" }],
-    maps: { key1: "value1", key2: "value2" },
+        {name: "北京", data: ["朝阳", "海淀"], key: "key1"},
+        {name: "四川", data: ["新都", "龙泉", "天府广场"], key: "key2"}],
+    maps: {key1: "value1", key2: "value2"},
     list2: ["sc", "bj"],
-    nameMap: { sc: "四川", bj: "北京" },
+    nameMap: {sc: "四川", bj: "北京"},
 }
 
 
@@ -24,37 +25,49 @@ var T = {
      *
      * */
     t1: function () {
-        var filename = path.join (__dirname, "./view/demo.shtm");
-        var str = shtm.compile (filename, data);
-        console.log (str)
+        var filename = path.join(__dirname, "./view/demo.shtm");
+        var str = shtm.compile(filename, data);
+        console.log(str);
     },
     // 将js 文件解析执行，调试用
     t2: function () {
-        const cp = new Compiler ();
-        var tmpfile = path.join (__dirname, "./view/demo2.shtm");
-        var fnfile = path.join (__dirname, "../src/runtime/out_rundemo.js");
+        const cp = new Compiler();
+        var tmpfile = path.join(__dirname, "./view/demo2.shtm");
+        var fnfile = path.join(__dirname, "../src/runtime/out_rundemo.js");
 
-        var tmpstr = fs.readFileSync (tmpfile, "utf-8")
-        var fnstr = fs.readFileSync (fnfile, "utf-8")
+        var tmpstr = fs.readFileSync(tmpfile, "utf-8")
+        var fnstr = fs.readFileSync(fnfile, "utf-8")
 
-        var fn = cp.getFnByFnStr (tmpstr, fnstr);
-        var str = fn (data);
-        console.log (str);
+        var fn = cp.getFnByFile(tmpstr, fnstr);
+        var str = fn(data);
+        console.log(str);
     }
 
 }
 // 专门用来编译为js 文件调试
 var C = {
     t1: function () {
-        const cp = new Compiler ();
-        var filename = path.join (__dirname, "./view/demo2.shtm");
-        var outfile = path.join (__dirname, "../src/runtime/out_rundemo.js");
-        var tmpstr = fs.readFileSync (filename, "utf-8")
-        var fnstr = cp.getFnStr (tmpstr);
-        fs.writeFileSync (outfile, fnstr);
+        const cp = new Compiler_node();
+        // var filename = path.join(__dirname, "./view/demo_include.shtm");
+        var filename = path.join(__dirname, "./view/demo.shtm");
+        var outfile = path.join(__dirname, "../src/runtime/out_rundemo.js");
+
+        var fnstr = cp._debug_getFnStrByFile(filename);
+        fs.writeFileSync(outfile, fnstr);
         // console.log (fnstr);
     }
 }
-C.t1 ();
-// T.t1 ();
-T.t2 ();
+var PC = {
+    t1: function () {
+        var tmpfile = path.join(__dirname, "./view/demo2.shtm");
+
+        var tmpstr = fs.readFileSync(tmpfile, "utf-8")
+        var fn = shtm_pc.compile(tmpstr);
+        var str = fn(data);
+        console.log(str)
+    }
+}
+// C.t1 ();
+// T.t1();
+// T.t2 ();
+PC.t1();

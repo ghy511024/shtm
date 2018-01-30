@@ -5,8 +5,8 @@ const Generator = require("../generator/Generator-Api");
 const JspReader = require("./JspReader");
 const Parser = require("./Parser2");
 const path = require("path");
+const fs = require("fs");
 const StringWriter = require("../writer/StringWriter");
-// const FileWriter = require("../writer/FileWriter");
 const ServletWriter = require("../writer/ServletWriter")
 
 // 测试
@@ -19,32 +19,19 @@ const Mark = require("./Mark")
 class Compiler {
     constructor(baseDir) {
         this.baseDir = baseDir
+        this.tempDir = "";
     }
 
     setBaseDir(baseDir) {
         this.baseDir = baseDir;
     }
 
-    /*
-     *
-     *
-     * **/
-
-    getFnByFile(fileName) {
-        var baseDir = fileName.slice(0, fileName.lastIndexOf(path.join("/")));
-        console.log(baseDir, "ghy。。。。。。。");
-        let tmpstr = fs.readFileSync(fileName, "utf-8");
-        var fnstr = this.getFnStrByTmpStr(tmpstr);
-
-        return this.getFnByFnStr(tmpstr, fnstr)
-
+    setTempDir(filename) {
+        this.tempDir = filename.slice(0, fileName.lastIndexOf(path.join("/")));
     }
 
-
-    getFnByTmpStr(tmpstr) {
-        var fnstr = this.getFnStrByTmpStr(tmpstr);
-        return this.getFnByFnStr(tmpstr, fnstr)
-
+    getBaseDir() {
+        return this.tempDir == "" ? this.baseDir : this.tempDir;
     }
 
     /**
@@ -52,14 +39,14 @@ class Compiler {
      * @return {fnction}
      *
      * */
-    getFnByFnStr(tmpstr, fnstr) {
-        let pageNodes = this.getPageNode(null, null, tmpstr);
-        if (fnstr == null) {
-            console.log("lalala============", tmpstr)
-            fnstr = this.getFnStrByTmpStr(tmpstr);
+    getFnByFile(fileName) {
+        var baseDir = fileName.slice(0, fileName.lastIndexOf(path.join("/")));
+        this.setBaseDir(baseDir);
 
-        }
+        let pageNodes = this.getPageNode(fileName, null);
+        let fnstr = this.getFnStrByPageNode(pageNodes);
         var rundemo = new Function('data, option', fnstr);
+
         var option = {
             ForEachImpl: ForEachImpl,
             IfImpl: IfImpl,
@@ -81,12 +68,25 @@ class Compiler {
         }
     }
 
-    getFnStrByTmpStr(tmpstr) {
+    getFnStrByPageNode(pageNodes) {
+        let fn_stringWriter = new StringWriter();
+        let fn_out = new ServletWriter(fn_stringWriter);
+        Generator.generateFn(this, fn_out, pageNodes);
+        let fnstr = fn_out.toString();
+
+        return fnstr;
+    }
+
+    _debug_getFnStrByFile(fileName) {
+        var baseDir = fileName.slice(0, fileName.lastIndexOf(path.join("/")));
+        this.setBaseDir(baseDir);
+        let tmpstr = fs.readFileSync(fileName, "utf-8");
         let pageNodes = this.getPageNode(null, null, tmpstr);
         let fn_stringWriter = new StringWriter();
         let fn_out = new ServletWriter(fn_stringWriter);
         Generator.generateFn(this, fn_out, pageNodes);
         let fnstr = fn_out.toString();
+
         return fnstr;
     }
 
@@ -102,6 +102,9 @@ class Compiler {
 
     getPageNode(filename, parent, fileStr) {
         let pageNodes;
+        if (filename != null) {
+            fileStr = fs.readFileSync(filename, "utf-8");
+        }
         let reader = new JspReader(fileStr);
         if (reader != null) {
             pageNodes = Parser.parse(reader, parent)

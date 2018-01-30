@@ -1,5 +1,9 @@
-const Compiler = require("./compile/Compiler")
+const Compiler = require("./compile/Compiler_node")
 const fs = require("fs");
+/**
+ * 提供给node 用
+ *
+ * */
 class SHTM {
     constructor() {
         this.cp = new Compiler();
@@ -17,15 +21,9 @@ class SHTM {
      *@return fn {Function} (接收data 参数)
      *
      * */
-    compile(filename,options, fileStr) {
+    compile(filename, options) {
         let retstr = "";
-        let fn = function () {
-        };
-        if (filename != null) {
-            fn = this.compileFileTofn(filename, false);
-        } else if (fileStr != null) {
-            fn = this.compileStringTofn(fileStr);
-        }
+        let fn = this.compileFileTofn(filename, false);
         retstr = fn(options);
         return retstr;
     }
@@ -35,24 +33,20 @@ class SHTM {
      *
      * */
     compileFileTofn(filename, isCache) {
-        let fileStr;
+        let fn;
         if (isCache) {
-            fileStr = this.cache[filename];
-            if (fileStr == null) {
-                fileStr = fs.readFileSync(filename, "utf-8");
-                if (fileStr != null) {
-                    this.cache[filename] = fileStr;
+            fn = this.cache[filename];
+            if (fn == null) {
+                fn = this.cp.getFnByFile(filename);
+                if (fn != null) {
+                    this.cache[filename] = fn;
                 }
             }
         } else {
-            fileStr = fs.readFileSync(filename, "utf-8");
+            fn = this.cp.getFnByFile(filename)
         }
 
-        return this.compileStringTofn(fileStr)
-    }
-
-    compileStringTofn(fileStr) {
-        return this.cp.getFnByTmpStr(fileStr)
+        return fn;
     }
 
     setBaseDir(baseDir) {
