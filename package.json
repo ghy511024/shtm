@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "main": "./src/shtm.js",
+  "script": {
+    "logtest": "console.log('ghytest')"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:ghy511024/shtm.git"
