@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "main": "./src/shtm.js",
-  "script": {
-    "logtest": "console.log('ghytest')"
+  "scripts": {
+    "logtest": "webpack"
   },
   "repository": {
     "type": "git",
