@@ -4,8 +4,9 @@
   "license": "MIT",
   "main": "./src/shtm.js",
   "scripts": {
-    "travis": "npm run cover",
+    "travis": "npm run cover:test",
     "cover": "npm run cover:init && npm run cover:all && npm run cover:report",
+    "cover:test": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "cover:init": "rimraf coverage",
     "cover:all": "node --max-old-space-size=4096 --harmony --trace-deprecation ./node_modules/istanbul/lib/cli.js cover --report none node_modules/jasmine-node/bin/jasmine-node spec/",
     "cover:report": "istanbul report",
@@ -21,6 +22,7 @@
     "extract-text-webpack-plugin": "^3.0.2"
   },
   "devDependencies": {
+    "rimraf": "^2.6.2",
     "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",
     "jasmine-node": "^1.14.5"
