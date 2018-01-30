@@ -1,4 +1,8 @@
+[![Build Status](https://travis-ci.org/ghy511024/shtm.svg?branch=master)](https://travis-ci.org/ghy511024/shtm)
 
+
+shtm.js
+=============
 ### 变量输出
 ```
 var data={a:1,b:{x1:1},c:{key:"x1"}}
