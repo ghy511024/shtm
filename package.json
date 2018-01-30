@@ -4,7 +4,11 @@
   "license": "MIT",
   "main": "./src/shtm.js",
   "scripts": {
-    "logtest": "npm -version"
+    "logtest": "npm -version",
+    "cover": "istanbul cover node_modules/jasmine-node/bin/jasmine-node spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "t1": "istanbul cover jasmine-node --captureExceptions spec/",
+    "t2": "istanbul cover istanbul cover node_modules/jasmine/bin/jasmine.js",
+    "t3": "jasmine-node spec/"
   },
   "repository": {
     "type": "git",
@@ -14,5 +18,10 @@
     "babel-loader": "^7.1.2",
     "esprima": "^4.0.0",
     "extract-text-webpack-plugin": "^3.0.2"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "jasmine-node": "^1.14.5"
   }
 }

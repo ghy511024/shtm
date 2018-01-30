@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src\compile\Mark.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">src/compile/</a> Mark.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">52.38% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>22/42</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>6/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">33.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">52.38% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>22/42</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-yes">380×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">379×</span>
+<span class="cline-any cline-yes">379×</span>
+<span class="cline-any cline-yes">379×</span>
+<span class="cline-any cline-yes">379×</span>
+<span class="cline-any cline-yes">379×</span>
+<span class="cline-any cline-yes">379×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">379×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * 标记类，辅助字符串输入操作
+ * @author ghy
+ * @date 20171117
+ *
+ */
+class Mark {
+    constructor (reader, stream, fileid, name, baseDir, encoding) {
+        this.reader = reader;
+        this.baseDir = baseDir;
+        this.stream = stream;
+        this.fileId = fileid;
+        this.encoding = encoding;
+        this.name = name;
+        this.col = 1;
+        this.line = 1;
+        this.cursor = 0;
+        this.includeStack = [];
+        this.line_cursor_map = { 1: 0 };
+    }
+&nbsp;
+    getIncludeMark <span class="fstat-no" title="function not covered" >(inCursor, inLine, inCol, inFileid, name, inBaseDir, inEncoding, inStream) {</span>
+<span class="cstat-no" title="statement not covered" >        let mark = new Mark (null, inStream, inFileid, name, inBaseDir, inEncoding);</span>
+<span class="cstat-no" title="statement not covered" >        mark.col = inCol;</span>
+<span class="cstat-no" title="statement not covered" >        mark.cursor = inCursor;</span>
+<span class="cstat-no" title="statement not covered" >        mark.line = inLine;</span>
+<span class="cstat-no" title="statement not covered" >        return mark;</span>
+    }
+&nbsp;
+    /**
+     * 判断两个mark 是否相等
+     * @param mark {Mark}
+     * @return {Boolean}
+     */
+    equals (mark) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (mark instanceof Mark) {
+            return this.reader == mark.reader &amp;&amp; this.fileId == mark.fileId
+                &amp;&amp; this.cursor == mark.cursor &amp;&amp; this.line == mark.line
+                &amp;&amp; this.col == mark.col;
+        }
+<span class="cstat-no" title="statement not covered" >        return false;</span>
+    }
+&nbsp;
+    // get one from other
+    copyMark <span class="fstat-no" title="function not covered" >() {</span>
+&nbsp;
+    }
+&nbsp;
+    static newMark (inMark) {
+        let mark = new Mark (inMark.reader, inMark.stream, inMark.fileId, inMark.baseDir, inMark.encoding);
+        mark.line = inMark.line;
+        mark.col = inMark.col;
+        mark.cursor = inMark.cursor;
+        mark.line_cursor_map = inMark.line_cursor_map;
+        for (let i = 0; i &lt; inMark.includeStack.length; i++) {
+<span class="cstat-no" title="statement not covered" >            mark.includeStack.push (inMark.includeStack[i]);</span>
+        }
+        return mark;
+    }
+&nbsp;
+// 涉及到
+    resetLine <span class="fstat-no" title="function not covered" >(line) {</span>
+<span class="cstat-no" title="statement not covered" >        this.line = line;</span>
+<span class="cstat-no" title="statement not covered" >        this.col = 1;</span>
+<span class="cstat-no" title="statement not covered" >        this.cursor = this.line_cursor_map[line] != null ? this.line_cursor_map[line] : this.cursor;</span>
+    }
+&nbsp;
+&nbsp;
+    /**
+     * 文件流压栈操作
+     * @param inStream {Array&lt;Char&gt;} new stream for mark
+     * @param inFileid {Integer}
+     * @param name {String}
+     * @param inBaseDir {String}
+     * @param inEncoding {String}
+     * @returns null
+     */
+    pushStream <span class="fstat-no" title="function not covered" >(inStream, inFileid, name, inBaseDir, inEncoding) {</span>
+        // 当前文件mark压栈
+<span class="cstat-no" title="statement not covered" >        this.includeStack.push (this.getIncludeMark (this.cursor, this.line, this.fileId, this.fileName, this.baseDir, this.encoding, this.stream))</span>
+<span class="cstat-no" title="statement not covered" >        this.cursor = 0;</span>
+<span class="cstat-no" title="statement not covered" >        this.line = 1;</span>
+<span class="cstat-no" title="statement not covered" >        this.col = 1;</span>
+<span class="cstat-no" title="statement not covered" >        this.fileId = inFileid;</span>
+<span class="cstat-no" title="statement not covered" >        this.fileName = name;</span>
+<span class="cstat-no" title="statement not covered" >        this.baseDir = inBaseDir;</span>
+<span class="cstat-no" title="statement not covered" >        this.encoding = inEncoding;</span>
+<span class="cstat-no" title="statement not covered" >        this.stream = inStream;</span>
+&nbsp;
+    }
+&nbsp;
+    popStream <span class="fstat-no" title="function not covered" >() {</span>
+&nbsp;
+    }
+&nbsp;
+    getInfo <span class="fstat-no" title="function not covered" >() {</span>
+<span class="cstat-no" title="statement not covered" >        return "(" + this.line + "-" + this.col + "-" + this.cursor + ")";</span>
+    }
+}
+&nbsp;
+Mark.prototype = {
+    reader: null,
+    cursor: 1,
+    line: 1,
+    col: 0,
+    fileId: 0,
+    fileName: 0,
+    includeStack: [],
+    stream: null,//Buffer
+    encoding: "utf-8",
+    fileName: "",
+    baseDir: "",
+}
+&nbsp;
+module.exports = Mark;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jan 30 2018 15:42:58 GMT+0800 (中国标准时间)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

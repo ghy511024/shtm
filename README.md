@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ghy511024/shtm.svg?branch=master)](https://travis-ci.org/ghy511024/shtm)
+[![Coverage Status](https://coveralls.io/repos/github/ghy511024/shtm/badge.svg?branch=master)](https://coveralls.io/github/ghy511024/shtm?branch=master)
 
 
 shtm.js
