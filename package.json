@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "./src/shtm.js",
   "scripts": {
-    "logtest": "webpack"
+    "logtest": "npm -version"
   },
   "repository": {
     "type": "git",
