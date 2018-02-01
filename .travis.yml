@@ -1,0 +1,11 @@
+language: node_js
+language: node_js
+node_js:
+  - "7"
+before_install:
+- npm install
+script:
+- npm run travis
+cache:
+  directories:
+  - node_modules

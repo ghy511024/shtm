@@ -3,6 +3,15 @@
   "version": "0.0.0",
   "license": "MIT",
   "main": "./src/shtm.js",
+  "scripts": {
+    "travis": "npm run cover:init && npm run cover:all&&npm run cover:test",
+    "cover": "npm run cover:init && npm run cover:all ",
+    "cover:test": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "cover:init": "rimraf ./coverage",
+    "cover:all": "node --max-old-space-size=4096 --harmony --trace-deprecation ./node_modules/istanbul/lib/cli.js cover  node_modules/jasmine-node/bin/jasmine-node spec/ --report lcovonly",
+    "cover:report": "istanbul report",
+    "cover:report-min": "istanbul report --report lcovonly"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:ghy511024/shtm.git"
@@ -11,5 +20,11 @@
     "babel-loader": "^7.1.2",
     "esprima": "^4.0.0",
     "extract-text-webpack-plugin": "^3.0.2"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.2",
+    "coveralls": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "jasmine-node": "^1.14.5"
   }
 }

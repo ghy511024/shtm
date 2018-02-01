@@ -41,10 +41,6 @@ class Mark {
         return false;
     }
 
-    // get one from other
-    copyMark () {
-
-    }
 
     static newMark (inMark) {
         let mark = new Mark (inMark.reader, inMark.stream, inMark.fileId, inMark.baseDir, inMark.encoding);
