@@ -10,7 +10,7 @@ const PageContext = require("../ctx/PageContext");
 // tag 解析实现类
 const ForEachIpml = require("../tag/ipml/ForEachIpml");
 const IfIpml = require("../tag/ipml/IfIpml");
-const Parser = require("../compile/Parser");
+const Parser = require("../compile/Parser_bk");
 const jerr = require("../err/Err");
 const path = require("path")
 

@@ -5,7 +5,9 @@ class Nodes {
     constructor(root) {
         this.root = root;
         this.list = [];
-        this.list.push(root);
+        if (root != null) {
+            this.list.push(root);
+        }
         this.name = "nodes"
 
     }
@@ -34,7 +36,6 @@ class Nodes {
 }
 
 Nodes.prototype = {
-    list: [],
     root: null,
     generatedInBuffer: false
 }
