@@ -79,8 +79,9 @@ var data={
 ```
 ├─common
 │  └─header.shtm
-├─page1.shtm
-├─child.shtm
+└─page
+    ├─page1.shtm
+    ├─child.shtm
 
 
 //page1.shtm
@@ -88,7 +89,7 @@ var data={
 <c:include page="../common/header.shtm"></c:include>
 
 <div class="main">
-<c:include page="child.shtm"></c:include>
+    <c:include page="child.shtm"></c:include>
 </div>
 
 ```
