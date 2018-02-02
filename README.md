@@ -62,7 +62,7 @@ The template (i.e. home.shtm)
 ```
 
 
-### normal
+## normal
 ```
 var data={a:1,b:{x1:1},c:{key:"x1"}}
 
@@ -73,7 +73,7 @@ var data={a:1,b:{x1:1},c:{key:"x1"}}
 <span>custom propertity:${b[c.key]}</span>
 ```
 
-### if 
+## if 
 
 * app.js
 
@@ -96,7 +96,7 @@ app.get('/home', function (req, res) {
 <c:if test="${'xixihaha'.length>0}">t7</c:if>   //true
 ```
 
-### forEach
+## forEach
 ```
 
  app.get('/home', function (req, res) {
@@ -137,7 +137,7 @@ app.get('/home', function (req, res) {
 
 ```
 
-### foreach nesting
+## foreach nesting
 ```
 
  app.get('/home', function (req, res) {
@@ -163,7 +163,7 @@ app.get('/home', function (req, res) {
 
 ```
 
-### include
+## include
 
 ```
 ├─common

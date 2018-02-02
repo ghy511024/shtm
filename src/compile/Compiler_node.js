@@ -77,15 +77,6 @@ class Compiler {
         return fnstr;
     }
 
-    getModuleFnStr(tmpstr) {
-        let pageNodes = this.getPageNode(null, null, tmpstr);
-        let fn_stringWriter = new StringWriter();
-        let fn_out = new ServletWriter(fn_stringWriter);
-        Generator.generateFnAsModule(this, fn_out, pageNodes);
-        let fnstr = fn_out.toString();
-        return fnstr;
-    }
-
     getPageNode(filename, parent, fileStr) {
         let pageNodes;
         if (filename != null) {

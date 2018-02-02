@@ -1,0 +1,2 @@
+parent-
+<c:include page="child/child1.shtm"></c:include>

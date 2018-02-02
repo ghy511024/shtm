@@ -4,8 +4,7 @@
 
 const Node = require ("../node/Node-Api");
 const Tag = require ("../tag/Tag");
-const visit_TemplateText = require ("./visitimpl/visit_TemplateText");
-const PageContext = require ("../ctx/PageContext");
+const PageContext = require ("../ctx/PageContext_fn");
 
 // tag 解析实现类
 const ForEachImpl = require ("../tag/funimpl/ForEachImpl");
@@ -19,9 +18,6 @@ class GenerateVisitor extends Node.Visitor {
     constructor (out, pageContext, compiler) {
         super ();
         this.out = out;
-        if (pageContext instanceof PageContext) {
-            this.pageContext = pageContext;
-        }
         this.tagVarNumbers = {};
         this.out = out;
         this.compiler = compiler;
@@ -35,8 +31,6 @@ class GenerateVisitor extends Node.Visitor {
         if (n instanceof Node.CustomTag) {
             this.out.println ("str+=\"" + n.parent.flush () + "\"")
             this._vCustomTag (n, i);
-        } else if (n instanceof Node.Nodes) {
-            this._vNodes (n);
         }
         else if (n instanceof Node.Root) {
             this._vRoot (n, i);
@@ -106,10 +100,6 @@ class GenerateVisitor extends Node.Visitor {
         pageNodes.visit (this);
     }
 
-    _vNodes (n) {
-
-    }
-
 
     /**
      * 打印普通文本
@@ -174,12 +164,7 @@ class GenerateVisitor extends Node.Visitor {
     _vELExpression (n) {
         if (n.parent.write) {
             n.parent.write ("\"+(" + this.getAfterElexpress (n.text) + "||\"\")+\"");
-        } else {
-            this.out.print ("str+=(" + this.getAfterElexpress (n.text) + "||\"\")")
         }
-
-        // n.parent.write("\"+" + this.getAfterElexpress(n.text) + "+\"");
-        // this.out.print("str+=" + this.getAfterElexpress(n.text) + ";")
     }
 
     /**
@@ -189,7 +174,8 @@ class GenerateVisitor extends Node.Visitor {
      * */
     generateCustomStart (n, tagHandlerVar) {
         this.out.println ("//" + n.qName);
-        let implName = this.getImplMethName (n)
+        let implName = this.getImplMethName (n);
+        this.out.pushIndent();
         this.out.println (`let ${tagHandlerVar} =new ${implName}();`)
         this.out.println (`${tagHandlerVar}.setPageContext(pageContext);`)
         this.generateSetters (n, tagHandlerVar);
@@ -299,30 +285,6 @@ class GenerateVisitor extends Node.Visitor {
             implName = "IncludeImpl";
         }
         return implName;
-    }
-
-    /**
-     * @param c ${Char}
-     * */
-    quote (c) {
-        let str = "";
-        str += '\'';
-        if (c == '\'') {
-            str += '\\\''
-        } else if (c == '\\') {
-            str += '\\\\'
-        }
-        else if (c == '\n') {
-            str += '\\n'
-        }
-        else if (c == '\r') {
-            str += '\\r'
-        }
-        else {
-            str += c;
-        }
-        str += '\'';
-        return str;
     }
 
     getAfterElexpress (exp) {

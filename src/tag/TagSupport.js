@@ -1,4 +1,3 @@
-const PageContext = require ("../ctx/PageContext");
 const Tag = require ("./Tag");
 
 class TagSupport extends Tag {

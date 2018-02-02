@@ -1,3 +1,4 @@
+foreach:
 <c:forEach items="${list}" var="item">
     <c:forEach items="${item.list}" var="item2">
         ${item2}

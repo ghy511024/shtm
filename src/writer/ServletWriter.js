@@ -3,7 +3,6 @@ const SPACES = "                          ";
 /**
  * writer 本来应该是最后再写的，前面应该把各种约定定义好
  * */
-const Writer = require("./Writer");
 
 class ServletWriter {
     /**
@@ -49,9 +48,6 @@ class ServletWriter {
         this.writer.println(s)
     }
 
-    printlt() {
-
-    }
 
     printMultiLn(s) {
         let index = 0;

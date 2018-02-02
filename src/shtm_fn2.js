@@ -1,4 +1,4 @@
-const Compiler = require("./compile/Compiler")
+const Compiler = require("./compile/Compiler_node")
 
 class SHTM {
     constructor() {

@@ -2,7 +2,6 @@
  * Created by ghy on 2017/12/1.
  */
 const lineSeparator = "\n";
-const Writer = require ("./Writer");
 
 class StringWriter  {
     constructor () {
