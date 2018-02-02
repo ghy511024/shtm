@@ -1,0 +1,7 @@
+<c:if test="${test1}">t1</c:if>
+<c:if test="${test2}">t2</c:if>
+<c:if test="${test1&&test2}">t3</c:if>
+<c:if test="${test1||test2}">t4</c:if>
+<c:if test="${test3}">t5</c:if>
+<c:if test="${'xixihaha'}">t6</c:if>
+<c:if test="${'xixihaha'.length>0}">t7</c:if>

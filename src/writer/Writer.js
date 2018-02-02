@@ -3,11 +3,9 @@
  * 这个应该是一个抽象类
  *
  */
-const Abstract = require("../object/Abstract");
 const lineSeparator = "\n";
-class Writer extends Abstract {
+class Writer {
     constructor() {
-        super();
     }
 
     print(s) {

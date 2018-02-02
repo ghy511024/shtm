@@ -163,12 +163,12 @@ class JspReader {
             while (!this.isDelimiter ()) {
                 ch = this.nextChar ();
                 // 以下逻辑暂时用不到
-                // if (ch == '\\') {
-                //     if (this.peekChar () == '"' || this.peekChar () == '\''
-                //         || this.peekChar () == '>' || this.peekChar () == '%') {
-                //         ch = nextChar ();
-                //     }
-                // }
+                if (ch == '\\') {
+                    if (this.peekChar () == '"' || this.peekChar () == '\''
+                        || this.peekChar () == '>' || this.peekChar () == '%') {
+                        ch = nextChar ();
+                    }
+                }
                 ret += ch;
             }
 

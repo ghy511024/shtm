@@ -100,4 +100,22 @@ describe ("Parser test", function () {
         expect (pages.list[0].body.list[0].attrs.getValue ("x:test")).toBe ("${xixi}");
         expect (pages.list[0].body.list[0].attrs.getValueByShortName ("test")).toBe ("${xixi}");
     });
+
+    // 属性测试
+    it ("parser 边界字符测试", function () {
+        let str = "$<>"
+        let reader = new JspReader (str);
+        let parser = new Parser (reader);
+        let pages = Parser.parse (reader, null);
+        expect (pages.list[0].body.list[0].name).toBe ("TemplateText");
+        expect (pages.list[0].body.list[0].text).toBe ("$<>");
+    });
+    it ("parser 边界字符测试", function () {
+        let str = "abcdefghijklmnopqrstuvwxyz~!#\$%^&*()_+`1234567890-=\;'<>$"
+        let reader = new JspReader (str);
+        let parser = new Parser (reader);
+        let pages = Parser.parse (reader, null);
+        expect (pages.list[0].body.list[0].name).toBe ("TemplateText");
+        expect (pages.list[0].body.list[0].text).toBe ("abcdefghijklmnopqrstuvwxyz~!#$%^&*()_+`1234567890-=;'<>$");
+    });
 })

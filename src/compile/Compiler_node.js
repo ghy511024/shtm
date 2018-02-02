@@ -77,20 +77,6 @@ class Compiler {
         return fnstr;
     }
 
-    _debug_getFnStrByFile(fileName) {
-        var baseDir = fileName.slice(0, fileName.lastIndexOf(path.join("/")));
-        this.setBaseDir(baseDir);
-        let tmpstr = fs.readFileSync(fileName, "utf-8");
-        let pageNodes = this.getPageNode(null, null, tmpstr);
-        let fn_stringWriter = new StringWriter();
-        let fn_out = new ServletWriter(fn_stringWriter);
-        Generator.generateFn(this, fn_out, pageNodes);
-        let fnstr = fn_out.toString();
-
-        return fnstr;
-    }
-
-
     getModuleFnStr(tmpstr) {
         let pageNodes = this.getPageNode(null, null, tmpstr);
         let fn_stringWriter = new StringWriter();
