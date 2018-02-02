@@ -38,8 +38,8 @@ describe ("Compiler_node", function () {
     it ("custom-foreach", function () {
         let p1 = path.join (__dirname, "../demo/custom-forEach.shtm");
         let fn = cp.getFnByFile (p1);
-        let str = fn ({ list: [{ list: ["1", "2"] }, { list: "3,4" }] });
+        let str = fn ({ list: [{ list: ["1", "2"] }, { list: "3,4" }],maps:{key1:"5"} });
         str = str.replace (/(?:\s|\n)/g, "");
-        expect (str).toMatch ("1234");
+        expect (str).toMatch ("12345");
     });
 })

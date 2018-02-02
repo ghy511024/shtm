@@ -1,2 +1,2 @@
 instrumentation:
-    excludes: ['**/spec/**', 'src/ast/**']
+    excludes: ['**/spec/**', 'src/ast/**','src/err/**']

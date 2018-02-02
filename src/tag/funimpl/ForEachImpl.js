@@ -46,8 +46,8 @@ class ForEachIpml extends TagSupport {
 
         if (this.itemId != null) {
             if (this.getCurrent () == null) {
-                if (this.setVar != null) {
-                    this.pageContext.setAttribute (this.itemId, this.setVar)
+                if (this.saveVar != null) {
+                    this.pageContext.setAttribute (this.itemId, this.saveVar)
                 }
                 this.pageContext.removeAttribute (this.itemId)
             } else if (this.deferredExpression != null) {

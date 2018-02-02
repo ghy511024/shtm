@@ -4,3 +4,6 @@ foreach:
         ${item2}
     </c:forEach>
 </c:forEach>
+<c:forEach items="${maps}" var="item">
+    ${item.value}
+</c:forEach>
