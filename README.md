@@ -74,43 +74,62 @@ var data={a:1,b:{x1:1},c:{key:"x1"}}
 ```
 
 ### if 
-```
-var data={
-    test1:false,
-    test2:true,
-    test3:1
-    test4:2
-    }
- =========xx.shtm============
 
-<c:if test="${!test1&&test2&&test3>0||(test4+1)==3}">
- <p>hello shtm</p>
-</c:if>
+* app.js
+
+```
+
+app.get('/home', function (req, res) {
+  res.render('home', { test1: true, test2: false, test3: 1 });
+});
+
+```
+* home.shtm
+
+```
+<c:if test="${test1}">t1</c:if>                 //true
+<c:if test="${test2}">t2</c:if>                 //false
+<c:if test="${test1&&test2}">t3</c:if>          //false
+<c:if test="${test1||test2}">t4</c:if>          //true
+<c:if test="${test3}">t5</c:if>                 //false
+<c:if test="${'xixihaha'}">t6</c:if>            //false
+<c:if test="${'xixihaha'.length>0}">t7</c:if>   //true
 ```
 
 ### forEach
 ```
-var data={
-    list:[{name:"lilei"}],
-    list1:{key1,"value1",key2:"value2"},
-    list2:"key1,key2,key3"
-    }
 
-    =========xx.shtm============
+ app.get('/home', function (req, res) {
+    var data = {
+            list: [{name: "lilei"}],
+            maps: {key1, "value1", key2: "value2"},
+            str: "key1,key2,key3"
+        }
+     res.render('home', data);
+});
+    
+```
+* foreach arraylist 
 
+```
     <c:forEach items="${list}" var="item">
         <span>
             <span>arrItem：${item}</span>
         </span>
     </c:forEach>
+```
+* foreach map 
 
-    <c:forEach items="${list1}" var="item">
+```
+    <c:forEach items="${maps}" var="item">
          <span>
              <span>map forEach：${item.key}:${item.value}</span>
          </span>
     </c:forEach>
-
-    <c:forEach items="${list2}" var="item">
+```
+* foreach string
+```
+    <c:forEach items="${str}" var="item">
           <span>
              <span>string forEach： ${item}</span>
           </span>
@@ -118,15 +137,23 @@ var data={
 
 ```
 
-### nesting
+### foreach nesting
 ```
-var data={
+
+ app.get('/home', function (req, res) {
+    var data={
         list:[
             {name:"lilei",list2:[1,2,3]},
             {name:"hanmeimei",list2:[4,5,6]}
         ]
-    }
- =========xx.shtm============
+     }
+    res.render('home', data);
+});
+    
+```
+* home.shtm
+
+```
     <c:forEach items="${list}" var="item">
           <p>name:${item.name}</p>
           <c:forEach items="${item.list2}" var="val">
@@ -145,10 +172,13 @@ var data={
     ├─page1.shtm
     ├─child.shtm
 
+```
 
-page1.shtm
+* page1.shtm
 
+```
 <c:include page="../common/header.shtm"></c:include>
+
 <div class="main">
     <c:include page="child.shtm"></c:include>
 </div>
