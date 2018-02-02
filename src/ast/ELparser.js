@@ -2,7 +2,7 @@
  * Created by ghy on 2018/1/4.
  */
 
-const AstCompiler = require("./AstCompiler");
+// const AstCompiler = require("./AstCompiler");
 const jerr = require("../err/Err");
 
 class ELparser {

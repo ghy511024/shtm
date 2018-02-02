@@ -1,10 +1,6 @@
 const Compiler = require("../compile/Compiler")
 const GenerateVisitor = require("./GenerateVisitor");
 const GenerateVisitor_tree = require("./GenerateVisitor_tree");
-const GenerateVisitor_for = require("./GenerateVisitor_for");
-const GenerateVisitor_fn = require("./GenerateVisitor_fn");// 原始版本
-const GenerateVisitor_fn2 = require("./GenerateVisitor_fn2");// 改进版本
-const GenerateVisitor_fn3 = require("./GenerateVisitor_fn3");// 改进第三版版本
 
 const ServletWriter = require("../../src/writer/ServletWriter");
 const PageContext = require("../ctx/PageContext");

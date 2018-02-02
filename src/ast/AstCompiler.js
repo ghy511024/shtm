@@ -1,4 +1,4 @@
-var esprima = require('esprima');
+// var esprima = require('esprima');
 // console.log(esprima.Syntax,"vvvvvvvvvvvvvvvvvv")
 // console.log(esprima.ComputedMemberExpression,"vvvvvvvvvvvvvvvvvv")
 class AstCompiler {
@@ -9,16 +9,16 @@ class AstCompiler {
     excute(program) {
 
         // let program = 'a>b&&c==0';
-        let ast = esprima.parse(program);
-        let astBody = ast.body || [];
-        let value;
-        if (astBody.length > 0) {
-            let expression = astBody[0].expression;
-            // console.log("express:", JSON.stringify(astBody[0]), JSON.stringify(this.ctx))
-            value = this.getvalue(expression, this.ctx);
-            // console.log (value)
-        }
-        return value;
+        // let ast = esprima.parse(program);
+        // let astBody = ast.body || [];
+        // let value;
+        // if (astBody.length > 0) {
+        //     let expression = astBody[0].expression;
+        //     // console.log("express:", JSON.stringify(astBody[0]), JSON.stringify(this.ctx))
+        //     value = this.getvalue(expression, this.ctx);
+        //     // console.log (value)
+        // }
+        // return value;
     }
 
     getvalue(node, ctx) {

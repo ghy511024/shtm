@@ -64,9 +64,6 @@ describe ("Parser test", function () {
 
 // el 测试
     it ("parser", function () {
-        //todo 有个异常待测，后续处理
-        // let str = "${'123'}${{ab,cd}}${'\\'}"// error
-        // let str = "${'123'}${{ab,cd}}${'\"sdf'}"// error
         let str = "${'123'}${{ab,cd}}${\"hehe\"}${'\\abc'}"
         let reader = new JspReader (str);
         let parser = new Parser (reader);
@@ -79,9 +76,23 @@ describe ("Parser test", function () {
         expect (pages.list[0].body.list[2].text).toBe ("${\"hehe\"}");
         expect (pages.list[0].body.list[3].name).toBe ("ELExpression");
         expect (pages.list[0].body.list[3].text).toBe ("${'\\abc'}");
+    });// el 测试
+    it ("parser err", function () {
+        let str = "${'\"sdf'}"// error
+        let str2 = "${'\\'}"
+        let reader = new JspReader (str);
+        let reader2 = new JspReader (str2);
+        let parser = new Parser (reader);
+        expect (function () {
+            Parser.parse (reader, null)
+        }).toThrow ();
+        expect (function () {
+            Parser.parse (reader2, null)
+        }).toThrow ();
+
     });
 // 属性测试
-    it ("parser", function () {
+    it ("parser propertity", function () {
         let str = "<c:out x:test='${xixi}'>"
         let reader = new JspReader (str);
         let parser = new Parser (reader);

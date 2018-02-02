@@ -32,7 +32,6 @@ class Compiler {
 
     getFnByFile(fileName) {
         var baseDir = fileName.slice(0, fileName.lastIndexOf(path.join("/")));
-        console.log(baseDir, "ghy。。。。。。。");
         let tmpstr = fs.readFileSync(fileName, "utf-8");
         var fnstr = this.getFnStrByTmpStr(tmpstr);
 
@@ -55,7 +54,6 @@ class Compiler {
     getFnByFnStr(tmpstr, fnstr) {
         let pageNodes = this.getPageNode(null, null, tmpstr);
         if (fnstr == null) {
-            console.log("lalala============", tmpstr)
             fnstr = this.getFnStrByTmpStr(tmpstr);
 
         }
