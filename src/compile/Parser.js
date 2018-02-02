@@ -7,7 +7,7 @@ const Node = require("../node/Node-Api");
 const JspReader = require("./JspReader");
 const Ut = require("./Ut");
 const Mark = require("./Mark");
-const Attributes = require("../taglib/Attributes")
+const Attributes = require("../node/Attributes")
 const TagInfo = require("../taglib/TagInfo");
 const jerr = require("../err/Err");
 
@@ -223,10 +223,10 @@ class Parser {
     parseOptionalBody(parent, tagName, bodyType) {
         // this.reader.showP("Parser.parseOptionalBody")
 
-        if (this.reader.matches("/>")) {
-            // EmptyBody
-            return;
-        }
+        // if (this.reader.matches("/>")) {
+        //     // EmptyBody 一般不会走到这儿
+        //     return;
+        // }
         if (!this.reader.matches(">")) {
             jerr.err(this.reader.mark(), "parser.parseOptionalBody")
         }

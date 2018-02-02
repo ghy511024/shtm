@@ -31,6 +31,15 @@ class Attributes {
         }
         return null;
     }
+    getValueByShortName (name) {
+        let max = this.dlength * this.len;
+        for (let i = 0; i < max; i += this.len) {
+            if (this.data[i + 1] == name) {
+                return this.data[i + 4];
+            }
+        }
+        return null;
+    }
 }
 
 module.exports = Attributes;

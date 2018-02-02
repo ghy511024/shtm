@@ -12,6 +12,7 @@ describe ("jspreader test", function () {
         let r3 = new JspReader (`
         `);
         let r4 = new JspReader ();
+        // r1.showP()
         expect (r1.hasMoreInput ()).toBe (true);
         expect (r2.hasMoreInput ()).toBe (false);
         expect (r3.hasMoreInput ()).toBe (true);
@@ -89,18 +90,24 @@ describe ("jspreader test", function () {
         var str = "\\\\<%=asdf%>"
         let r1 = new JspReader (str);
         let watchstr = "%>";
+        let watchstr_2 = "#>";
+
         r1.matches ("<%");
         let stop = r1.skipUntilIgnoreEsc (watchstr)
+        let stop2 = r1.skipUntilIgnoreEsc (watchstr_2)
         expect (stop).not.toBeNull ();
         expect (stop.line).toBe (1);
         expect (stop.col).toBe (10);
+        expect (stop2).toBeNull ();
     });
     // 分隔符测试
     it ("isDelimiter", function () {
         var str = " =>'\"/"
         var str2 = "->a"
+        var str3 = "-a"
         let r1 = new JspReader (str);
         let r2 = new JspReader (str2);
+        let r3 = new JspReader (str3);
         expect (r1.isDelimiter ()).toBe (true);
         r1.skipSpaces ();
         r1.nextChar ();//=
@@ -117,13 +124,20 @@ describe ("jspreader test", function () {
         expect (r2.isDelimiter ()).toBe (true);
         r2.matches ("->");///
         expect (r2.isDelimiter ()).toBe (false);
+
+        expect (r3.isDelimiter ()).toBe (false);
+
+
     });
 
     it ("parseToken", function () {
         var str1 = "<c:if disabled item='${abc}'>"
+        var str2 = " "
         let r1 = new JspReader (str1);
+        let r2 = new JspReader (str2);
         r1.nextChar ()
         expect (r1.parseToken ()).toBe ("c:if");
+        expect (r2.parseToken ()).toBe ("");
     });
 
     it ("getText", function () {
@@ -132,5 +146,26 @@ describe ("jspreader test", function () {
         r1.nextChar ()
         expect (r1.parseToken ()).toBe ("c:if");
     });
+
+
+    it ("getTextline", function () {
+        var tmpstr = `
+        start
+        line1
+        line2
+        `;
+        let r1 = new JspReader (tmpstr);
+        r1.skipSpaces ();
+        let start = r1.mark ();
+        let str0 = r1.getTextline (start, start.line-1);
+        let str1 = r1.getTextline (start, start.line+1);
+        let str2 = r1.getTextline (start, start.line+10);
+        // console.log (str1);
+        expect (str0).toBeNull ();
+        expect (str1.replace(/\s+/g,"")).toBe ("startline1");
+        expect (str2.replace(/\s+/g,"")).toBe ("startline1line2");
+        start.getInfo()
+    });
+
 
 });

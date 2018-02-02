@@ -19,13 +19,13 @@ class Mark {
         this.line_cursor_map = {1: 0};
     }
 
-    getIncludeMark(inCursor, inLine, inCol, inFileid, name, inBaseDir, inEncoding, inStream) {
-        let mark = new Mark(null, inStream, inFileid, name, inBaseDir, inEncoding);
-        mark.col = inCol;
-        mark.cursor = inCursor;
-        mark.line = inLine;
-        return mark;
-    }
+    // getIncludeMark(inCursor, inLine, inCol, inFileid, name, inBaseDir, inEncoding, inStream) {
+    //     let mark = new Mark(null, inStream, inFileid, name, inBaseDir, inEncoding);
+    //     mark.col = inCol;
+    //     mark.cursor = inCursor;
+    //     mark.line = inLine;
+    //     return mark;
+    // }
 
     /**
      * 判断两个mark 是否相等
@@ -51,9 +51,9 @@ class Mark {
         mark.col = inMark.col;
         mark.cursor = inMark.cursor;
         mark.line_cursor_map = inMark.line_cursor_map;
-        for (let i = 0; i < inMark.includeStack.length; i++) {
-            mark.includeStack.push(inMark.includeStack[i]);
-        }
+        // for (let i = 0; i < inMark.includeStack.length; i++) {
+        //     mark.includeStack.push(inMark.includeStack[i]);
+        // }
         return mark;
     }
 
@@ -74,23 +74,20 @@ class Mark {
      * @param inEncoding {String}
      * @returns null
      */
-    pushStream(inStream, inFileid, name, inBaseDir, inEncoding) {
-        // 当前文件mark压栈
-        this.includeStack.push(this.getIncludeMark(this.cursor, this.line, this.fileId, this.fileName, this.baseDir, this.encoding, this.stream))
-        this.cursor = 0;
-        this.line = 1;
-        this.col = 1;
-        this.fileId = inFileid;
-        this.fileName = name;
-        this.baseDir = inBaseDir;
-        this.encoding = inEncoding;
-        this.stream = inStream;
+    // pushStream(inStream, inFileid, name, inBaseDir, inEncoding) {
+    //     // 当前文件mark压栈
+    //     this.includeStack.push(this.getIncludeMark(this.cursor, this.line, this.fileId, this.fileName, this.baseDir, this.encoding, this.stream))
+    //     this.cursor = 0;
+    //     this.line = 1;
+    //     this.col = 1;
+    //     this.fileId = inFileid;
+    //     this.fileName = name;
+    //     this.baseDir = inBaseDir;
+    //     this.encoding = inEncoding;
+    //     this.stream = inStream;
+    //
+    // }
 
-    }
-
-    popStream() {
-
-    }
 
     getInfo() {
         return "(" + this.line + "-" + this.col + "-" + this.cursor + ")";

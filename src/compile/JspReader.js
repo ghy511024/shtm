@@ -107,7 +107,8 @@ class JspReader {
             if (this.current == null) {
                 this.current = new Mark (this, charArray)
             } else {
-                this.current.pushStream (charArray);
+                // todo include 使用另外一种方式实现了 暂时去掉
+                // this.current.pushStream (charArray);
             }
         }
         catch (e) {
