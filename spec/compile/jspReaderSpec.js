@@ -3,6 +3,7 @@
  */
 const JspReader = require ("../../src/compile/JspReader");
 const Mark = require ("../../src/compile/Mark");
+
 describe ("jspreader test", function () {
 
     it ("hasmore_input", function () {
@@ -70,7 +71,7 @@ describe ("jspreader test", function () {
         expect (r1.peekChar ()).toBe ("<");
         expect (r1.nextChar ()).toBe ("<");
     });
-
+// 空格测试
     it ("isSpace", function () {
         let r1 = new JspReader (` \n\t\babc`);
         expect (r1.isSpace ()).toBe (true);
@@ -83,16 +84,53 @@ describe ("jspreader test", function () {
         r1.nextChar ();
         expect (r1.isSpace ()).toBe (false);
     });
-
+    // lookup 查询测试
     it ("skipUntilIgnoreEsc", function () {
         var str = "\\\\<%=asdf%>"
         let r1 = new JspReader (str);
         let watchstr = "%>";
         r1.matches ("<%");
         let stop = r1.skipUntilIgnoreEsc (watchstr)
-        expect (stop).not.toBeNull();
+        expect (stop).not.toBeNull ();
         expect (stop.line).toBe (1);
         expect (stop.col).toBe (10);
+    });
+    // 分隔符测试
+    it ("isDelimiter", function () {
+        var str = " =>'\"/"
+        var str2 = "->a"
+        let r1 = new JspReader (str);
+        let r2 = new JspReader (str2);
+        expect (r1.isDelimiter ()).toBe (true);
+        r1.skipSpaces ();
+        r1.nextChar ();//=
+        expect (r1.isDelimiter ()).toBe (true);
+        r1.nextChar ();//>
+        expect (r1.isDelimiter ()).toBe (true);
+        r1.nextChar ();//"
+        expect (r1.isDelimiter ()).toBe (true);
+        r1.nextChar ();//\"
+        expect (r1.isDelimiter ()).toBe (true);
+        r1.nextChar ();///
+        expect (r1.isDelimiter ()).toBe (true);
+
+        expect (r2.isDelimiter ()).toBe (true);
+        r2.matches ("->");///
+        expect (r2.isDelimiter ()).toBe (false);
+    });
+
+    it ("parseToken", function () {
+        var str1 = "<c:if disabled item='${abc}'>"
+        let r1 = new JspReader (str1);
+        r1.nextChar ()
+        expect (r1.parseToken ()).toBe ("c:if");
+    });
+
+    it ("getText", function () {
+        var str1 = "<c:if disabled item='${abc}'>"
+        let r1 = new JspReader (str1);
+        r1.nextChar ()
+        expect (r1.parseToken ()).toBe ("c:if");
     });
 
 });

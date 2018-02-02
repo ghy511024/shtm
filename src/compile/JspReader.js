@@ -147,7 +147,10 @@ class JspReader {
         return this.current.stream[this.current.cursor];
     }
 
-
+    /**
+     * 核心函数，转换token,解析文档中的 tocken,比如单词，自定义语句，以特殊分隔符为界限
+     *
+     * */
     parseToken () {
         let ret = "";
         this.skipSpaces ();
@@ -158,12 +161,13 @@ class JspReader {
         if (!this.isDelimiter ()) {
             while (!this.isDelimiter ()) {
                 ch = this.nextChar ();
-                if (ch == '\\') {
-                    if (this.peekChar () == '"' || this.peekChar () == '\''
-                        || this.peekChar () == '>' || this.peekChar () == '%') {
-                        ch = nextChar ();
-                    }
-                }
+                // 以下逻辑暂时用不到
+                // if (ch == '\\') {
+                //     if (this.peekChar () == '"' || this.peekChar () == '\''
+                //         || this.peekChar () == '>' || this.peekChar () == '%') {
+                //         ch = nextChar ();
+                //     }
+                // }
                 ret += ch;
             }
 
@@ -171,6 +175,10 @@ class JspReader {
         return ret;
     }
 
+    /**
+     * 是否是分隔符
+     *
+     * */
     isDelimiter () {
         if (!this.isSpace ()) {
             let ch = this.peekChar ();
@@ -238,7 +246,6 @@ class JspReader {
                         }
                     return ret;
                 }
-
             }
         return null;
     }
