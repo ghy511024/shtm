@@ -4,17 +4,76 @@
 
 shtm.js
 =============
-### 变量输出
+
+A node template engine based on Java JSTL
+----
+
+## Install
+
+```
+npm install shtm
+```
+## Use in express
+
+* set engine
+
+Using shtm as the default view engine requires just one line of code in your app setup. This will render .shtm files when res.render is called.
+
+```
+app.set ('views', path.join (__dirname, 'views'));
+app.set('view engine', 'shtm');
+```
+
+To use a different extension (i.e. html) for your template files:
+
+```
+app.set ('views', path.join (__dirname, 'views'));
+app.set('view engine', 'html');
+app.engine('html', require('shtm').__express);
+```
+
+* use engine
+ 
+```
+app.get('/home', function (req, res) {
+  res.render('home', { title: 'Hello shtm!'});
+});
+
+```
+The template (i.e. home.shtm)
+
+```
+├─views
+│   └─home.shtm
+└─package.json
+```
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shtm</title>
+</head>
+<body>
+    message:${title}
+</body>
+</html>
+
+```
+
+
+### normal
 ```
 var data={a:1,b:{x1:1},c:{key:"x1"}}
 
-// 模版
-<span>普通变量:${a}</span>
-<span>属性读取:${b.x1}</span>
-<span>组合属性读取:${b[c.key]}</span>
+ =========xx.shtm============
+ 
+<span>normal:${a}</span>
+<span>static propertity:${b.x1}</span>
+<span>custom propertity:${b[c.key]}</span>
 ```
 
-### if 判断
+### if 
 ```
 var data={
     test1:false,
@@ -22,54 +81,52 @@ var data={
     test3:1
     test4:2
     }
+ =========xx.shtm============
 
-// 模版
 <c:if test="${!test1&&test2&&test3>0||(test4+1)==3}">
  <p>hello shtm</p>
 </c:if>
 ```
 
-### 循环
+### forEach
 ```
 var data={
-    list:[{name:"李雷"}],
+    list:[{name:"lilei"}],
     list1:{key1,"value1",key2:"value2"},
     list2:"key1,key2,key3"
     }
 
-// 模版
+    =========xx.shtm============
+
     <c:forEach items="${list}" var="item">
         <span>
-            <span>数组list：${item}</span>
+            <span>arrItem：${item}</span>
         </span>
     </c:forEach>
 
     <c:forEach items="${list1}" var="item">
          <span>
-             <span>map遍历：${item.key}:${item.value}</span>
+             <span>map forEach：${item.key}:${item.value}</span>
          </span>
     </c:forEach>
 
     <c:forEach items="${list2}" var="item">
           <span>
-             <span>字符串 循环输出： ${item}</span>
+             <span>string forEach： ${item}</span>
           </span>
     </c:forEach>
 
 ```
-* 字符串目前只支持逗号分隔的字符串遍历
 
-### 嵌套
+### nesting
 ```
 var data={
         list:[
-            {name:"李雷",list2:[1,2,3]},
-            {name:"韩梅梅",list2:[4,5,6]}
+            {name:"lilei",list2:[1,2,3]},
+            {name:"hanmeimei",list2:[4,5,6]}
         ]
     }
-
-// 模版
-
+ =========xx.shtm============
     <c:forEach items="${list}" var="item">
           <p>name:${item.name}</p>
           <c:forEach items="${item.list2}" var="val">
@@ -79,21 +136,21 @@ var data={
 
 ```
 
-### 引用外部模板
+### include
 
 ```
 ├─common
 │  └─header.shtm
-├─page1.shtm
-├─child.shtm
+└─page
+    ├─page1.shtm
+    ├─child.shtm
 
 
-//page1.shtm
+page1.shtm
 
 <c:include page="../common/header.shtm"></c:include>
-
 <div class="main">
-<c:include page="child.shtm"></c:include>
+    <c:include page="child.shtm"></c:include>
 </div>
 
 ```

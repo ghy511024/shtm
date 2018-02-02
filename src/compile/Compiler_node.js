@@ -3,7 +3,7 @@
  */
 const Generator = require("../generator/Generator-Api");
 const JspReader = require("./JspReader");
-const Parser = require("./Parser2");
+const Parser = require("./Parser");
 const path = require("path");
 const fs = require("fs");
 const StringWriter = require("../writer/StringWriter");

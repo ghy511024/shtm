@@ -1,15 +1,15 @@
 {
   "name": "shtm",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "./src/shtm.js",
   "scripts": {
     "travis": "npm run cover:init && npm run cover:all&&npm run cover:test",
-    "cover": "npm run cover:init && npm run cover:all ",
+    "cover": "npm run cover:init && npm run cover:all &&npm run cover:report",
     "cover:test": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "cover:init": "rimraf ./coverage",
     "cover:all": "node --max-old-space-size=4096 --harmony --trace-deprecation ./node_modules/istanbul/lib/cli.js cover  node_modules/jasmine-node/bin/jasmine-node spec/ --report lcovonly",
-    "cover:report": "istanbul report",
+    "cover:report": "node ./node_modules/istanbul/lib/cli.js report",
     "cover:report-min": "istanbul report --report lcovonly"
   },
   "repository": {
@@ -17,11 +17,11 @@
     "url": "git+ssh://git@github.com:ghy511024/shtm.git"
   },
   "dependencies": {
-    "babel-loader": "^7.1.2",
-    "esprima": "^4.0.0",
-    "extract-text-webpack-plugin": "^3.0.2"
   },
   "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "esprima": "^4.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "rimraf": "^2.6.2",
     "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",
