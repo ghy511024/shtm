@@ -1,0 +1,21 @@
+<c:forEach items="${list}" var="item" begin="2" end="3">
+    a${item}
+</c:forEach>
+<c:forEach items="${list}" var="item" begin="3" end="7">
+    b${item}
+</c:forEach>
+<c:forEach items="${list}" var="item" end="1">
+    c${item}
+</c:forEach>
+<c:forEach items="${list}" var="item" begin="3">
+    d${item}
+</c:forEach>
+<c:forEach items="${list}" var="item" begin="7" end="3">
+    e${item}
+</c:forEach>
+<c:forEach items="${list}" var="item" begin="0" end="3" index="c">
+    f${c}
+</c:forEach>
+<c:forEach begin="0" end="3" index="c">
+    g${c}
+</c:forEach>

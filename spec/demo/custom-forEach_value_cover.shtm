@@ -1,0 +1,5 @@
+${title}-${cindex}
+<c:forEach items="${list}" var="title" index="cindex">
+    -${title.title}-${cindex}-
+</c:forEach>
+${title}-${cindex}

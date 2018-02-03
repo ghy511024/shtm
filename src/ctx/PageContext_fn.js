@@ -11,10 +11,7 @@ const ELparser = require("../ast/ELparser");
 const path = require("path");
 
 class PageContext {
-    constructor(data, filPath) {
-        if (filPath != null) {
-            this.fileDir = filPath.slice(0, filPath.lastIndexOf(path.join("/")));
-        }
+    constructor(data) {
         this.data = data;
         this.attributes = {};
         this.isNametableInitialized = false;
@@ -29,7 +26,10 @@ class PageContext {
         } else {
             this.data[name] = null;
         }
+    }
 
+    removeAttribute(name) {
+        this.data[name] = null;
     }
 
     hasValue(itemName) {

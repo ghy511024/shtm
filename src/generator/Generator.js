@@ -13,7 +13,7 @@ class Generator {
      *  生成树用于dom 树分析用
      * */
     static generateTree(page) {
-        let a = new GenerateVisitor_tree()
+        let a = new GenerateVisitor_tree();
         page.visit(a);
         // console.log(JSON.stringify(a.getTree()));
         return a.getTree();
@@ -36,7 +36,7 @@ class Generator {
     var IncludeImpl = option.IncludeImpl;
     var Mark = option.Mark;
     var pageContext = new option.PageContext(data);
-    var str="";
+    var ${GenerateVisitor.OUT_STR}="";
     with (data || {}) {
         var out = option.out;
         var pageNodes = option.pageNodes;

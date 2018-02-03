@@ -8,7 +8,7 @@ describe("Compiler_node_tree", function () {
     let cp = new Compiler_node();
 
     it("simple demo", function () {
-        let p1 = path.join(__dirname, "../demo/custom-forEach.shtm");
+        let p1 = path.join(__dirname, "../demo/custom-forEach_simple.shtm");
         let pageNode = cp.getPageNode(p1, null);
         let tree = Generator.generateTree(pageNode);
         // console.log("ghy", JSON.stringify(tree));

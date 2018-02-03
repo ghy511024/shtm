@@ -7,16 +7,23 @@ const shtm_pc = require("../src/shtm-pc");
 const path = require("path");
 const fs = require("fs");
 let data = {
-    title: "smart html template",
-    if_test1: true,
-    if_test2: false,
+    // title: "smart html template",
+    // if_test1: true,
+    // if_test2: false,
+    // list: [
+    //     {name: "北京", data: ["朝阳", "海淀"], key: "key1"},
+    //     {name: "四川", data: ["新都", "龙泉", "天府广场"], key: "key2"}],
+    // maps: {key1: "value1", key2: "value2"},
+    // list2: ["sc", "bj"],
+    // nameMap: {sc: "四川", bj: "北京"},
     list: [
-        {name: "北京", data: ["朝阳", "海淀"], key: "key1"},
-        {name: "四川", data: ["新都", "龙泉", "天府广场"], key: "key2"}],
-    maps: {key1: "value1", key2: "value2"},
-    list2: ["sc", "bj"],
-    nameMap: {sc: "四川", bj: "北京"},
+        {list: ["1", "2"]},
+        {list: "3,4"}
+    ],
+    maps: {key1: "5"},
+    str: "str1,str2,str3,str4"
 }
+
 
 
 var T = {
@@ -25,7 +32,8 @@ var T = {
      *
      * */
     t1: function () {
-        var filename = path.join(__dirname, "./view/demo.shtm");
+        // var filename = path.join(__dirname, "./view/demo2.shtm");
+        var filename = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
         var str = shtm.compile(filename, data);
         console.log(str);
     },
@@ -49,17 +57,19 @@ var C = {
     t1: function () {
         const cp = new Compiler_node();
         // var filename = path.join(__dirname, "./view/demo_include.shtm");
-        var filename = path.join(__dirname, "./view/demo.shtm");
+        // var filename = path.join(__dirname, "./view/demo2.shtm");
+        var filename = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
         var outfile = path.join(__dirname, "../src/runtime/out_rundemo.js");
-
-        var fnstr = cp._debug_getFnStrByFile(filename);
+        let pagenode = cp.getPageNode(filename);
+        var fnstr = cp.getFnStrByPageNode(pagenode);
         fs.writeFileSync(outfile, fnstr);
         // console.log (fnstr);
     }
 }
 var PC = {
     t1: function () {
-        var tmpfile = path.join(__dirname, "./view/demo2.shtm");
+        // var tmpfile = path.join(__dirname, "./view/demo2.shtm");
+        var tmpfile = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
 
         var tmpstr = fs.readFileSync(tmpfile, "utf-8")
         var fn = shtm_pc.compile(tmpstr);
@@ -67,7 +77,7 @@ var PC = {
         console.log(str)
     }
 }
-// C.t1 ();
-// T.t1();
+// C.t1();
+T.t1();
 // T.t2 ();
-PC.t1();
+// PC.t1();

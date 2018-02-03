@@ -1,0 +1,15 @@
+begin-
+<c:forEach items="${list}" var="item">
+    <c:forEach items="${item.list}" var="item2">
+        ${item2}
+    </c:forEach>
+</c:forEach>
+-map-
+<c:forEach items="${maps}" var="item">
+    ${item.value}
+</c:forEach>
+-str-
+<c:forEach items="${str}" var="item">
+    ${item}
+</c:forEach>
+-end
