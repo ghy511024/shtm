@@ -62,18 +62,18 @@ The template (i.e. home.shtm)
 ```
 
 
-## normal
+## Normal
 ```
 var data={a:1,b:{x1:1},c:{key:"x1"}}
-
- =========xx.shtm============
- 
-<span>normal:${a}</span>
-<span>static propertity:${b.x1}</span>
-<span>custom propertity:${b[c.key]}</span>
 ```
 
-## if 
+ ```
+<span>${a}</span>
+<span>${b.x1}</span>
+<span>${b[c.key]}</span>
+```
+
+## If 
 
 * app.js
 
@@ -96,12 +96,12 @@ app.get('/home', function (req, res) {
 <c:if test="${'xixihaha'.length>0}">t7</c:if>   //true
 ```
 
-## forEach
+## ForEach
 ```
 
  app.get('/home', function (req, res) {
     var data = {
-            list: [{name: "lilei"}],
+            list: [{name: "lilei"},{name: "hanmeimei"}],
             maps: {key1, "value1", key2: "value2"},
             str: "key1,key2,key3"
         }
@@ -136,8 +136,24 @@ app.get('/home', function (req, res) {
     </c:forEach>
 
 ```
+* foreach "begin && end && index"
+```
+<ul>
+    <c:forEach  begin="0" end="3" index="index">
+        <li>${index}</li>       
+    </c:forEach>
+<ul>
 
-## foreach nesting
+==================out============
+<ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ul>
+```
+
+## Foreach nesting
 ```
 
  app.get('/home', function (req, res) {
