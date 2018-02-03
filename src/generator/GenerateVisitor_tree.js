@@ -38,7 +38,7 @@ class GenerateVisitor extends Node.Visitor {
             this.tmp = obj.child;
             this.visitBody(n)
             this.tmp = gtmp;
-        } else if (n instanceof Node.TemplateText) {
+        } else if (n instanceof Node.TempleteText) {
             let obj = {};
             obj.name = name;
             obj.text=n.text;

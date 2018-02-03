@@ -10,7 +10,7 @@ describe ("Compiler_include", function () {
         let p1 = path.join (__dirname, "../demo/comstom-include.shtm");
         let fn = cp.getFnByFile (p1);
         let str = fn ({});
-        console.log("include",str)
+        // console.log("include",str)
         // expect (str).toBe ("abcdefghijklmnopqrstuvwxyz~!#$%^&*()_+`1234567890-=\\;'\"<>?");
     });
 

@@ -34,8 +34,8 @@ class GenerateVisitor extends Node.Visitor {
         }
         else if (n instanceof Node.Root) {
             this._vRoot (n, i);
-        } else if (n instanceof Node.TemplateText) {
-            this._vTemplateText (n);
+        } else if (n instanceof Node.TempleteText) {
+            this._vTempleteText (n);
         } else if (n instanceof Node.ELExpression) {
             this._vELExpression (n);
         }
@@ -104,7 +104,7 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * 打印普通文本
      * */
-    _vTemplateText (n) {
+    _vTempleteText (n) {
         let text = n.text || "";
         if (text.length == 0) {
             return;

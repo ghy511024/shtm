@@ -48,12 +48,12 @@ class Parser {
         //     this.parseStandardAction(parent);
         // }
         else if (!this.parseCustomTag (parent)) {
-            this.parseTemplateText (parent);
+            this.parseTempleteText (parent);
         }
     }
 
 
-    parseTemplateText (parent) {
+    parseTempleteText (parent) {
 
         // if (!this.reader.hasMoreInput()) {
         //     return;// 不会执行到这儿，因为上层已经屏蔽了
@@ -129,7 +129,7 @@ class Parser {
             }
             ttext += ch;
         }
-        new Node.TemplateText (ttext, this.start, parent);
+        new Node.TempleteText (ttext, this.start, parent);
     }
 
     /**

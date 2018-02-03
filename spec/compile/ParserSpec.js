@@ -20,11 +20,11 @@ describe ("Parser test", function () {
         let pages = Parser.parse (reader, null);
         expect (pages.list[0].body.list[0].name).toBe ("ELExpression");
         expect (pages.list[0].body.list[0].text).toBe ("${123}");
-        expect (pages.list[0].body.list[1].name).toBe ("TemplateText");
+        expect (pages.list[0].body.list[1].name).toBe ("TempleteText");
         expect (pages.list[0].body.list[1].text).toBe ("$123");
         expect (pages.list[0].body.list[2].name).toBe ("ELExpression");
         expect (pages.list[0].body.list[2].text).toBe ("${item}");
-        expect (pages.list[0].body.list[3].name).toBe ("TemplateText");
+        expect (pages.list[0].body.list[3].name).toBe ("TempleteText");
         expect (pages.list[0].body.list[3].text).toBe ("${123}$123$");
     });
     //
@@ -33,7 +33,7 @@ describe ("Parser test", function () {
         let reader = new JspReader (str);
         let parser = new Parser (reader);
         let pages = Parser.parse (reader, null);
-        expect (pages.list[0].body.list[0].name).toBe ("TemplateText");
+        expect (pages.list[0].body.list[0].name).toBe ("TempleteText");
         expect (pages.list[0].body.list[0].text).toBe ("\\");
     });
 
@@ -51,12 +51,12 @@ describe ("Parser test", function () {
         let reader = new JspReader (str);
         let parser = new Parser (reader);
         let pages = Parser.parse (reader, null);
-        expect (pages.list[0].body.list[0].name).toBe ("TemplateText");
+        expect (pages.list[0].body.list[0].name).toBe ("TempleteText");
         expect (pages.list[0].body.list[1].name).toBe ("customTag");
-        expect (pages.list[0].body.list[2].name).toBe ("TemplateText");// 换行 \n
+        expect (pages.list[0].body.list[2].name).toBe ("TempleteText");// 换行 \n
         expect (pages.list[0].body.list[3].name).toBe ("customTag");// 外层foreach
-        expect (pages.list[0].body.list[3].body.list[0].name).toBe ("customTag");// 空格换行,已经被跳过，所以不是 TemplateText
-        expect (pages.list[0].body.list[3].body.list[0].body.list[0].name).toBe ("TemplateText");// <span>if inner</span>
+        expect (pages.list[0].body.list[3].body.list[0].name).toBe ("customTag");// 空格换行,已经被跳过，所以不是 TempleteText
+        expect (pages.list[0].body.list[3].body.list[0].body.list[0].name).toBe ("TempleteText");// <span>if inner</span>
         expect (pages.list[0].body.list[3].body.list[1].name).toBe ("customTag");// cout
         expect (pages.list[0].body.list[3].body.list[1].qName).toBe ("c:out");// cout
 
@@ -107,7 +107,7 @@ describe ("Parser test", function () {
         let reader = new JspReader (str);
         let parser = new Parser (reader);
         let pages = Parser.parse (reader, null);
-        expect (pages.list[0].body.list[0].name).toBe ("TemplateText");
+        expect (pages.list[0].body.list[0].name).toBe ("TempleteText");
         expect (pages.list[0].body.list[0].text).toBe ("$<>");
     });
     it ("parser 边界字符测试", function () {
@@ -115,7 +115,7 @@ describe ("Parser test", function () {
         let reader = new JspReader (str);
         let parser = new Parser (reader);
         let pages = Parser.parse (reader, null);
-        expect (pages.list[0].body.list[0].name).toBe ("TemplateText");
+        expect (pages.list[0].body.list[0].name).toBe ("TempleteText");
         expect (pages.list[0].body.list[0].text).toBe ("abcdefghijklmnopqrstuvwxyz~!#$%^&*()_+`1234567890-=;'<>$");
     });
 })

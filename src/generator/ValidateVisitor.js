@@ -12,8 +12,8 @@ class ValidateVisitor extends Node.Visitor {
         }
         else if (n instanceof Node.Root) {
             this._vRoot(n);
-        } else if (n instanceof Node.TemplateText) {
-            this._vTemplateText(n);
+        } else if (n instanceof Node.TempleteText) {
+            this._vTempleteText(n);
 
         } else if (n instanceof Node.ELExpression) {
             this._vELExpression(n);
