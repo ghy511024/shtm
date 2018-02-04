@@ -26,9 +26,6 @@ class Compiler {
         this.baseDir = baseDir;
     }
 
-    setTempDir(filename) {
-        this.tempDir = filename.slice(0, fileName.lastIndexOf(path.join("/")));
-    }
 
     getBaseDir() {
         return this.tempDir == "" ? this.baseDir : this.tempDir;
@@ -46,25 +43,16 @@ class Compiler {
 
         let pageNodes = this.getPageNode(fileName, null);
         let fnstr = this.getFnStrByPageNode(pageNodes);
-        var outdir = path.join(baseDir, shortFileName + "_debug_.js");
-        fs.writeFileSync(outdir, fnstr);
+        // var outdir = path.join(baseDir, shortFileName + "_debug_.js");
+        // fs.writeFileSync(outdir, fnstr);
         var rundemo = new Function('data, option', fnstr);
 
-        var option = {
-            ForEachImpl: ForEachImpl,
-            IfImpl: IfImpl,
-            pageNodes: pageNodes,
-            PageContext: PageContext
-        }
         return function (data) {
             var option = {
                 ForEachImpl: ForEachImpl,
                 IfImpl: IfImpl,
                 IncludeImpl: IncludeImpl,
-                out: null,
-                pageNodes: pageNodes,
                 PageContext: PageContext,
-                Mark: Mark
             }
             var strs = rundemo.call(data, data, option)
             return strs;
