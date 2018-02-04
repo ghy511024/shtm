@@ -41,12 +41,12 @@ class Compiler {
      * */
     getFnByFile(fileName) {
         var baseDir = fileName.slice(0, fileName.lastIndexOf(path.join("/")));
-        var shortFileName=fileName.slice(fileName.lastIndexOf(path.join("/"))+1,fileName.length);
+        var shortFileName = fileName.slice(fileName.lastIndexOf(path.join("/")) + 1, fileName.length);
         this.setBaseDir(baseDir);
 
         let pageNodes = this.getPageNode(fileName, null);
         let fnstr = this.getFnStrByPageNode(pageNodes);
-        var outdir = path.join(__dirname, "../../debug/" + shortFileName + ".js");
+        var outdir = path.join(baseDir, shortFileName + "_debug_.js");
         fs.writeFileSync(outdir, fnstr);
         var rundemo = new Function('data, option', fnstr);
 
