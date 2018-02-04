@@ -3,6 +3,7 @@
 /fangapp/css/dev/.sass-cache/
 /.sass-cache/
 /node_modules
+/debug
 /coverage
 */node_modules
 .DS_Store
