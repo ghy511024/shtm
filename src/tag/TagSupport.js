@@ -1,27 +1,36 @@
-const Tag = require ("./Tag");
+const Tag = require("./Tag");
 
 class TagSupport extends Tag {
-    constructor () {
-        super ();
+    constructor() {
+        super();
         this.pageContext = null;
         this.parent = null;
         this.id = null;
         this.values = {};
+        this.errInfo = "";
     }
 
-    setPageContext (pageContext) {
+    setPageContext(pageContext) {
         this.pageContext = pageContext;
+    }
+
+    setErrInfo(errInfo) {
+        this.errInfo = errInfo;
+    }
+
+    getErrInfo(errInfo) {
+        return this.errInfo;
     }
 
     /**
      * @abstract
      *
      * */
-    doStartTag () {
+    doStartTag() {
 
     }
 
-    doEndTag () {
+    doEndTag() {
         return this.EVAL_PAGE;
     }
 }

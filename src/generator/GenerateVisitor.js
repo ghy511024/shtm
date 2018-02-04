@@ -28,13 +28,13 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * 覆盖父类visit 抽象方-----+-+法
      */
-    visit(n, i) {
+    visit(n) {
         if (n instanceof Node.CustomTag) {
             this.out.println(OUT_STR + "+=\"" + n.parent.flush() + "\"")
-            this._vCustomTag(n, i);
+            this._vCustomTag(n);
         }
         else if (n instanceof Node.Root) {
-            this._vRoot(n, i);
+            this._vRoot(n);
         } else if (n instanceof Node.TempleteText) {
             this._vTempleteText(n);
         } else if (n instanceof Node.ELExpression) {
@@ -45,7 +45,7 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * 打印根目录
      * */
-    _vRoot(n, i) {
+    _vRoot(n) {
         this.visitBody(n);
         this.out.println(OUT_STR + "+=\"" + n.flush() + "\"")
     }
@@ -53,7 +53,8 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * 技巧处理，存缓存，然后回退打印父类
      */
-    _vCustomTag(n, i) {
+    _vCustomTag(n) {
+
         let outSave = null;
         let baseVar = this.createTagVarName(n.qName, n.prefix, n.localName)
         let tagEvalVar = "_js_eval_" + baseVar;
@@ -62,8 +63,7 @@ class GenerateVisitor extends Node.Visitor {
         let tagMethod = "_js_meth_" + baseVar;
 
         this.out.println();
-        this.out.print(`if(${tagMethod}(n.body.list[${i}])){return true;}`)
-
+        this.out.print(`if(${tagMethod}()){return true;}`)
         let genBuffer = new GenBuffer();
         this.methodsBuffered.push(genBuffer);
         outSave = this.out;// 存档
@@ -72,6 +72,8 @@ class GenerateVisitor extends Node.Visitor {
         // this.out.print("// 开始输出函数体");
         this.out.println()
         this.out.println(`function ${tagMethod}(n){`)
+        let implName = this.getImplMethName(n);
+        this.out.println(`let ${tagHandlerVar} =new ${implName}();`)
         this.out.println(`  try {`)
         this.generateCustomStart(n, tagHandlerVar);
 
@@ -89,16 +91,17 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * include 实现，
      * */
-    _vIncludeAction(n) {
+    _vIncludeAction(n, i) {
         if (this.compiler.getBaseDir() == null || this.compiler.getBaseDir().length == 0) {
             return;
         }
+        // let pageNodes = this.compiler.getPageNode(path.join(this.compiler.getBaseDir(), n.attrs.getValue("page")), n.parent);
         let pageNodes = this.compiler.getPageNode(path.join(this.compiler.getBaseDir(), n.attrs.getValue("page")), n.parent);
         if (pageNodes == null) {
             jerr.err("GetnnerateVisitor.visitInclude err")
             return;
         }
-        pageNodes.visit(this);
+        pageNodes.visit(this, (n.parent.body.list.length - 1));
     }
 
 
@@ -162,10 +165,10 @@ class GenerateVisitor extends Node.Visitor {
      * */
     generateCustomStart(n, tagHandlerVar) {
         this.out.println("//" + n.qName);
-        let implName = this.getImplMethName(n);
+        let errinfo = jerr.getErrInfoByNode(n);// 预先获取错误信息，当异常得时候，可以直接拿出来输出
         this.out.pushIndent();
-        this.out.println(`let ${tagHandlerVar} =new ${implName}();`)
         this.out.println(`${tagHandlerVar}.setPageContext(pageContext);`)
+        this.out.println(`${tagHandlerVar}.setErrInfo("${errinfo}");`)
         this.generateSetters(n, tagHandlerVar);
         this.out.print(`
         let each_val = ${tagHandlerVar}.doStartTag();
@@ -208,7 +211,7 @@ class GenerateVisitor extends Node.Visitor {
         }
       }
       catch(e){
-      var msg = getErrInfo(n);
+      var msg = ${tagHandlerVar}.getErrInfo();
       msg += e;
       ${OUT_STR}=msg;
       return true;
@@ -233,43 +236,9 @@ class GenerateVisitor extends Node.Visitor {
             let buffer = this.methodsBuffered[i];
             this.out.printMultiLn(buffer.toString());
         }
-        this.genErrFn();// err 处理函数
         this.out.printil("return " + OUT_STR + ";");// with 函数结尾
 
     }
-
-    genErrFn() {
-        var errfn = `
-        function getErrInfo(node) {
-        var mark = node.startMark;
-        var line = mark.line;
-        var col = mark.col;
-        var name = mark.name;
-        var preline = 2;
-        var nextline = 2;
-        var msginfo = "ERROR: " + " position:(" + line + "," + col + ")\\n";
-
-        var sline = Math.max(mark.line - preline, 1)
-        var retstr = "";
-        for (let i = sline; i < mark.line; i++) {
-            var start = Mark.newMark(mark);
-            start.resetLine(i);
-            retstr += ("   " + i + "|" + mark.reader.getTextline(start, i));
-        }
-        let cmark = Mark.newMark(mark);
-        cmark.resetLine(mark.line);
-        retstr += (">> " + cmark.line + "|" + cmark.reader.getTextline(cmark, cmark.line));
-        for (let i = 1; i < nextline; i++) {
-            let start = Mark.newMark(mark);
-            start.resetLine(mark.line + i);
-            retstr += "   " + start.line + "|" + mark.reader.getTextline(start, start.line)
-        }
-        return msginfo + retstr;
-    }
-        `
-        this.out.printil(errfn);
-    }
-
     /**
      * 传入node ，根据node 类型返回对应的tagimpul 实例函数名
      * @param n {Node}

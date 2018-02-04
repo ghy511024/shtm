@@ -32,8 +32,8 @@ var T = {
      *
      * */
     t1: function () {
-        // var filename = path.join(__dirname, "./view/demo2.shtm");
-        var filename = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
+        var filename = path.join(__dirname, "./view/home/home.shtm");
+        // var filename = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
         var str = shtm.compile(filename, data);
         console.log(str);
     },

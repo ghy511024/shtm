@@ -50,19 +50,6 @@ class PageContext {
         this.setAttribute(REQUEST, {})
         this.setAttribute(SESSION, {})
     }
-
-    /**
-     * 使用词法解析
-     * */
-    getElValue(exp, node) {
-        let tmpData = Object.assign({}, this.attributes, this.data)
-        let exp_str;
-        let reg = /\$\{(.*?)\}/gi
-        exp.replace(reg, function (_, $1) {
-            exp_str = $1;
-        })
-        return ELparser.getValue(exp_str, tmpData);
-    }
 }
 
 module.exports = PageContext;

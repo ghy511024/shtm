@@ -23,12 +23,12 @@ class Nodes {
      * @abstract
      * @param v {Visitor}
      */
-    visit(v) {
+    visit(v, parent_index) {
         let iter = this.list;
         for (let i = 0; i < iter.length; i++) {
             let item = iter[i]
             if (item != null) {
-                item.accept(v, i);
+                item.accept(v, i, parent_index);
             }
         }
     }

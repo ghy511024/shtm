@@ -1,8 +1,8 @@
 const Node = require ("./Node");
 
 class Root extends Node {
-    constructor() {
-        super();
+    constructor(start, parent) {
+        super(null, null, null, start, parent);
         this.name = "root"
     }
 }

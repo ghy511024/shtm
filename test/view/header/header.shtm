@@ -1,0 +1,10 @@
+<div class="header-wrap">
+    <div class="header-inner">
+        <a href="/"> <div class="logo"></div></a>
+        <div class="menu-wrap">
+            <a href="/" calss="<c:if test="${str=='download'}">active</c:if>">下载</a>
+            <a href="/about">关于我们</a>
+            <a href="/contact">站长合作</a>
+        </div>
+    </div>
+</div>

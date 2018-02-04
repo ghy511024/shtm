@@ -1,17 +1,17 @@
 /**
  * Created by ghy on 2017/11/17.
  */
-const Nodes = require ("./Nodes");
+const Nodes = require("./Nodes");
 
 class Node {
-    constructor (qName, localName, attrs, start, parent) {
+    constructor(qName, localName, attrs, start, parent) {
         this.qName = qName;//full name [c:forEach]
         this.localName = localName;// [forEach]
         this.attrs = attrs;
         // this.taglibAttrs = taglibAttrs;
         this.startMark = start;
         this.isDummy = (start == null);
-        this.addToParent (parent);
+        this.addToParent(parent);
         this.name = "node";
         this.buffer = "";
     }
@@ -19,40 +19,40 @@ class Node {
     /**
      * 写入buffer,进入缓冲
      * */
-    write (s) {
+    write(s) {
         this.buffer += s;
     }
 
-    getBuffer () {
+    getBuffer() {
         return this.buffer;
     }
 
     /**
      * 输出缓冲
      * */
-    flush () {
+    flush() {
         var buffer = this.buffer;
         this.buffer = "";
         return buffer;
     }
 
-    addToParent (parent) {
+    addToParent(parent) {
         if (parent != null) {
             this.parent = parent;
             let parentBody = parent.body;
             if (parentBody == null) {
-                parentBody = new Nodes ();
+                parentBody = new Nodes();
                 parent.body = parentBody;
             }
-            parentBody.add (this);
+            parentBody.add(this);
         }
     }
 
-    static getCustomTag () {
+    static getCustomTag() {
 
     }
 
-    getBody () {
+    getBody() {
         return this.body;
     }
 
@@ -60,8 +60,8 @@ class Node {
      * @abstract 抽象方法
      * @param v {Visitor}
      */
-    accept (v, i) {
-        v.visit (this, i);
+    accept(v, i, parent_index) {
+        v.visit(this, i, parent_index);
 
     }
 
