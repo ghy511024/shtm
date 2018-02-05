@@ -48,7 +48,6 @@ class GenerateVisitor extends Node.Visitor {
     _vRoot (n) {
         this.visitBody (n);
         this.out.println (OUT_STR + "+=\"" + n.flush () + "\"")
-        //
     }
 
     /**
