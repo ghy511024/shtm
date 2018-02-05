@@ -13,11 +13,11 @@ class SHTM {
         return fn;
     }
 }
-let shtm =  new SHTM ();
-// if(typeof window=="undefined"){
-//     module.exports=window.shtm;
-// }else{
-//
-// }
+let shtm = new SHTM ();
+alert (typeof window)
+if (typeof window != "undefined") {
+
+    window.shtm = shtm;
+}
 // module.exports=window.shtm;
-module.exports=shtm;
+module.exports = shtm;

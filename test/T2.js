@@ -7,21 +7,15 @@ const shtm_pc = require("../src/shtm-pc");
 const path = require("path");
 const fs = require("fs");
 let data = {
-    // title: "smart html template",
-    // if_test1: true,
-    // if_test2: false,
-    // list: [
-    //     {name: "北京", data: ["朝阳", "海淀"], key: "key1"},
-    //     {name: "四川", data: ["新都", "龙泉", "天府广场"], key: "key2"}],
-    // maps: {key1: "value1", key2: "value2"},
-    // list2: ["sc", "bj"],
-    // nameMap: {sc: "四川", bj: "北京"},
+    title: "smart html template",
+    if_test1: true,
+    if_test2: false,
     list: [
-        {list: ["1", "2"]},
-        {list: "3,4"}
-    ],
-    maps: {key1: "5"},
-    str: "str1,str2,str3,str4"
+        {name: "北京", data: ["朝阳", "海淀"], key: "key1"},
+        {name: "四川", data: ["新都", "龙泉", "天府广场"], key: "key2"}],
+    maps: {key1: "value1", key2: "value2"},
+    list2: ["sc", "bj"],
+    nameMap: {sc: "四川", bj: "北京"}
 }
 
 
@@ -68,7 +62,7 @@ var C = {
 }
 var PC = {
     t1: function () {
-        var tmpfile = path.join(__dirname, "./view/demo2.shtm");
+        var tmpfile = path.join(__dirname, "./view/demo.shtm");
         // var tmpfile = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
         var tmpstr = fs.readFileSync(tmpfile, "utf-8")
         var fn = shtm_pc.compile(tmpstr);

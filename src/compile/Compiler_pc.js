@@ -48,6 +48,9 @@ class Compiler {
         }
     }
 
+    getBaseDir () {
+    }
+
     getFnStrByPageNode (pageNodes) {
         let fn_stringWriter = new StringWriter ();
         let fn_out = new ServletWriter (fn_stringWriter);
