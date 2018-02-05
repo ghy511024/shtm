@@ -10,7 +10,7 @@ A node template engine based on Java JSTL
 
 ## Install
 
-```
+```bash
 npm install shtm
 ```
 ## Use in express
@@ -19,14 +19,14 @@ npm install shtm
 
 Using shtm as the default view engine requires just one line of code in your app setup. This will render .shtm files when res.render is called.
 
-```
+```js
 app.set ('views', path.join (__dirname, 'views'));
 app.set('view engine', 'shtm');
 ```
 
 To use a different extension (i.e. html) for your template files:
 
-```
+```js
 app.set ('views', path.join (__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html', require('shtm').__express);
@@ -34,7 +34,7 @@ app.engine('html', require('shtm').__express);
 
 * use engine
  
-```
+```js
 app.get('/home', function (req, res) {
   res.render('home', { title: 'Hello shtm!'});
 });
@@ -42,12 +42,13 @@ app.get('/home', function (req, res) {
 ```
 The template (i.e. home.shtm)
 
-```
+```html
 ├─views
 │   └─home.shtm
 └─package.json
 ```
-```
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,11 +64,16 @@ The template (i.e. home.shtm)
 
 
 ## Normal
-```
-var data={a:1,b:{x1:1},c:{key:"x1"}}
+
+```js
+var data = {
+    a: 1,
+    b: { x1: 1 },
+    c: { key: "x1" }
+}
 ```
 
- ```
+ ```html
 <span>${a}</span>
 <span>${b.x1}</span>
 <span>${b[c.key]}</span>
@@ -77,7 +83,7 @@ var data={a:1,b:{x1:1},c:{key:"x1"}}
 
 * app.js
 
-```
+```js
 
 app.get('/home', function (req, res) {
   res.render('home', { test1: true, test2: false, test3: 1 });
@@ -86,7 +92,7 @@ app.get('/home', function (req, res) {
 ```
 * home.shtm
 
-```
+```html
 <c:if test="${test1}">t1</c:if>                 //true
 <c:if test="${test2}">t2</c:if>                 //false
 <c:if test="${test1&&test2}">t3</c:if>          //false
@@ -97,7 +103,8 @@ app.get('/home', function (req, res) {
 ```
 
 ## ForEach
-```
+
+```js
 
  app.get('/home', function (req, res) {
     var data = {
@@ -111,7 +118,7 @@ app.get('/home', function (req, res) {
 ```
 * foreach arraylist 
 
-```
+```html
     <c:forEach items="${list}" var="item">
         <span>
             <span>arrItem：${item}</span>
@@ -120,7 +127,7 @@ app.get('/home', function (req, res) {
 ```
 * foreach map 
 
-```
+```html
     <c:forEach items="${maps}" var="item">
          <span>
              <span>map forEach：${item.key}:${item.value}</span>
@@ -128,7 +135,7 @@ app.get('/home', function (req, res) {
     </c:forEach>
 ```
 * foreach string
-```
+```html
     <c:forEach items="${str}" var="item">
           <span>
              <span>string forEach： ${item}</span>
@@ -137,7 +144,8 @@ app.get('/home', function (req, res) {
 
 ```
 * foreach "begin && end && index"
-```
+
+```html
 <ul>
     <c:forEach  begin="0" end="3" index="index">
         <li>${index}</li>       
@@ -154,7 +162,8 @@ app.get('/home', function (req, res) {
 ```
 
 ## Foreach nesting
-```
+
+```js
 
  app.get('/home', function (req, res) {
     var data={
@@ -169,7 +178,7 @@ app.get('/home', function (req, res) {
 ```
 * home.shtm
 
-```
+```html
     <c:forEach items="${list}" var="item">
           <p>name:${item.name}</p>
           <c:forEach items="${item.list2}" var="val">
@@ -181,7 +190,7 @@ app.get('/home', function (req, res) {
 
 ## include
 
-```
+```html
 ├─common
 │  └─header.shtm
 └─page
@@ -192,7 +201,7 @@ app.get('/home', function (req, res) {
 
 * page1.shtm
 
-```
+```html
 <c:include page="../common/header.shtm"></c:include>
 
 <div class="main">
