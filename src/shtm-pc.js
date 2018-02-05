@@ -13,5 +13,11 @@ class SHTM {
         return fn;
     }
 }
-var shtm = new SHTM ();
-module.exports = shtm;
+let shtm =  new SHTM ();
+// if(typeof window=="undefined"){
+//     module.exports=window.shtm;
+// }else{
+//
+// }
+// module.exports=window.shtm;
+module.exports=shtm;

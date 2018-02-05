@@ -68,9 +68,8 @@ var C = {
 }
 var PC = {
     t1: function () {
-        // var tmpfile = path.join(__dirname, "./view/demo2.shtm");
-        var tmpfile = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
-
+        var tmpfile = path.join(__dirname, "./view/demo2.shtm");
+        // var tmpfile = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
         var tmpstr = fs.readFileSync(tmpfile, "utf-8")
         var fn = shtm_pc.compile(tmpstr);
         var str = fn(data);
@@ -78,6 +77,6 @@ var PC = {
     }
 }
 // C.t1();
-T.t1();
+// T.t1();
 // T.t2 ();
-// PC.t1();
+PC.t1();

@@ -1,22 +1,22 @@
 /**
  * Created by ghy on 2017/11/17.
  */
-const Generator = require("../generator/Generator-Api");
-const JspReader = require("./JspReader");
-const Parser = require("./Parser");
-const path = require("path");
-const StringWriter = require("../writer/StringWriter");
-const ServletWriter = require("../writer/ServletWriter")
+const Generator = require ("../generator/Generator-Api");
+const JspReader = require ("./JspReader");
+const Parser = require ("./Parser");
+const path = require ("path");
+const StringWriter = require ("../writer/StringWriter");
+const ServletWriter = require ("../writer/ServletWriter")
 
 // 测试
-const ForEachImpl = require("../tag/funimpl/ForEachImpl")
-const IfImpl = require("../tag/funimpl/IfImpl")
-const IncludeImpl = require("../tag/funimpl/IncludeImpl")
-const PageContext = require("../ctx/PageContext_fn")
-const Mark = require("./Mark")
+const ForEachImpl = require ("../tag/funimpl/ForEachImpl")
+const IfImpl = require ("../tag/funimpl/IfImpl")
+const IncludeImpl = require ("../tag/funimpl/IncludeImpl")
+const PageContext = require ("../ctx/PageContext_fn")
+const Mark = require ("./Mark")
 
 class Compiler {
-    constructor() {
+    constructor () {
     }
 
     /**
@@ -24,16 +24,15 @@ class Compiler {
      * @return {fnction}
      *
      * */
-    getFnByStr(tmpstr) {
+    getFnByStr (tmpstr) {
 
-        let pageNodes = this.getPageNode(tmpstr, null);
-        let fnstr = this.getFnStrByPageNode(pageNodes);
-        var rundemo = new Function('data, option', fnstr);
+        let pageNodes = this.getPageNode (tmpstr, null);
+        let fnstr = this.getFnStrByPageNode (pageNodes);
+        var rundemo = new Function ('data, option', fnstr);
 
         var option = {
             ForEachImpl: ForEachImpl,
             IfImpl: IfImpl,
-            pageNodes: pageNodes,
             PageContext: PageContext
         }
         return function (data) {
@@ -42,29 +41,27 @@ class Compiler {
                 IfImpl: IfImpl,
                 IncludeImpl: IncludeImpl,
                 out: null,
-                pageNodes: pageNodes,
                 PageContext: PageContext,
-                Mark: Mark
             }
-            var strs = rundemo.call(data, data, option)
+            var strs = rundemo.call (data, data, option)
             return strs;
         }
     }
 
-    getFnStrByPageNode(pageNodes) {
-        let fn_stringWriter = new StringWriter();
-        let fn_out = new ServletWriter(fn_stringWriter);
-        Generator.generateFn(this, fn_out, pageNodes);
-        let fnstr = fn_out.toString();
+    getFnStrByPageNode (pageNodes) {
+        let fn_stringWriter = new StringWriter ();
+        let fn_out = new ServletWriter (fn_stringWriter);
+        Generator.generateFn (this, fn_out, pageNodes);
+        let fnstr = fn_out.toString ();
 
         return fnstr;
     }
 
-    getPageNode(fileStr, parent) {
+    getPageNode (fileStr, parent) {
         let pageNodes;
-        let reader = new JspReader(fileStr);
+        let reader = new JspReader (fileStr);
         if (reader != null) {
-            pageNodes = Parser.parse(reader, parent)
+            pageNodes = Parser.parse (reader, parent)
         }
         return pageNodes;
     }
