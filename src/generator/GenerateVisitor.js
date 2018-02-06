@@ -171,6 +171,8 @@ class GenerateVisitor extends Node.Visitor {
             this.out.println(`
     function ${tagMethod}() {
         try {
+        if(${tag_el}==null){
+        ${tag_el}="";}
             return ${tag_el};
         } catch (e) {
              return "";
@@ -203,10 +205,18 @@ class GenerateVisitor extends Node.Visitor {
 
     generateSetters(n, tagHandlerVar) {
         // this.out.print(`${tagHandlerVar}.setPageContext(pageContext);`);//
+        let genBuffer = new GenBuffer();
+        let outSave = this.out;// 存档
         if (n.localName == "forEach") {
             let valName = this.getAfterElexpress(n.attrs.getValue("items"));
+
+            let baseVar = this.createTagVarName("", "forEach", "el")
+            let tagMethod = "_js_meth_" + baseVar;
+
             this.out.print(`${tagHandlerVar}.setItems(${valName});`);//
+
             this.out.print(`${tagHandlerVar}.setVar("${n.attrs.getValue("var")}");`);//
+
             if (/^\d+$/g.test(n.attrs.getValue("begin"))) {
                 this.out.print(`${tagHandlerVar}.setBegin(${n.attrs.getValue("begin")});`);//
             }
@@ -269,8 +279,22 @@ class GenerateVisitor extends Node.Visitor {
 
     }
 
-    getElMethod(methd_name) {
-
+    getElMethod(tagMethod, n, attr_key) {
+        let errinfo = jerr.getErrInfoByNode(n);
+        let genBuffer = new GenBuffer();
+        this.methodsBuffered.push(genBuffer);
+        var tag_el = this.getAfterElexpress(n[attr_key])
+        this.out.println(`
+    function ${tagMethod}() {
+        try {
+        if(${tag_el}==null){
+        ${tag_el}="";
+        }
+            return ${tag_el};
+        } catch (e) {
+            throw  "${errinfo}";
+        }
+    }`)
     }
 
     /**

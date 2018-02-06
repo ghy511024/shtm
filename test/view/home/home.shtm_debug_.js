@@ -30,7 +30,7 @@ js_th_c_if_1.setTest(true);
         if (each_val != js_th_c_if_1.SKIP_BODY){
          while (true) {
 
-ghy_shtm_tmp_out_str+="<script>\r\n        var a={ss:\""+_js_meth_c_el_1()+"\"\r\n        }\r\n    </script>\r\n"
+ghy_shtm_tmp_out_str+="<script>\r\n        var a={ss:\""+_js_meth_c_el_2()+"\"\r\n        }\r\n    </script>\r\n"
 let evalDoAfterBody = js_th_c_if_1.doAfterBody();
                     if (evalDoAfterBody != js_th_c_if_1.EVAL_BODY_AGAIN) {
                         break;
@@ -53,7 +53,7 @@ let evalDoAfterBody = js_th_c_if_1.doAfterBody();
       }
          return false;}
             
-    function _js_meth_c_el_1() {
+    function _js_meth_c_el_2() {
         try {
             return ss;
         } catch (e) {
