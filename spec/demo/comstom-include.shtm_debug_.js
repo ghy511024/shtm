@@ -10,7 +10,7 @@
             service()
         }
         catch (e) {
-            str = e.message;
+           throw  new Error(e);
         }
         function service (n) {
 ghy_shtm_tmp_out_str+="parent-\r\n"
@@ -43,9 +43,13 @@ let evalDoAfterBody = js_th_c_include_1.doAfterBody();
         }
       }
       catch(e){
-      var msg = js_th_c_include_1.getErrInfo();
-      msg += e;
-      ghy_shtm_tmp_out_str=msg;
+        var msg;
+ if(typeof e=="string"){
+ msg=e;
+ }else{
+  msg = js_th_c_include_1.getErrInfo();
+ }
+    throw msg;
       return true;
       }
          return false;}
@@ -75,9 +79,13 @@ let evalDoAfterBody = js_th_c_include_2.doAfterBody();
         }
       }
       catch(e){
-      var msg = js_th_c_include_2.getErrInfo();
-      msg += e;
-      ghy_shtm_tmp_out_str=msg;
+        var msg;
+ if(typeof e=="string"){
+ msg=e;
+ }else{
+  msg = js_th_c_include_2.getErrInfo();
+ }
+    throw msg;
       return true;
       }
          return false;}
@@ -105,9 +113,13 @@ let evalDoAfterBody = js_th_c_if_1.doAfterBody();
         }
       }
       catch(e){
-      var msg = js_th_c_if_1.getErrInfo();
-      msg += e;
-      ghy_shtm_tmp_out_str=msg;
+        var msg;
+ if(typeof e=="string"){
+ msg=e;
+ }else{
+  msg = js_th_c_if_1.getErrInfo();
+ }
+    throw msg;
       return true;
       }
          return false;}

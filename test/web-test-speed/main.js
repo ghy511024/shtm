@@ -1,10 +1,10 @@
 var runConf = [
     "art-template",
-    "shtm",
-    "doT",
-    "ejs",
-    "Jade",
-    "swig"
+    "shtm"
+    // "doT",
+    // "ejs",
+    // "Jade",
+    // "swig"
 ]
 
 var T = {
@@ -164,12 +164,15 @@ var T = {
 
     getData: function (option) {
         var data = {
-            list: []
+            title:"sss",
+            test1: true,
+            list: [{name: "xixi"}]
         };
         for (var i = 0; i < option.data_length; i++) {
             data.list.push({
                 index: i,
-                user: '<strong style="color:red">老王' + i + '</strong>',
+                name: "xixi",
+                list: [1, 2, 3],
             });
         }
         return data;

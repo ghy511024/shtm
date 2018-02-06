@@ -1,5 +1,8 @@
-<script>
-    var config = {
-        pre_commit_id: "${pro.pre_commit_id}",
-    };
-</script>
+${title}
+<c:if test="${test1}">test1</c:if>
+<c:forEach items="${list}" var="item">
+    ${item.name}
+    <c:forEach items="${item.list}" var="val">
+        -${val}
+    </c:forEach>
+</c:forEach>

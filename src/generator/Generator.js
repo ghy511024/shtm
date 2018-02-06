@@ -42,7 +42,7 @@ class Generator {
             service()
         }
         catch (e) {
-            str = e.message;
+           throw  new Error(e);
         }
         function service (n) {`)
     }

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,7 +70,7 @@
 /**
  * Created by ghy on 2017/11/17.
  */
-const Nodes = __webpack_require__(8);
+const Nodes = __webpack_require__(6);
 
 class Node {
     constructor(qName, localName, attrs, start, parent) {
@@ -152,27 +152,6 @@ module.exports = Node;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Node = __webpack_require__(0);
-const CustomTag = __webpack_require__(23);
-const TempleteText = __webpack_require__(24);
-const Nodes = __webpack_require__(8);
-const Root = __webpack_require__(25);
-const ELExpression = __webpack_require__(26);
-const Visitor = __webpack_require__(27);
-
-Node.CustomTag = CustomTag;
-Node.TempleteText = TempleteText;
-Node.Nodes = Nodes;
-Node.Root = Root;
-Node.ELExpression = ELExpression;
-Node.Visitor = Visitor;
-
-module.exports = Node;
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports) {
 
 /**
@@ -286,6 +265,27 @@ Mark.prototype = {
 }
 
 module.exports = Mark;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Node = __webpack_require__(0);
+const CustomTag = __webpack_require__(18);
+const TempleteText = __webpack_require__(19);
+const Nodes = __webpack_require__(6);
+const Root = __webpack_require__(20);
+const ELExpression = __webpack_require__(21);
+const Visitor = __webpack_require__(22);
+
+Node.CustomTag = CustomTag;
+Node.TempleteText = TempleteText;
+Node.Nodes = Nodes;
+Node.Root = Root;
+Node.ELExpression = ELExpression;
+Node.Visitor = Visitor;
+
+module.exports = Node;
 
 /***/ }),
 /* 3 */
@@ -516,103 +516,13 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)))
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
- * Created by ghy on 2018/1/11.
- */
-const Node = __webpack_require__(1);
-const Mark = __webpack_require__(2);
-
-class jspErr {
-    constructor() {
-
-    }
-
-    static err(node, msg, e) {
-
-        let mark
-        if (node instanceof Node) {
-            mark = node.startMark;
-        } else if (node instanceof Mark) {
-            mark = node;
-        }
-        if (mark == null) {
-            throw  new Error(msg, e);
-            return;
-        }
-        let line = mark.line;
-        let col = mark.col;
-        let name = mark.name;
-        var msginfo = "ERROR: " + msg + " position:(" + line + "," + col + ")";
-        let tmpText = jspErr.getErrInfo(mark, 2, 2)
-        msginfo += "\r\n" + tmpText;
-        throw  new Error(msginfo);
-    }
-
-    static getErrInfo(mark, preline, nextline) {
-        let sline = Math.max(mark.line - preline, 1)
-        let retstr = "";
-        for (let i = sline; i < mark.line; i++) {
-            let start = Mark.newMark(mark);
-            start.resetLine(i);
-            retstr += ("   " + i + "|" + mark.reader.getTextline(start, i));
-        }
-        let cmark = Mark.newMark(mark);
-        cmark.resetLine(mark.line);
-        retstr += (">> " + cmark.line + "|" + cmark.reader.getTextline(cmark, cmark.line));
-        for (let i = 1; i < nextline; i++) {
-            let start = Mark.newMark(mark);
-            start.resetLine(mark.line + i);
-            retstr += "   " + start.line + "|" + mark.reader.getTextline(start, start.line)
-        }
-        return retstr;
-    }
-
-    static  getErrInfoByNode(node) {
-        var mark = node.startMark;
-        var line = mark.line;
-        var col = mark.col;
-        var name = mark.name;
-        var preline = 2;
-        var nextline = 2;
-        var msginfo = "ERROR: " + " position:(" + line + "," + col + ")\r\n";
-
-        var sline = Math.max(mark.line - preline, 1)
-        var retstr = "";
-        for (let i = sline; i < mark.line; i++) {
-            var start = Mark.newMark(mark);
-            start.resetLine(i);
-            retstr += ("   " + i + "|" + mark.reader.getTextline(start, i));
-        }
-        let cmark = Mark.newMark(mark);
-        cmark.resetLine(mark.line);
-        retstr += (">> " + cmark.line + "|" + cmark.reader.getTextline(cmark, cmark.line));
-        for (let i = 1; i < nextline; i++) {
-            let start = Mark.newMark(mark);
-            start.resetLine(mark.line + i);
-            retstr += "   " + start.line + "|" + mark.reader.getTextline(start, start.line)
-        }
-        var str = (msginfo + retstr).replace(/(\n)/g, "\\n");
-        str = str.replace(/(\r)/g, "\\r");
-        str = str.replace(/(\")/g, "\\\"");
-        str = str.replace(/(\')/g, "\\\'");
-        return str
-    }
-}
-
-module.exports = jspErr;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Tag = __webpack_require__(9);
+const Tag = __webpack_require__(28);
 
 class TagSupport extends Tag {
     constructor() {
@@ -652,7 +562,413 @@ class TagSupport extends Tag {
 module.exports = TagSupport;
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 字符串直出
+ * */
+
+const Node = __webpack_require__(2);
+const Tag = __webpack_require__(28);
+const PageContext = __webpack_require__(31);
+
+// tag 解析实现类
+const ForEachImpl = __webpack_require__(27);
+const IfImpl = __webpack_require__(29);
+const Parser = __webpack_require__(24);
+const jerr = __webpack_require__(11);
+const path = __webpack_require__(3)
+const GenBuffer = __webpack_require__(33);
+
+const OUT_STR = "ghy_shtm_tmp_out_str"//名字取这么长，防止，用户数据中，传入字变量与此重名，届时会冲突造成模板解析不正确
+class GenerateVisitor extends Node.Visitor {
+    constructor(out, pageContext, compiler) {
+        super();
+        this.out = out;
+        this.tagVarNumbers = {};
+        this.out = out;
+        this.compiler = compiler;
+        this.methodsBuffered = [];
+    }
+
+    /**
+     * 覆盖父类visit 抽象方-----+-+法
+     */
+    visit(n) {
+        if (n instanceof Node.CustomTag) {
+            this.out.println(OUT_STR + "+=\"" + n.parent.flush() + "\"")
+            this._vCustomTag(n);
+        }
+        else if (n instanceof Node.Root) {
+            this._vRoot(n);
+        } else if (n instanceof Node.TempleteText) {
+            this._vTempleteText(n);
+        } else if (n instanceof Node.ELExpression) {
+            this._vELExpression(n);
+        }
+    }
+
+    /**
+     * 打印根目录
+     * */
+    _vRoot(n) {
+        this.visitBody(n);
+        this.out.println(OUT_STR + "+=\"" + n.flush() + "\"")
+    }
+
+    /**
+     * 技巧处理，存缓存，然后回退打印父类
+     */
+    _vCustomTag(n) {
+        let outSave = null;
+        let baseVar = this.createTagVarName(n.qName, n.prefix, n.localName)
+        let tagEvalVar = "_js_eval_" + baseVar;
+        let tagHandlerVar = "js_th_" + baseVar;
+        let tagPushBodyCountVar = "_js_push_body_count_" + baseVar;
+        let tagMethod = "_js_meth_" + baseVar;
+
+        this.out.println();
+        this.out.print(`if(${tagMethod}()){return true;}`)
+        let genBuffer = new GenBuffer();
+        this.methodsBuffered.push(genBuffer);
+        outSave = this.out;// 存档
+        this.out = genBuffer.getOut();
+        this.out.println()
+        // this.out.print("// 开始输出函数体");
+        this.out.println()
+        this.out.println(`function ${tagMethod}(n){`)
+        let implName = this.getImplMethName(n);
+        this.out.println(`let ${tagHandlerVar} =new ${implName}();`)
+        this.out.println(`  try {`)
+        this.generateCustomStart(n, tagHandlerVar);
+
+        if (n.localName == "include") {
+            this._vIncludeAction(n);
+            // this.out.println (OUT_STR + "+=\"" + n.flush () + "\"")
+        } else {
+            this.visitBody(n);
+            this.out.println(OUT_STR + "+=\"" + n.flush() + "\"")
+        }
+
+        this.generateCustomEnd(n, tagHandlerVar);
+        this.out = outSave;
+    }
+
+    /**
+     * include 实现，
+     * */
+    _vIncludeAction(n, i) {
+        if (this.compiler.getBaseDir() == null || this.compiler.getBaseDir().length == 0) {
+            return;
+        }
+        // let pageNodes = this.compiler.getPageNode(path.join(this.compiler.getBaseDir(), n.attrs.getValue("page")), n.parent);
+        let pageNodes = this.compiler.getPageNode(path.join(this.compiler.getBaseDir(), n.attrs.getValue("page")), n);
+        if (pageNodes == null) {
+            jerr.err("GetnnerateVisitor.visitInclude err")
+            return;
+        }
+        pageNodes.visit(this, (n.parent.body.list.length - 1));
+    }
+
+
+    /**
+     * 打印普通文本
+     * */
+    _vTempleteText(n) {
+        let text = n.text || "";
+        if (text.length == 0) {
+            return;
+        }
+        this.out.println();
+        let sb = "";
+        let count = 1024;
+        for (let i = 0; i < text.length; i++) {
+            let ch = text[i];
+            --count;
+            switch (ch) {
+                case '"':
+                    sb += '\\\"';
+                    break;
+                case '\\':
+                    sb += '\\\\';
+                    break;
+                case '\r':
+                    sb += '\\r';
+                    break;
+                case '\n':
+                    sb += '\\n';
+                    break;
+                case '\t':
+                    sb += '\\t';
+                    break;
+                case '$':
+                    if ((i + 1 < text.length) && (text.charAt(i + 1) == '{')) {
+                        sb += '\\\\';
+                    }
+                    sb += ch;
+                    break;
+                default:
+                    sb += ch;
+            }
+        }
+        n.parent.write(sb);
+    }
+
+    /**
+     * 打印el 表达式
+     *
+     * */
+    _vELExpression(n) {
+        // if (n.parent.write) {
+        //     n.parent.write("\"+(" + this.getAfterElexpress(n.text) + "==null?\"\":" + this.getAfterElexpress(n.text) + ")+\"");
+        // }
+
+        if (n.parent.write) {
+            let errinfo = jerr.getErrInfoByNode(n);
+            let genBuffer = new GenBuffer();
+            this.methodsBuffered.push(genBuffer);
+            let baseVar = this.createTagVarName("", "c", "el")
+            let tagMethod = "_js_meth_" + baseVar;
+            var tag_el = this.getAfterElexpress(n.text)
+            let outSave = null;
+            n.parent.write("\"+" + tagMethod + "()" + "+\"");
+            outSave = this.out;// 存档
+            this.out = genBuffer.getOut();
+            this.out.println(`
+    function ${tagMethod}() {
+        try {
+        if(${tag_el}==null){
+        ${tag_el}="";}
+            return ${tag_el};
+        } catch (e) {
+             return "";
+             // 暂时不按异常处理，当空处理
+            // throw  "${errinfo}";
+        }
+    }`)
+            this.out = outSave;
+        }
+
+    }
+
+    /**
+     * 自定义函数，foreach,if 等输出函数体头部
+     * @param n {Node}
+     * @param tagHandlerVar {String} 变量名
+     * */
+    generateCustomStart(n, tagHandlerVar) {
+        this.out.println("//" + n.qName);
+        let errinfo = jerr.getErrInfoByNode(n);// 预先获取错误信息，当异常得时候，可以直接拿出来输出
+        this.out.pushIndent();
+        this.out.println(`${tagHandlerVar}.setPageContext(pageContext);`)
+        this.out.println(`${tagHandlerVar}.setErrInfo("${errinfo}");`)
+        this.generateSetters(n, tagHandlerVar);
+        this.out.print(`
+        let each_val = ${tagHandlerVar}.doStartTag();
+        if (each_val != ${tagHandlerVar}.SKIP_BODY){
+         while (true) {`);
+    }
+
+    generateSetters(n, tagHandlerVar) {
+        // this.out.print(`${tagHandlerVar}.setPageContext(pageContext);`);//
+        let genBuffer = new GenBuffer();
+        let outSave = this.out;// 存档
+        if (n.localName == "forEach") {
+            let valName = this.getAfterElexpress(n.attrs.getValue("items"));
+
+            let baseVar = this.createTagVarName("", "forEach", "el")
+            let tagMethod = "_js_meth_" + baseVar;
+
+            this.out.print(`${tagHandlerVar}.setItems(${valName});`);//
+
+            this.out.print(`${tagHandlerVar}.setVar("${n.attrs.getValue("var")}");`);//
+
+            if (/^\d+$/g.test(n.attrs.getValue("begin"))) {
+                this.out.print(`${tagHandlerVar}.setBegin(${n.attrs.getValue("begin")});`);//
+            }
+            if (/^\d+$/g.test(n.attrs.getValue("end"))) {
+                this.out.print(`${tagHandlerVar}.setEnd(${n.attrs.getValue("end")});`);//
+            }
+            if (n.attrs.getValue("index") != null && n.attrs.getValue("index").length > 0) {
+                this.out.print(`${tagHandlerVar}.setIndex("${n.attrs.getValue("index")}");`);//
+            }
+        }
+        else if (n.localName == "if") {
+            let valName = this.getAfterElexpress(n.attrs.getValue("test"));
+            this.out.print(`${tagHandlerVar}.setTest(${valName});`);//
+        }
+    }
+
+    generateCustomEnd(n, tagHandlerVar) {
+        this.out.print(`let evalDoAfterBody = ${tagHandlerVar}.doAfterBody();
+                    if (evalDoAfterBody != ${tagHandlerVar}.EVAL_BODY_AGAIN) {
+                        break;
+                    }
+                }
+            }
+            if (${tagHandlerVar}.doEndTag() == ${tagHandlerVar}.SKIP_PAGE) {
+            return true;
+        }
+      }
+      catch(e){
+        var msg;
+ if(typeof e=="string"){
+ msg=e;
+ }else{
+  msg = ${tagHandlerVar}.getErrInfo();
+ }
+    throw msg;
+      return true;
+      }
+         return false;}
+            `)
+    }
+
+
+    /**
+     * 输出结束代码
+     *
+     * */
+    generatePostamble(n) {
+        this.genCommonPostamble();
+    }
+
+    /**
+     * 输出缓存区间的的，代码
+     * */
+    genCommonPostamble() {
+        for (let i = 0; i < this.methodsBuffered.length; i++) {
+            let buffer = this.methodsBuffered[i];
+            this.out.printMultiLn(buffer.toString());
+        }
+        this.out.printil("return " + OUT_STR + ";");// with 函数结尾
+
+    }
+
+    getElMethod(tagMethod, n, attr_key) {
+        let errinfo = jerr.getErrInfoByNode(n);
+        let genBuffer = new GenBuffer();
+        this.methodsBuffered.push(genBuffer);
+        var tag_el = this.getAfterElexpress(n[attr_key])
+        this.out.println(`
+    function ${tagMethod}() {
+        try {
+        if(${tag_el}==null){
+        ${tag_el}="";
+        }
+            return ${tag_el};
+        } catch (e) {
+            throw  "${errinfo}";
+        }
+    }`)
+    }
+
+    /**
+     * 传入node ，根据node 类型返回对应的tagimpul 实例函数名
+     * @param n {Node}
+     * */
+    getImplMethName(n) {
+        let implName = "";
+        if (n.localName == "forEach") {
+            implName = "ForEachImpl";
+        } else if (n.localName == "if") {
+            implName = "IfImpl";
+        } else if (n.localName == "include") {
+            implName = "IncludeImpl";
+        }
+        return implName;
+    }
+
+    getAfterElexpress(exp) {
+        if (exp == null) {
+            return null;
+        }
+        let exp_str;
+        let reg = /\$\{(.*?)\}/gi
+        exp.replace(reg, function (_, $1) {
+            exp_str = $1;
+        })
+        return exp_str
+    }
+
+    createTagVarName(fullName, prefix, shortName) {
+        let varName;
+        varName = prefix + "_" + shortName + "_"
+        if (this.tagVarNumbers[fullName] != null) {
+            let i = Number(this.tagVarNumbers[fullName]) || 0;
+            varName = varName + (i + 1);
+            this.tagVarNumbers[fullName] = i + 1;
+        } else {
+            varName = varName + 1;
+            this.tagVarNumbers[fullName] = 1;
+        }
+        return varName;
+    }
+}
+
+GenerateVisitor.prototype = {
+    tagVarNumbers: {},
+    parent: "",
+    isFragment: "",
+    methodNesting: 0,
+    arrayCount: 0,
+    textMap: {},
+}
+GenerateVisitor.OUT_STR = OUT_STR;
+
+module.exports = GenerateVisitor;
+
+/***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Node = __webpack_require__(0);
+
+class Nodes {
+
+    constructor(root) {
+        this.root = root;
+        this.list = [];
+        if (root != null) {
+            this.list.push(root);
+        }
+        this.name = "nodes"
+
+    }
+
+    add(n) {
+        this.list.push(n);
+        this.root = null;
+    }
+
+
+    /**
+     * 设计模式之 访问模式
+     * @abstract
+     * @param v {Visitor}
+     */
+    visit(v, parent_index) {
+        let iter = this.list;
+        for (let i = 0; i < iter.length; i++) {
+            let item = iter[i]
+            if (item != null) {
+                item.accept(v, i, parent_index);
+            }
+        }
+    }
+
+}
+
+Nodes.prototype = {
+    root: null,
+    generatedInBuffer: false
+}
+
+module.exports = Nodes;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports) {
 
 const TAB_WIDTH = 2;
@@ -736,1120 +1052,7 @@ class ServletWriter {
 module.exports = ServletWriter;
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * 字符串直出
- * */
-
-const Node = __webpack_require__ (1);
-const Tag = __webpack_require__ (9);
-const PageContext = __webpack_require__ (10);
-
-// tag 解析实现类
-const ForEachImpl = __webpack_require__ (11);
-const IfImpl = __webpack_require__ (12);
-const Parser = __webpack_require__ (13);
-const jerr = __webpack_require__ (4);
-const path = __webpack_require__ (3)
-const GenBuffer = __webpack_require__ (31);
-
-const OUT_STR = "ghy_shtm_tmp_out_str"//名字取这么长，防止，用户数据中，传入字变量与此重名，届时会冲突造成模板解析不正确
-class GenerateVisitor extends Node.Visitor {
-    constructor (out, pageContext, compiler) {
-        super ();
-        this.out = out;
-        this.tagVarNumbers = {};
-        this.out = out;
-        this.compiler = compiler;
-        this.methodsBuffered = [];
-    }
-
-    /**
-     * 覆盖父类visit 抽象方-----+-+法
-     */
-    visit (n) {
-        if (n instanceof Node.CustomTag) {
-            this.out.println (OUT_STR + "+=\"" + n.parent.flush () + "\"")
-            this._vCustomTag (n);
-        }
-        else if (n instanceof Node.Root) {
-            this._vRoot (n);
-        } else if (n instanceof Node.TempleteText) {
-            this._vTempleteText (n);
-        } else if (n instanceof Node.ELExpression) {
-            this._vELExpression (n);
-        }
-    }
-
-    /**
-     * 打印根目录
-     * */
-    _vRoot (n) {
-        this.visitBody (n);
-        this.out.println (OUT_STR + "+=\"" + n.flush () + "\"")
-    }
-
-    /**
-     * 技巧处理，存缓存，然后回退打印父类
-     */
-    _vCustomTag (n) {
-        let outSave = null;
-        let baseVar = this.createTagVarName (n.qName, n.prefix, n.localName)
-        let tagEvalVar = "_js_eval_" + baseVar;
-        let tagHandlerVar = "js_th_" + baseVar;
-        let tagPushBodyCountVar = "_js_push_body_count_" + baseVar;
-        let tagMethod = "_js_meth_" + baseVar;
-
-        this.out.println ();
-        this.out.print (`if(${tagMethod}()){return true;}`)
-        let genBuffer = new GenBuffer ();
-        this.methodsBuffered.push (genBuffer);
-        outSave = this.out;// 存档
-        this.out = genBuffer.getOut ();
-        this.out.println ()
-        // this.out.print("// 开始输出函数体");
-        this.out.println ()
-        this.out.println (`function ${tagMethod}(n){`)
-        let implName = this.getImplMethName (n);
-        this.out.println (`let ${tagHandlerVar} =new ${implName}();`)
-        this.out.println (`  try {`)
-        this.generateCustomStart (n, tagHandlerVar);
-
-        if (n.localName == "include") {
-            this._vIncludeAction (n);
-            // this.out.println (OUT_STR + "+=\"" + n.flush () + "\"")
-        } else {
-            this.visitBody (n);
-            this.out.println (OUT_STR + "+=\"" + n.flush () + "\"")
-        }
-
-        this.generateCustomEnd (n, tagHandlerVar);
-        this.out = outSave;
-    }
-
-    /**
-     * include 实现，
-     * */
-    _vIncludeAction (n, i) {
-        if (this.compiler.getBaseDir () == null || this.compiler.getBaseDir ().length == 0) {
-            return;
-        }
-        // let pageNodes = this.compiler.getPageNode(path.join(this.compiler.getBaseDir(), n.attrs.getValue("page")), n.parent);
-        let pageNodes = this.compiler.getPageNode (path.join (this.compiler.getBaseDir (), n.attrs.getValue ("page")), n);
-        if (pageNodes == null) {
-            jerr.err ("GetnnerateVisitor.visitInclude err")
-            return;
-        }
-        pageNodes.visit (this, (n.parent.body.list.length - 1));
-    }
-
-
-    /**
-     * 打印普通文本
-     * */
-    _vTempleteText (n) {
-        let text = n.text || "";
-        if (text.length == 0) {
-            return;
-        }
-        this.out.println ();
-        let sb = "";
-        let count = 1024;
-        for (let i = 0; i < text.length; i++) {
-            let ch = text[i];
-            --count;
-            switch (ch) {
-                case '"':
-                    sb += '\\\"';
-                    break;
-                case '\\':
-                    sb += '\\\\';
-                    break;
-                case '\r':
-                    sb += '\\r';
-                    break;
-                case '\n':
-                    sb += '\\n';
-                    break;
-                case '\t':
-                    sb += '\\t';
-                    break;
-                case '$':
-                    if ((i + 1 < text.length) && (text.charAt (i + 1) == '{')) {
-                        sb += '\\\\';
-                    }
-                    sb += ch;
-                    break;
-                default:
-                    sb += ch;
-            }
-        }
-        n.parent.write (sb);
-    }
-
-    /**
-     * 打印el 表达式
-     *
-     * */
-    _vELExpression (n) {
-        if (n.parent.write) {
-            n.parent.write ("\"+(" + this.getAfterElexpress (n.text) + "==null?\"\":" + this.getAfterElexpress (n.text) + ")+\"");
-        }
-    }
-
-    /**
-     * 自定义函数，foreach,if 等输出函数体头部
-     * @param n {Node}
-     * @param tagHandlerVar {String} 变量名
-     * */
-    generateCustomStart (n, tagHandlerVar) {
-        this.out.println ("//" + n.qName);
-        let errinfo = jerr.getErrInfoByNode (n);// 预先获取错误信息，当异常得时候，可以直接拿出来输出
-        this.out.pushIndent ();
-        this.out.println (`${tagHandlerVar}.setPageContext(pageContext);`)
-        this.out.println (`${tagHandlerVar}.setErrInfo("${errinfo}");`)
-        this.generateSetters (n, tagHandlerVar);
-        this.out.print (`
-        let each_val = ${tagHandlerVar}.doStartTag();
-        if (each_val != ${tagHandlerVar}.SKIP_BODY){
-         while (true) {`);
-    }
-
-    generateSetters (n, tagHandlerVar) {
-        // this.out.print(`${tagHandlerVar}.setPageContext(pageContext);`);//
-        if (n.localName == "forEach") {
-            let valName = this.getAfterElexpress (n.attrs.getValue ("items"));
-            this.out.print (`${tagHandlerVar}.setItems(${valName});`);//
-            this.out.print (`${tagHandlerVar}.setVar("${n.attrs.getValue ("var")}");`);//
-            if (/^\d+$/g.test (n.attrs.getValue ("begin"))) {
-                this.out.print (`${tagHandlerVar}.setBegin(${n.attrs.getValue ("begin")});`);//
-            }
-            if (/^\d+$/g.test (n.attrs.getValue ("end"))) {
-                this.out.print (`${tagHandlerVar}.setEnd(${n.attrs.getValue ("end")});`);//
-            }
-            if (n.attrs.getValue ("index") != null && n.attrs.getValue ("index").length > 0) {
-                this.out.print (`${tagHandlerVar}.setIndex("${n.attrs.getValue ("index")}");`);//
-            }
-
-        }
-        else if (n.localName == "if") {
-            let valName = this.getAfterElexpress (n.attrs.getValue ("test"));
-            this.out.print (`${tagHandlerVar}.setTest(${valName});`);//
-        }
-    }
-
-    generateCustomEnd (n, tagHandlerVar) {
-        this.out.print (`let evalDoAfterBody = ${tagHandlerVar}.doAfterBody();
-                    if (evalDoAfterBody != ${tagHandlerVar}.EVAL_BODY_AGAIN) {
-                        break;
-                    }
-                }
-            }
-            if (${tagHandlerVar}.doEndTag() == ${tagHandlerVar}.SKIP_PAGE) {
-            return true;
-        }
-      }
-      catch(e){
-      var msg = ${tagHandlerVar}.getErrInfo();
-      msg += e;
-      ${OUT_STR}=msg;
-      return true;
-      }
-         return false;}
-            `)
-    }
-
-    /**
-     * 输出结束代码
-     *
-     * */
-    generatePostamble (n) {
-        this.genCommonPostamble ();
-    }
-
-    /**
-     * 输出缓存区间的的，代码
-     * */
-    genCommonPostamble () {
-        for (let i = 0; i < this.methodsBuffered.length; i++) {
-            let buffer = this.methodsBuffered[i];
-            this.out.printMultiLn (buffer.toString ());
-        }
-        this.out.printil ("return " + OUT_STR + ";");// with 函数结尾
-
-    }
-
-    /**
-     * 传入node ，根据node 类型返回对应的tagimpul 实例函数名
-     * @param n {Node}
-     * */
-    getImplMethName (n) {
-        let implName = "";
-        if (n.localName == "forEach") {
-            implName = "ForEachImpl";
-        } else if (n.localName == "if") {
-            implName = "IfImpl";
-        } else if (n.localName == "include") {
-            implName = "IncludeImpl";
-        }
-        return implName;
-    }
-
-    getAfterElexpress (exp) {
-        if (exp == null) {
-            return null;
-        }
-        let exp_str;
-        let reg = /\$\{(.*?)\}/gi
-        exp.replace (reg, function (_, $1) {
-            exp_str = $1;
-        })
-        return exp_str
-    }
-
-    createTagVarName (fullName, prefix, shortName) {
-        let varName;
-        varName = prefix + "_" + shortName + "_"
-        if (this.tagVarNumbers[fullName] != null) {
-            let i = Number (this.tagVarNumbers[fullName]) || 0;
-            varName = varName + (i + 1);
-            this.tagVarNumbers[fullName] = i + 1;
-        } else {
-            varName = varName + 1;
-            this.tagVarNumbers[fullName] = 1;
-        }
-        return varName;
-    }
-}
-
-GenerateVisitor.prototype = {
-    tagVarNumbers: {},
-    parent: "",
-    isFragment: "",
-    methodNesting: 0,
-    arrayCount: 0,
-    textMap: {},
-}
-GenerateVisitor.OUT_STR = OUT_STR;
-
-module.exports = GenerateVisitor;
-
-/***/ }),
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Node = __webpack_require__(0);
-
-class Nodes {
-
-    constructor(root) {
-        this.root = root;
-        this.list = [];
-        if (root != null) {
-            this.list.push(root);
-        }
-        this.name = "nodes"
-
-    }
-
-    add(n) {
-        this.list.push(n);
-        this.root = null;
-    }
-
-
-    /**
-     * 设计模式之 访问模式
-     * @abstract
-     * @param v {Visitor}
-     */
-    visit(v, parent_index) {
-        let iter = this.list;
-        for (let i = 0; i < iter.length; i++) {
-            let item = iter[i]
-            if (item != null) {
-                item.accept(v, i, parent_index);
-            }
-        }
-    }
-
-}
-
-Nodes.prototype = {
-    root: null,
-    generatedInBuffer: false
-}
-
-module.exports = Nodes;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-class Tag {
-    constructor () {
-        this.SKIP_BODY = 0;
-        this.EVAL_BODY_INCLUDE = 1;
-        this.EVAL_BODY_AGAIN = 2;
-        this.SKIP_PAGE = 5;
-        this.EVAL_PAGE = 6;
-    }
-}
-Tag.prototype = {
-    SKIP_BODY: 0,
-    EVAL_BODY_INCLUDE: 1,
-    EVAL_BODY_AGAIN: 2,
-    SKIP_PAGE: 5,
-    EVAL_PAGE: 6,
-}
-module.exports = Tag;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const PAGE_SCOPE = 1;
-const REQUEST_SCOPE = 2;
-const SESSION_SCOPE = 3;
-const APPLICATION_SCOPE = 4;
-
-const PAGE = "node.jstl.jsPage";
-const REQUEST = "node.jstl.jsRequest";
-const SESSION = "node.jstl.jsSession";
-
-const ELparser = __webpack_require__(28);
-const path = __webpack_require__(3);
-
-class PageContext {
-    constructor(data) {
-        this.data = data;
-        this.attributes = {};
-        this.isNametableInitialized = false;
-    }
-
-    setAttribute(name, attribute) {
-        if (attribute != null) {
-            if (!this.isNametableInitialized) {
-                this.initializePageScopeNameTable();
-            }
-            this.data[name] = attribute;
-        } else {
-            this.data[name] = null;
-        }
-    }
-
-    removeAttribute(name) {
-        this.data[name] = null;
-    }
-
-    hasValue(itemName) {
-        return this.data[itemName] != null;
-    }
-
-    getAttribute(name) {
-        if (!this.isNametableInitialized) {
-            this.initializePageScopeNameTable();
-        }
-        return this.data[name];
-    }
-
-    initializePageScopeNameTable() {
-        // 留着以后扩展吧，暂时用不到
-        this.isNametableInitialized = true;
-        this.setAttribute(PAGE, {})
-        this.setAttribute(REQUEST, {})
-        this.setAttribute(SESSION, {})
-    }
-}
-
-module.exports = PageContext;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const TagSupport = __webpack_require__(5);
-
-
-class ForEachIpml extends TagSupport {
-    constructor() {
-        super();
-        this.items = null;
-        this.index = 0;
-        this.indexId = "index";
-        this.count = 1;
-        this.end = -1;
-        this.begin = 0;
-        this.step = 1;
-        this.item = null;
-        this.last = false;
-        this.statusId = null;
-        this.all_len = 0;
-        this.cindex = 0;// 当前索引
-    }
-
-    hasNext() {
-        return this.items != null && this.items.length > 0;
-    }
-
-    next() {
-        return this.items.shift();
-
-    }
-
-    setItems(o) {
-        this.rawItems = o;
-    }
-
-    setVar(_id) {
-        if (this.pageContext.hasValue(_id)) {
-            this.saveVar = this.pageContext.getAttribute(_id)
-        }
-        this.itemId = _id;
-    }
-
-    resetVar() {
-        if (this.saveVar != null) {
-            this.pageContext.setAttribute(this.itemId, this.saveVar)
-        } else {
-            this.pageContext.removeAttribute(this.itemId)
-        }
-        if (this.saveIndex != null) {
-            this.pageContext.setAttribute(this.indexId, this.saveIndex)
-        } else {
-            this.pageContext.removeAttribute(this.indexId)
-        }
-    }
-
-    setBegin(begin) {
-        if (begin !== null) {
-            this.begin = begin;
-        }
-    }
-
-    setEnd(end) {
-        if (end !== null) {
-            this.end = end;
-        }
-    }
-
-    setIndex(indexId) {
-        if (this.pageContext.hasValue(indexId)) {
-            this.saveIndex = this.pageContext.getAttribute(indexId);
-        }
-        this.indexId = indexId;
-    }
-
-    exposeVariables(firstTime) {
-        if (this.itemId != null) {
-            if (this.getCurrent() == null) {
-            } else if (this.deferredExpression != null) {
-
-            } else {
-                this.pageContext.setAttribute(this.itemId, this.getCurrent())
-                this.pageContext.setAttribute(this.indexId, this.index + 1)
-            }
-        }
-
-    }
-
-    discard(n) {
-        let oldIndex = this.index;
-        while (n-- > 0 && !this.atEnd() && this.hasNext()) {
-            this.index++;
-            this.next();
-        }
-        this.index = oldIndex;
-    }
-
-    doStartTag() {
-
-        if (this.end != -1 && this.begin > this.end) {
-            return
-        }
-        this.index = 0;
-        this.count = 1;
-        this.cindex = 0;// 重置游标
-        this.last = false;
-        this.iteratedExpression = null;
-        this.deferredExpression = null;
-
-        this.prepare();// 数据转换
-        this.all_len = this.items.length;// 重置长度
-
-        // 设置了开始标签，直接从开始标签起步
-        this.discardIgnoreSubset(this.begin);
-        if (this.hasNext()) {
-            this.item = this.next();
-        } else {
-            return this.SKIP_BODY;
-        }
-        this.discard(this.step - 1);
-
-        // 设置临时变量，比如循环中第一个object 赋值为 item
-        this.exposeVariables(true);
-        this.calibrateLast();
-
-        return this.EVAL_BODY_INCLUDE;
-    }
-
-
-    doAfterBody() {
-        this.index += this.step - 1;
-        this.count++;
-        // console.log("开始判断", this.item, this.hasNext(), !this.atEnd(), this.end, this.begin, this.index)
-        if (this.hasNext() && !this.atEnd()) {
-            this.index++;
-            this.item = this.next();
-        } else {
-            this.resetVar();
-            return this.SKIP_BODY;
-        }
-
-        this.discard(this.step - 1)
-        this.exposeVariables(false);
-        this.calibrateLast();
-        return this.EVAL_BODY_AGAIN;
-    }
-
-    /**
-     * 将 rawItems 转换设置为items
-     * */
-    prepare() {
-        if (this.rawItems != null) {
-            // 数据转换
-            this.rawItems = this.supportedTypeForEachIterator(this.rawItems)
-            this.items = this.rawItems;
-
-        } else {
-            // 没有items 就使用begin ,end
-            this.items = this.beginEndForEachIterator();
-        }
-
-    }
-
-    discardIgnoreSubset(n) {
-        while (n-- > 0 && this.hasNext()) {
-            this.next();
-        }
-    }
-
-    atEnd() {
-        return ((this.end != -1) && (this.begin + this.index >= this.end));
-    }
-
-    calibrateLast() {
-        this.last = !this.hasNext() || this.atEnd() || (this.end != -1 && (this.begin + this.index + this.step > this.end));
-    }
-
-    beginEndForEachIterator() {
-        let ia = [];
-        for (let i = 0; i <= this.end; i++) {
-            ia[i] = i;
-        }
-        return ia;
-    }
-
-    getCurrent() {
-        return this.item;
-    }
-
-    /**
-     * 遍历数据类型转换
-     * @param o{Object}
-     * */
-    supportedTypeForEachIterator(o) {
-        let ret = [];
-        if (o instanceof Array) {
-            ret = Object.assign([], o);
-        } else if (typeof o == "object") {
-            for (let key in o) {
-                if (typeof o[key] !== "function") {
-                    let obj = {key: key, value: o[key]};
-                    ret.push(obj);
-                }
-            }
-        } else if (typeof o == "string") {
-            ret = o.split(",")
-        } else {
-
-        }
-        return ret;
-    }
-}
-
-module.exports = ForEachIpml;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const TagSupport = __webpack_require__(5);
-
-class IfIpml extends TagSupport {
-    constructor() {
-        super();
-        this.test = false;
-        this.result = false;
-        this.var;
-    }
-
-    setTest(el) {
-
-        if (typeof el == "boolean") {
-            this.test = el;
-        } else {
-            this.test = false;
-        }
-    }
-
-    exposeVariables(firstTime) {
-        if (this.var != null) {
-            this.pageContext.setAttribute(this.var, this.result);
-        }
-    }
-
-
-    condition() {
-        return this.test;
-    }
-
-    doStartTag() {
-        this.result = this.condition();
-        this.exposeVariables();
-        if (this.result)
-            return this.EVAL_BODY_INCLUDE;
-        else
-            return this.SKIP_BODY;
-    }
-
-
-    doAfterBody() {
-        return this.SKIP_BODY;
-    }
-
-}
-
-module.exports = IfIpml;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Created by ghy on 2017/11/17.
- */
-
-
-const Node = __webpack_require__ (1);
-const JspReader = __webpack_require__ (14);
-const Ut = __webpack_require__ (15);
-const Mark = __webpack_require__ (2);
-const Attributes = __webpack_require__ (30)
-const TagInfo = __webpack_require__ (16);
-const jerr = __webpack_require__ (4);
-
-const JSP_BODY_CONTENT_PARAM = "JSP_BODY_CONTENT_PARAM"
-
-class Parser {
-    constructor (reader) {
-        this.reader = reader;
-        this.start = reader.mark ();
-    }
-
-    /**
-     * parse 函数入口 非常
-     * @param path {String} 文件绝对路径
-     * @param reader {JspReader} 字符读取处理类实例
-     * @param parent {Node} 字符读取处理类实例
-     * @return {Node.Nodes} page 对象，
-     */
-    static parse (reader, parent) {
-        let parser = new Parser (reader);
-        let root = new Node.Root (reader.mark (), parent);
-        let i = 0;
-        while (reader.hasMoreInput ()) {
-            parser.parseElements (root);
-            i++;
-        }
-        let page = new Node.Nodes (root);
-        return page;
-    }
-
-    parseElements (parent) {
-
-        this.start = this.reader.mark ();
-        if (this.reader.matches ("${")) {
-            this.parseELExpression (parent, "${")
-        }
-        // else if (this.reader.matches("<jsp:")) {
-        //     this.parseStandardAction(parent);
-        // }
-        else if (!this.parseCustomTag (parent)) {
-            this.parseTempleteText (parent);
-        }
-    }
-
-
-    parseTempleteText (parent) {
-
-        // if (!this.reader.hasMoreInput()) {
-        //     return;// 不会执行到这儿，因为上层已经屏蔽了
-        // }
-        let ttext = "";
-        let ch = this.reader.nextChar ();
-        if (ch == '\\') {
-            this.reader.pushChar ();
-        } else {
-            ttext += ch;
-        }
-        while (this.reader.hasMoreInput ()) {
-            ch = this.reader.nextChar ();
-            if (ch == '<') {
-                let c1 = this.reader.nextChar ();
-                if (!this.reader.hasMoreInput ()) {
-                    ttext += ch+c1;
-                    break;
-                }
-                let c2 = this.reader.nextChar ();
-                if (!this.reader.hasMoreInput ()) {
-                    ttext += ch+c1+c2;
-                    break;
-                }
-                let c3 = this.reader.nextChar ();
-                if (!this.reader.hasMoreInput ()) {
-                    ttext += ch+c1+c2+c3;
-                    break;
-                }
-                if (c1 == 'c' && c2 == ':') {
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    break;
-                } else if (c1 == '/' && c2 == 'c' && c3 == ':') {
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    break;
-                }
-                this.reader.pushChar ();
-                this.reader.pushChar ();
-                this.reader.pushChar ();
-                ttext += ch;
-                continue;
-                // this.reader.pushChar();
-                // break;
-            } else if (ch == '$' || ch == '$') {
-                if (!this.reader.hasMoreInput ()) {
-                    ttext += ch;
-                    break;
-                }
-                if (this.reader.nextChar () == '{') {
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    break;
-                }
-                ttext += ch;
-                this.reader.pushChar ();
-                continue;
-            }
-            else if (ch == '\\') { // abc\\${123 连个斜杠情况下
-                if (!this.reader.hasMoreInput ()) {
-                    ttext += ch;
-                    break;
-                }
-                let next = this.reader.peekChar ();
-                if (next == '%' || next == '$' || next == '#') {
-                    ch = this.reader.nextChar ();
-                }
-            }
-            ttext += ch;
-        }
-        new Node.TempleteText (ttext, this.start, parent);
-    }
-
-    /**
-     * 解析jsp: 标准语法
-     * */
-    // parseStandardAction(parent) {
-    //     let start = this.reader.mark();
-    //     if (this.reader.matches("include")) {
-    //         this.parseInclude(parent)
-    //     }
-    // }
-
-    /**
-     * 解析<jsp:include>
-     * */
-    // parseInclude(parent) {
-    //     let attrs = this.parseAttributes();
-    //     this.reader.skipSpaces();
-    //     // Node 类型
-    //     let includeNode = new Node.IncludeAction(attrs, this.start, parent);
-    //     this.parseOptionalBody(includeNode, "jsp:include", TagInfo.BODY_CONTENT_PARAM)
-    // }
-
-    parseCustomTag (parent) {
-        // this.reader.showP("Parser.parseCustomTag")
-        if (this.reader.peekChar () != '<') {
-            return false;
-        }
-
-        this.reader.nextChar ();
-        // let tagnName = "c:forEach"// 这儿tag 应该从一个方法中获取，暂时写死
-        let tagName = this.reader.parseToken ();
-        let i = tagName.indexOf (':');
-        if (i == -1) {
-            this.reader.reset (this.start);
-            return false;
-        }
-        let prefix = tagName.substring (0, i);
-        let shortTagName = tagName.substring (i + 1);
-
-        let attrs = this.parseAttributes ();
-        let uri = "";
-        this.reader.skipSpaces ();
-        if (this.reader.matches ("/>")) {
-            new Node.CustomTag (
-                tagName,
-                prefix,
-                shortTagName,
-                uri,
-                attrs,
-                this.start,
-                parent);
-            return true;
-        }
-        // 有内容
-        let tagNode = new Node.CustomTag (
-            tagName,
-            prefix,
-            shortTagName,
-            uri,
-            attrs,
-            this.start,
-            parent);
-        this.parseOptionalBody (tagNode, tagName, "JSP")
-        return true;
-    }
-
-    /**
-     * ELExpressionBody
-     *  (举个栗子 "${" or "#{"to first unquoted "}")
-     * @param
-     * @return
-     */
-    parseELExpression (parent, typeEL) {
-        this.start = this.reader.mark ();
-        let singleQuoted = false;
-        let doubleQuoted = false;
-        let curl = 0;
-        let ch;
-        while (ch != '}' || curl >= 0 || singleQuoted || doubleQuoted) {
-            ch = this.reader.nextChar ();
-            if (ch == '\\' && (singleQuoted || doubleQuoted)) {
-                this.reader.nextChar ();
-                ch = this.reader.nextChar ();
-            }
-            if (ch == null) {
-                jerr.err (this.reader.mark (), "parser.parseELExpression")
-            }
-            if (ch == '"') {
-                doubleQuoted = !doubleQuoted;
-            } else if (ch == '\'') {
-                singleQuoted = !singleQuoted;
-            }
-            else if (ch == '{') {
-                curl++;
-            } else if (ch == '}') {
-                curl--;
-            }
-        }
-        let text = typeEL + this.reader.getText (this.start, this.reader.mark ())
-        new Node.ELExpression (text, this.start, parent);
-    }
-
-    parseOptionalBody (parent, tagName, bodyType) {
-        // this.reader.showP("Parser.parseOptionalBody")
-
-        // if (this.reader.matches("/>")) {
-        //     // EmptyBody 一般不会走到这儿
-        //     return;
-        // }
-        if (!this.reader.matches (">")) {
-            jerr.err (this.reader.mark (), "parser.parseOptionalBody")
-        }
-        this.reader.skipSpaces ();
-        if (this.reader.matchesETag (tagName)) {
-            // EmptyBody
-            return;
-        }
-        if (!this.parseJspAttributeAndBody (parent, tagName, bodyType)) {
-            // Must be ( '>' # Body ETag )
-            this.parseBody (parent, tagName, bodyType);
-        }
-    }
-
-    /**
-     *先留着吧
-     * */
-    parseJspAttributeAndBody () {
-        let result = false;
-        //todo 这块可以去掉优化
-        return result;
-    }
-
-    /**
-     * 开始解析 foreach 这种自定义标签内部，为了防止程序陷入死循环，加入限制锁，4086,基本上没有网页能有4千个节点
-     *
-     * */
-    parseBody (parent, tag, bodyType) {
-        // throw  new Error ("parsebody");
-        // this.reader.showP("Parser.parseBody  " + tag + " " + bodyType + " " + (bodyType == TagInfo.BODY_CONTENT_JSP))
-        let c = 0;
-        while (this.reader.hasMoreInput () && ++c < 4086) {
-            if (this.reader.matchesETag (tag)) {
-                return;
-            }
-            if (bodyType == TagInfo.BODY_CONTENT_JSP) {
-                this.parseElements (parent);
-            }
-            // else if (bodyType == TagInfo.BODY_CONTENT_PARAM) {
-            //     this.reader.skipSpaces();
-            //     this.parseParam(parent);
-            // }
-        }
-    }
-
-    /**
-     * @param parent {Node}
-     * */
-    // parseParam(parent) {
-    //     if (!this.reader.matches("<jsp:param")) {
-    //         jerr.err(this.reader.mark(), "parser.parseParam err")
-    //
-    //     }
-    //     let attrs = this.parseAttributes();
-    //     this.reader.skipSpaces();
-    //     let paramActionNode = new Node("jsp:param", "param", attrs, this.start, parent);
-    //     this.parseEmptyBody(paramActionNode, "jsp:param");
-    // }
-
-    // parseEmptyBody() {
-    //     if (this.reader.matches("/>")) {
-    //         // done
-    //     }
-    //     else if (this.reader.matches(">")) {
-    //         if (this.reader.matchesETag(tag)) {
-    //
-    //         } else if (this.reader.matchesOptionalSpacesFollowedBy("<jsp:attribute")) {
-    //             this.parseNamedAttributes(parent);
-    //             if (!this.reader.matchesETag(tag)) {
-    //                 jerr.err(this.reader.mark(), "parser.parseEmptyBody err")
-    //             }
-    //         }
-    //         else {
-    //             jerr.err(this.reader.mark(), "parser.parseEmptyBody err")
-    //         }
-    //     }
-    //     else {
-    //         jerr.err(this.reader.mark(), "parser.parseEmptyBody err")
-    //     }
-    // }
-
-    // parseNamedAttributes(parent) {
-    //     // 先不支持吧，回头再写，2：10了
-    //     while (this.reader.matches("<jsp:attribute")) {
-    //         let start = this.reader.mark();
-    //         let attrs = this.parseAttributes();
-    //         if (attr == null || attrs.getValue("name") == null) {
-    //             jerr.err(this.reader.mark(), "parser.parseNamedAttributes err")
-    //         }
-    //     }
-    // }
-
-    /**
-     * @param attrs {Attributes}
-     */
-    parseAttributes () {
-        let attribute = new Attributes ();
-        this.reader.skipSpaces ();
-        while (this.parseAttribute (attribute)) {
-            this.reader.skipSpaces ();
-        }
-        return attribute;
-    }
-
-    parseAttribute (attrs) {
-        let qName = this.parseName ();
-        if (qName == null) {
-            return false;
-        }
-        let localName = qName;
-        let index = qName.indexOf (':');
-        if (index != -1) {
-            let prefix = qName.substring (0, index);
-            localName = qName.substring (index + 1);
-        }
-        this.reader.skipSpaces ();
-        if (!this.reader.matches ("=")) {
-            jerr.err (this.reader.mark (), "parser.parseAttribute err")
-        }
-        this.reader.skipSpaces ();
-        let quote = this.reader.nextChar ();
-        if (quote != '\'' && quote != '"') {
-            jerr.err (this.reader.mark (), "parser.parsequote err")
-        }
-        let watchString = quote;// java jsp 中 还有 <%=%> 这种情况（此时 watchString=%>"），js 版本中不考虑了
-        let attrValue = this.parseAttributeValue (watchString);
-        attrs.addAttribute (localName, qName, "CDATA", attrValue)
-        return true;
-    }
-
-    parseAttributeValue (watch) {
-        let start = this.reader.mark ();
-        let stop = this.reader.skipUntilIgnoreEsc (watch);
-        if (stop == null) {
-            jerr.err (this.reader.mark (), "parser.parseAttributeValue err")
-        }
-        //todo 需要转义 parseQuoted （这一版先不做，不影响功能）
-        // let ret = this.parseQuoted(this.reader.getText(start, stop));
-        let ret = this.reader.getText (start, stop);
-
-        return ret;
-    }
-
-    /**
-     * Name ::= (Letter | '_' | ':') (Letter | Digit | '.' | '_' | '-' | ':')*
-     * @param null
-     * @return {String}
-     */
-
-    parseName () {
-        let ch = this.reader.peekChar ();
-        if (Ut.isLetter (ch) || ch == '_' || ch == ':') {
-            let ret = ch;
-            this.reader.nextChar ();
-            ch = this.reader.peekChar ();
-            while (Ut.isLetter (ch) || Ut.isDigit (ch) || ch == '.' || ch == '_' || ch == ':') {
-                ret += ch;
-                this.reader.nextChar ();
-                ch = this.reader.peekChar ();
-            }
-            return ret;
-        }
-        return null;
-    }
-}
-
-module.exports = Parser;
-
-/***/ }),
-/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1857,9 +1060,9 @@ module.exports = Parser;
  */
 const path = __webpack_require__ (3);
 
-const Ut = __webpack_require__ (15);
-const Mark = __webpack_require__ (2);
-const TagInfo = __webpack_require__ (16);
+const Ut = __webpack_require__ (9);
+const Mark = __webpack_require__ (1);
+const TagInfo = __webpack_require__ (10);
 
 class JspReader {
     constructor (str) {
@@ -1868,7 +1071,7 @@ class JspReader {
     }
 
     showP (msg) {
-        // console.log (msg, this.current.line, this.current.col, this.current.cursor, ":end")
+        console.log (msg, this.current.line, this.current.col, this.current.cursor, ":end")
     }
 
     matches (str) {
@@ -2116,7 +1319,7 @@ JspReader.prototype = {
 module.exports = JspReader;
 
 /***/ }),
-/* 15 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /**
@@ -2155,7 +1358,7 @@ var Ut = {
 module.exports = Ut;
 
 /***/ }),
-/* 16 */
+/* 10 */
 /***/ (function(module, exports) {
 
 class TagInfo {
@@ -2190,86 +1393,107 @@ TagInfo.prototype = {
 module.exports = TagInfo;
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports) {
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Created by ghy on 2017/12/1.
+ * Created by ghy on 2018/1/11.
  */
-const lineSeparator = "\n";
+const Node = __webpack_require__(2);
+const Mark = __webpack_require__(1);
 
-class StringWriter  {
-    constructor () {
-        // super ();
-        this.str = "";
+class jspErr {
+    constructor() {
+
     }
-    print(s) {
-        this.str += s;
-        // if (s == null) {
-        //     s = "";
-        // }
-        // this.write(s);
-    }
-    println(x) {
-        if (x != null) {
-            this.print(x);
+
+    static err(node, msg, e) {
+
+        let mark
+        if (node instanceof Node) {
+            mark = node.startMark;
+        } else if (node instanceof Mark) {
+            mark = node;
         }
-        this.write(lineSeparator);
+        if (mark == null) {
+            throw  new Error(msg, e);
+            return;
+        }
+        let line = mark.line;
+        let col = mark.col;
+        let name = mark.name;
+        var msginfo = "ERROR: " + msg + " position:(" + line + "," + col + ")";
+        let tmpText = jspErr.getErrInfo(mark, 2, 2)
+        msginfo += "\r\n" + tmpText;
+        throw  new Error(msginfo);
     }
-    write(s) {
-        this.str += s;
-    }
-    // _write_str (s) {
-    //     this.str += s;
-    // }
-    //
-    // _write_num (s) {
-    //     this.str += s;
-    // }
-    //
-    // _write_bol (s) {
-    //     this.str += s;
-    // }
-    //
-    // _write_obj (s) {
-    //     try {
-    //         this.str += JSON.stringify (s);
-    //     }
-    //     catch (e) {
-    //         this.str += "[Object]";
-    //     }
-    //
-    // }
-    //
-    // _write_arr (s) {
-    //     console.log (s)
-    //     try {
-    //         this.str += JSON.stringify (s);
-    //     }
-    //     catch (e) {
-    //         this.str += "[Array]";
-    //     }
-    // }
 
-    toString () {
-        return this.str;
+    static getErrInfo(mark, preline, nextline) {
+        let sline = Math.max(mark.line - preline, 1)
+        let retstr = "";
+        for (let i = sline; i < mark.line; i++) {
+            let start = Mark.newMark(mark);
+            start.resetLine(i);
+            retstr += ("   " + i + "|" + mark.reader.getTextline(start, i));
+        }
+        let cmark = Mark.newMark(mark);
+        cmark.resetLine(mark.line);
+        retstr += (">> " + cmark.line + "|" + cmark.reader.getTextline(cmark, cmark.line));
+        for (let i = 1; i < nextline; i++) {
+            let start = Mark.newMark(mark);
+            start.resetLine(mark.line + i);
+            retstr += "   " + start.line + "|" + mark.reader.getTextline(start, start.line)
+        }
+        return retstr;
+    }
+
+    static  getErrInfoByNode(node) {
+        var mark = node.startMark;
+        var line = mark.line;
+        var col = mark.col;
+        var name = mark.name;
+        var preline = 2;
+        var nextline = 2;
+        var msginfo = "ERROR: " + " position:(" + line + "," + col + ")\r\n";
+
+        var sline = Math.max(mark.line - preline, 1)
+        var retstr = "";
+        for (let i = sline; i < mark.line; i++) {
+            var start = Mark.newMark(mark);
+            start.resetLine(i);
+            retstr += ("   " + i + "|" + mark.reader.getTextline(start, i));
+        }
+        let cmark = Mark.newMark(mark);
+        cmark.resetLine(mark.line);
+        retstr += (">> " + cmark.line + "|" + cmark.reader.getTextline(cmark, cmark.line));
+        for (let i = 1; i < nextline; i++) {
+            let start = Mark.newMark(mark);
+            start.resetLine(mark.line + i);
+            retstr += "   " + start.line + "|" + mark.reader.getTextline(start, start.line)
+        }
+        var str = (msginfo + retstr).replace(/(\n)/g, "\\n");
+        str = str.replace(/(\r)/g, "\\r");
+        str = str.replace(/(\")/g, "\\\"");
+        str = str.replace(/(\')/g, "\\\'");
+        return str
     }
 }
 
-module.exports = StringWriter;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(19);
+module.exports = jspErr;
 
 
 /***/ }),
-/* 19 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Compiler = __webpack_require__(20)
+module.exports = __webpack_require__(13);
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Compiler = __webpack_require__(14)
 /**
  * 提供给pc 用,主要是与其他模板引擎跑性能对比
  *
@@ -2293,28 +1517,28 @@ if (typeof window != "undefined") {
 module.exports = shtm;
 
 /***/ }),
-/* 20 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Created by ghy on 2017/11/17.
  */
-const Generator = __webpack_require__ (21);
-const JspReader = __webpack_require__ (14);
-const Parser = __webpack_require__ (13);
-const path = __webpack_require__ (3);
-const StringWriter = __webpack_require__ (17);
-const ServletWriter = __webpack_require__ (6)
+const Generator = __webpack_require__(15);
+const JspReader = __webpack_require__(8);
+const Parser = __webpack_require__(24);
+const path = __webpack_require__(3);
+const StringWriter = __webpack_require__(26);
+const ServletWriter = __webpack_require__(7)
 
 // 测试
-const ForEachImpl = __webpack_require__ (11)
-const IfImpl = __webpack_require__ (12)
-const IncludeImpl = __webpack_require__ (33)
-const PageContext = __webpack_require__ (10)
-const Mark = __webpack_require__ (2)
+const ForEachImpl = __webpack_require__(27)
+const IfImpl = __webpack_require__(29)
+const IncludeImpl = __webpack_require__(30)
+const PageContext = __webpack_require__(31)
+const Mark = __webpack_require__(1)
 
 class Compiler {
-    constructor () {
+    constructor() {
     }
 
     /**
@@ -2322,11 +1546,12 @@ class Compiler {
      * @return {fnction}
      *
      * */
-    getFnByStr (tmpstr) {
+    getFnByStr(tmpstr) {
 
-        let pageNodes = this.getPageNode (tmpstr, null);
-        let fnstr = this.getFnStrByPageNode (pageNodes);
-        var rundemo = new Function ('data, option', fnstr);
+        let pageNodes = this.getPageNode(tmpstr, null);
+        let fnstr = this.getFnStrByPageNode(pageNodes);
+        console.log(fnstr);
+        var rundemo = new Function('data, option', fnstr);
 
         var option = {
             ForEachImpl: ForEachImpl,
@@ -2341,28 +1566,28 @@ class Compiler {
                 out: null,
                 PageContext: PageContext,
             }
-            var strs = rundemo.call (data, data, option)
+            var strs = rundemo.call(data, data, option)
             return strs;
         }
     }
 
-    getBaseDir () {
+    getBaseDir() {
     }
 
-    getFnStrByPageNode (pageNodes) {
-        let fn_stringWriter = new StringWriter ();
-        let fn_out = new ServletWriter (fn_stringWriter);
-        Generator.generateFn (this, fn_out, pageNodes);
-        let fnstr = fn_out.toString ();
+    getFnStrByPageNode(pageNodes) {
+        let fn_stringWriter = new StringWriter();
+        let fn_out = new ServletWriter(fn_stringWriter);
+        Generator.generateFn(this, fn_out, pageNodes);
+        let fnstr = fn_out.toString();
 
         return fnstr;
     }
 
-    getPageNode (fileStr, parent) {
+    getPageNode(fileStr, parent) {
         let pageNodes;
-        let reader = new JspReader (fileStr);
+        let reader = new JspReader(fileStr);
         if (reader != null) {
-            pageNodes = Parser.parse (reader, parent)
+            pageNodes = Parser.parse(reader, parent)
         }
         return pageNodes;
     }
@@ -2372,23 +1597,23 @@ class Compiler {
 module.exports = Compiler;
 
 /***/ }),
-/* 21 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Generator = __webpack_require__(22);
-const GenerateVisitor = __webpack_require__(7);
+const Generator = __webpack_require__(16);
+const GenerateVisitor = __webpack_require__(5);
 
 Generator.GenerateVisitor = GenerateVisitor;
 
 module.exports = Generator;
 
 /***/ }),
-/* 22 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const GenerateVisitor = __webpack_require__(7);
-const GenerateVisitor_tree = __webpack_require__(32);
-const ServletWriter = __webpack_require__(6);
+const GenerateVisitor = __webpack_require__(5);
+const GenerateVisitor_tree = __webpack_require__(17);
+const ServletWriter = __webpack_require__(7);
 
 /**
  * @param outpath {String} 输出绝对路径
@@ -2430,7 +1655,7 @@ class Generator {
             service()
         }
         catch (e) {
-            str = e.message;
+           throw  new Error(e);
         }
         function service (n) {`)
     }
@@ -2443,7 +1668,75 @@ class Generator {
 module.exports = Generator;
 
 /***/ }),
-/* 23 */
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+const Node = __webpack_require__(2);
+
+class GenerateVisitor extends Node.Visitor {
+    constructor() {
+        super();
+        this.tagVarNumbers = {};
+        this.tree = [];
+        this.tmp = this.tree;
+    }
+
+    getTree() {
+        return this.tree;
+    }
+
+    /**
+     * 覆盖父类visit 抽象方法
+     */
+    visit(n) {
+        let name = n.name;
+
+         if (n instanceof Node.CustomTag) {
+            let obj = {};
+            obj.name = name;
+            obj.child = [];
+            let gtmp = this.tmp
+            this.tmp.push(obj);
+            this.tmp = obj.child;
+            this.visitBody(n)
+            this.tmp = gtmp;
+        }
+        else if (n instanceof Node.Root) {
+            let obj = {};
+            obj.name = name;
+            obj.child = [];
+            this.tmp.push(obj);
+            let gtmp = this.tmp
+            this.tmp = obj.child;
+            this.visitBody(n)
+            this.tmp = gtmp;
+        } else if (n instanceof Node.TempleteText) {
+            let obj = {};
+            obj.name = name;
+            obj.text=n.text;
+            this.tmp.push(obj);
+        } else if (n instanceof Node.ELExpression) {
+            let obj = {};
+            obj.name = name;
+            this.tmp.push(obj);
+        }
+    }
+}
+
+GenerateVisitor.prototype = {
+    tagVarNumbers: {},
+    parent: "",
+    isFragment: "",
+    methodNesting: 0,
+    arrayCount: 0,
+    textMap: {},
+}
+
+module.exports = GenerateVisitor;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Node = __webpack_require__(0);
@@ -2487,7 +1780,7 @@ CustomTag.prototype = {
 module.exports = CustomTag;
 
 /***/ }),
-/* 24 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Node = __webpack_require__(0);
@@ -2503,7 +1796,7 @@ class TempleteText extends Node {
 module.exports = TempleteText;
 
 /***/ }),
-/* 25 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Node = __webpack_require__ (0);
@@ -2521,7 +1814,7 @@ Root.prototype = {
 module.exports = Root;
 
 /***/ }),
-/* 26 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Node = __webpack_require__(0);
@@ -2542,7 +1835,7 @@ ELExpression.prototype = {
 module.exports = ELExpression;
 
 /***/ }),
-/* 27 */
+/* 22 */
 /***/ (function(module, exports) {
 
 class Visitor {
@@ -2556,50 +1849,7 @@ class Visitor {
 module.exports = Visitor;
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Created by ghy on 2018/1/4.
- */
-
-// const AstCompiler = require("./AstCompiler");
-const jerr = __webpack_require__(4);
-
-class ELparser {
-    static getValue(el, ctx, node) {
-        // return "";
-        return ELparser.getValueByLocal (el, ctx,node);
-        // return ELparser.getValueByAst(el, ctx);
-    }
-
-    // 正规 ast 抽象语法树路线，解释器需要自己写，（目前就实现了基础表达式的解析）。
-    static getValueByAst(el, ctx) {
-        let astCompiler = new AstCompiler(ctx);
-        let value = astCompiler.excute(el);
-        // console.log("el:",el,value,JSON.stringify(ctx))
-        return value;
-    }
-
-    // with 关键字，市面上的模版引擎基本都采用这套方案，代码量少，使用简单，其实最终执行环境还是走AST 那一套
-    static getValueByLocal(el, ctx, node) {
-        let str = "with(ctx){return " + el + "}";
-        let value = null;
-        try {
-            let fn = new Function('ctx', str);
-            let value = fn.call(ctx, ctx) || "";
-            return value;
-        }
-        catch (e) {
-            jerr.err(node, "Elparser.getelValue err")
-        }
-    }
-}
-
-module.exports = ELparser;
-
-/***/ }),
-/* 29 */
+/* 23 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -2789,7 +2039,418 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 30 */
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Created by ghy on 2017/11/17.
+ */
+
+
+const Node = __webpack_require__(2);
+const JspReader = __webpack_require__(8);
+const Ut = __webpack_require__(9);
+const Mark = __webpack_require__(1);
+const Attributes = __webpack_require__(25)
+const TagInfo = __webpack_require__(10);
+const jerr = __webpack_require__(11);
+
+const JSP_BODY_CONTENT_PARAM = "JSP_BODY_CONTENT_PARAM"
+
+class Parser {
+    constructor(reader) {
+        this.reader = reader;
+        this.start = reader.mark();
+    }
+
+    /**
+     * parse 函数入口 非常
+     * @param path {String} 文件绝对路径
+     * @param reader {JspReader} 字符读取处理类实例
+     * @param parent {Node} 字符读取处理类实例
+     * @return {Node.Nodes} page 对象，
+     */
+    static parse(reader, parent) {
+        let parser = new Parser(reader);
+        let root = new Node.Root(reader.mark(), parent);
+        let i = 0;
+        while (reader.hasMoreInput()) {
+            parser.parseElements(root);
+            i++;
+        }
+        let page = new Node.Nodes(root);
+        return page;
+    }
+
+    parseElements(parent) {
+        this.start = this.reader.mark();
+        if (this.reader.matches("${")) {
+            this.parseELExpression(parent, "${")
+        }
+        else if (!this.parseCustomTag(parent)) {
+            this.parseTempleteText(parent);
+        }
+    }
+
+
+    parseTempleteText(parent) {
+
+        // if (!this.reader.hasMoreInput()) {
+        //     return;// 不会执行到这儿，因为上层已经屏蔽了
+        // }
+        let ttext = "";
+        let ch = this.reader.nextChar();
+        if (ch == '\\') {
+            this.reader.pushChar();
+        } else {
+            ttext += ch;
+        }
+        while (this.reader.hasMoreInput()) {
+
+            ch = this.reader.nextChar();
+            if (ch == '<') {
+                let c1 = this.reader.nextChar();
+                if (!this.reader.hasMoreInput()) {
+                    ttext += ch + c1;
+                    break;
+                }
+                let c2 = this.reader.nextChar();
+                if (!this.reader.hasMoreInput()) {
+                    ttext += ch + c1 + c2;
+                    break;
+                }
+                let c3 = this.reader.nextChar();
+                if (!this.reader.hasMoreInput()) {
+                    ttext += ch + c1 + c2 + c3;
+                    break;
+                }
+                if (c1 == 'c' && c2 == ':') {
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    break;
+                } else if (c1 == '/' && c2 == 'c' && c3 == ':') {
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    break;
+                }
+                this.reader.pushChar();
+                this.reader.pushChar();
+                this.reader.pushChar();
+                ttext += ch;
+                continue;
+                // this.reader.pushChar();
+                // break;
+            } else if (ch == '$' || ch == '#') {
+                if (!this.reader.hasMoreInput()) {
+                    ttext += ch;
+                    break;
+                }
+                if (this.reader.nextChar() == '{') {
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    break;
+                }
+                ttext += ch;
+                this.reader.pushChar();
+                continue;
+            }
+            else if (ch == '\\') { // abc\\${123 连个斜杠情况下
+                if (!this.reader.hasMoreInput()) {
+                    ttext += ch;
+                    break;
+                }
+                let next = this.reader.peekChar();
+                if (next == '%' || next == '$' || next == '#') {
+                    ch = this.reader.nextChar();
+                }
+            }
+            ttext += ch;
+        }
+        new Node.TempleteText(ttext, this.start, parent);
+    }
+
+    /**
+     * 解析jsp: 标准语法
+     * */
+    // parseStandardAction(parent) {
+    //     let start = this.reader.mark();
+    //     if (this.reader.matches("include")) {
+    //         this.parseInclude(parent)
+    //     }
+    // }
+
+    /**
+     * 解析<jsp:include>
+     * */
+    // parseInclude(parent) {
+    //     let attrs = this.parseAttributes();
+    //     this.reader.skipSpaces();
+    //     // Node 类型
+    //     let includeNode = new Node.IncludeAction(attrs, this.start, parent);
+    //     this.parseOptionalBody(includeNode, "jsp:include", TagInfo.BODY_CONTENT_PARAM)
+    // }
+
+    parseCustomTag(parent) {
+        // this.reader.showP("Parser.parseCustomTag")
+        if (this.reader.peekChar() != '<') {
+            return false;
+        }
+
+        this.reader.nextChar();
+        // let tagnName = "c:forEach"// 这儿tag 应该从一个方法中获取，暂时写死
+        let tagName = this.reader.parseToken();
+        let i = tagName.indexOf(':');
+        if (i == -1) {
+            this.reader.reset(this.start);
+            return false;
+        }
+        let prefix = tagName.substring(0, i);
+        let shortTagName = tagName.substring(i + 1);
+
+        let attrs = this.parseAttributes();
+        let uri = "";
+        this.reader.skipSpaces();
+        if (this.reader.matches("/>")) {
+            new Node.CustomTag(
+                tagName,
+                prefix,
+                shortTagName,
+                uri,
+                attrs,
+                this.start,
+                parent);
+            return true;
+        }
+        // 有内容
+        let tagNode = new Node.CustomTag(
+            tagName,
+            prefix,
+            shortTagName,
+            uri,
+            attrs,
+            this.start,
+            parent);
+        this.parseOptionalBody(tagNode, tagName, "JSP")
+        return true;
+    }
+
+    /**
+     * ELExpressionBody
+     *  (举个栗子 "${" or "#{"to first unquoted "}")
+     * @param
+     * @return
+     */
+    parseELExpression(parent, typeEL) {
+        this.start = this.reader.mark();
+        let singleQuoted = false;
+        let doubleQuoted = false;
+        let curl = 0;
+        let ch;
+        while (ch != '}' || curl >= 0 || singleQuoted || doubleQuoted) {
+            ch = this.reader.nextChar();
+            if (ch == '\\' && (singleQuoted || doubleQuoted)) {
+                this.reader.nextChar();
+                ch = this.reader.nextChar();
+            }
+            if (ch == null) {
+                jerr.err(this.reader.mark(), "parser.parseELExpression")
+            }
+            if (ch == '"') {
+                doubleQuoted = !doubleQuoted;
+            } else if (ch == '\'') {
+                singleQuoted = !singleQuoted;
+            }
+            else if (ch == '{') {
+                curl++;
+            } else if (ch == '}') {
+                curl--;
+            }
+        }
+        let text = typeEL + this.reader.getText(this.start, this.reader.mark())
+        new Node.ELExpression(text, this.start, parent);
+    }
+
+    parseOptionalBody(parent, tagName, bodyType) {
+        // this.reader.showP("Parser.parseOptionalBody")
+
+        // if (this.reader.matches("/>")) {
+        //     // EmptyBody 一般不会走到这儿
+        //     return;
+        // }
+        if (!this.reader.matches(">")) {
+            jerr.err(this.reader.mark(), "parser.parseOptionalBody")
+        }
+        this.reader.skipSpaces();
+        if (this.reader.matchesETag(tagName)) {
+            // EmptyBody
+            return;
+        }
+        if (!this.parseJspAttributeAndBody(parent, tagName, bodyType)) {
+            // Must be ( '>' # Body ETag )
+            this.parseBody(parent, tagName, bodyType);
+        }
+    }
+
+    /**
+     *先留着吧
+     * */
+    parseJspAttributeAndBody() {
+        let result = false;
+        //todo 这块可以去掉优化
+        return result;
+    }
+
+    /**
+     * 开始解析 foreach 这种自定义标签内部，为了防止程序陷入死循环，加入限制锁，4086,基本上没有网页能有4千个节点
+     *
+     * */
+    parseBody(parent, tag, bodyType) {
+        // throw  new Error ("parsebody");
+        // this.reader.showP("Parser.parseBody  " + tag + " " + bodyType + " " + (bodyType == TagInfo.BODY_CONTENT_JSP))
+        let c = 0;
+        while (this.reader.hasMoreInput() && ++c < 4086) {
+            if (this.reader.matchesETag(tag)) {
+                return;
+            }
+            if (bodyType == TagInfo.BODY_CONTENT_JSP) {
+                this.parseElements(parent);
+            }
+            // else if (bodyType == TagInfo.BODY_CONTENT_PARAM) {
+            //     this.reader.skipSpaces();
+            //     this.parseParam(parent);
+            // }
+        }
+    }
+
+    /**
+     * @param parent {Node}
+     * */
+    // parseParam(parent) {
+    //     if (!this.reader.matches("<jsp:param")) {
+    //         jerr.err(this.reader.mark(), "parser.parseParam err")
+    //
+    //     }
+    //     let attrs = this.parseAttributes();
+    //     this.reader.skipSpaces();
+    //     let paramActionNode = new Node("jsp:param", "param", attrs, this.start, parent);
+    //     this.parseEmptyBody(paramActionNode, "jsp:param");
+    // }
+
+    // parseEmptyBody() {
+    //     if (this.reader.matches("/>")) {
+    //         // done
+    //     }
+    //     else if (this.reader.matches(">")) {
+    //         if (this.reader.matchesETag(tag)) {
+    //
+    //         } else if (this.reader.matchesOptionalSpacesFollowedBy("<jsp:attribute")) {
+    //             this.parseNamedAttributes(parent);
+    //             if (!this.reader.matchesETag(tag)) {
+    //                 jerr.err(this.reader.mark(), "parser.parseEmptyBody err")
+    //             }
+    //         }
+    //         else {
+    //             jerr.err(this.reader.mark(), "parser.parseEmptyBody err")
+    //         }
+    //     }
+    //     else {
+    //         jerr.err(this.reader.mark(), "parser.parseEmptyBody err")
+    //     }
+    // }
+
+    // parseNamedAttributes(parent) {
+    //     // 先不支持吧，回头再写，2：10了
+    //     while (this.reader.matches("<jsp:attribute")) {
+    //         let start = this.reader.mark();
+    //         let attrs = this.parseAttributes();
+    //         if (attr == null || attrs.getValue("name") == null) {
+    //             jerr.err(this.reader.mark(), "parser.parseNamedAttributes err")
+    //         }
+    //     }
+    // }
+
+    /**
+     * @param attrs {Attributes}
+     */
+    parseAttributes() {
+        let attribute = new Attributes();
+        this.reader.skipSpaces();
+        while (this.parseAttribute(attribute)) {
+            this.reader.skipSpaces();
+        }
+        return attribute;
+    }
+
+    parseAttribute(attrs) {
+        let qName = this.parseName();
+        if (qName == null) {
+            return false;
+        }
+        let localName = qName;
+        let index = qName.indexOf(':');
+        if (index != -1) {
+            let prefix = qName.substring(0, index);
+            localName = qName.substring(index + 1);
+        }
+        this.reader.skipSpaces();
+        if (!this.reader.matches("=")) {
+            jerr.err(this.reader.mark(), "parser.parseAttribute err")
+        }
+        this.reader.skipSpaces();
+        let quote = this.reader.nextChar();
+        if (quote != '\'' && quote != '"') {
+            jerr.err(this.reader.mark(), "parser.parsequote err")
+        }
+        let watchString = quote;// java jsp 中 还有 <%=%> 这种情况（此时 watchString=%>"），js 版本中不考虑了
+        let attrValue = this.parseAttributeValue(watchString);
+        attrs.addAttribute(localName, qName, "CDATA", attrValue)
+        return true;
+    }
+
+    parseAttributeValue(watch) {
+        let start = this.reader.mark();
+        let stop = this.reader.skipUntilIgnoreEsc(watch);
+        if (stop == null) {
+            jerr.err(this.reader.mark(), "parser.parseAttributeValue err")
+        }
+        //todo 需要转义 parseQuoted （这一版先不做，不影响功能）
+        // let ret = this.parseQuoted(this.reader.getText(start, stop));
+        let ret = this.reader.getText(start, stop);
+
+        return ret;
+    }
+
+    /**
+     * Name ::= (Letter | '_' | ':') (Letter | Digit | '.' | '_' | '-' | ':')*
+     * @param null
+     * @return {String}
+     */
+
+    parseName() {
+        let ch = this.reader.peekChar();
+        if (Ut.isLetter(ch) || ch == '_' || ch == ':') {
+            let ret = ch;
+            this.reader.nextChar();
+            ch = this.reader.peekChar();
+            while (Ut.isLetter(ch) || Ut.isDigit(ch) || ch == '.' || ch == '_' || ch == ':') {
+                ret += ch;
+                this.reader.nextChar();
+                ch = this.reader.peekChar();
+            }
+            return ret;
+        }
+        return null;
+    }
+}
+
+module.exports = Parser;
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports) {
 
 /*
@@ -2839,104 +2500,369 @@ class Attributes {
 module.exports = Attributes;
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 26 */
+/***/ (function(module, exports) {
 
 /**
  * Created by ghy on 2017/12/1.
  */
+const lineSeparator = "\n";
 
-const ServletWriter = __webpack_require__ (6);
-const StringWriter = __webpack_require__ (17);
-class GenBuffer {
+class StringWriter  {
     constructor () {
-        this.stringWriter = new StringWriter ();
-        this.out = new ServletWriter (this.stringWriter);
+        // super ();
+        this.str = "";
     }
-
-    getOut () {
-        return this.out;
+    print(s) {
+        this.str += s;
+        // if (s == null) {
+        //     s = "";
+        // }
+        // this.write(s);
     }
+    println(x) {
+        if (x != null) {
+            this.print(x);
+        }
+        this.write(lineSeparator);
+    }
+    write(s) {
+        this.str += s;
+    }
+    // _write_str (s) {
+    //     this.str += s;
+    // }
+    //
+    // _write_num (s) {
+    //     this.str += s;
+    // }
+    //
+    // _write_bol (s) {
+    //     this.str += s;
+    // }
+    //
+    // _write_obj (s) {
+    //     try {
+    //         this.str += JSON.stringify (s);
+    //     }
+    //     catch (e) {
+    //         this.str += "[Object]";
+    //     }
+    //
+    // }
+    //
+    // _write_arr (s) {
+    //     console.log (s)
+    //     try {
+    //         this.str += JSON.stringify (s);
+    //     }
+    //     catch (e) {
+    //         this.str += "[Array]";
+    //     }
+    // }
 
     toString () {
-        return this.out.toString ();
+        return this.str;
     }
 }
-module.exports = GenBuffer;
+
+module.exports = StringWriter;
 
 /***/ }),
-/* 32 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
+const TagSupport = __webpack_require__(4);
 
-const Node = __webpack_require__(1);
 
-class GenerateVisitor extends Node.Visitor {
+class ForEachIpml extends TagSupport {
     constructor() {
         super();
-        this.tagVarNumbers = {};
-        this.tree = [];
-        this.tmp = this.tree;
+        this.items = null;
+        this.index = 0;
+        this.indexId = "index";
+        this.count = 1;
+        this.end = -1;
+        this.begin = 0;
+        this.step = 1;
+        this.item = null;
+        this.last = false;
+        this.statusId = null;
+        this.all_len = 0;
+        this.cindex = 0;// 当前索引
     }
 
-    getTree() {
-        return this.tree;
+    hasNext() {
+        return this.items != null && this.items.length > 0;
+    }
+
+    next() {
+        return this.items.shift();
+
+    }
+
+    setItems(o) {
+        this.rawItems = o;
+    }
+
+    setVar(_id) {
+        if (this.pageContext.hasValue(_id)) {
+            this.saveVar = this.pageContext.getAttribute(_id)
+        }
+        this.itemId = _id;
+    }
+
+    resetVar() {
+        if (this.saveVar != null) {
+            this.pageContext.setAttribute(this.itemId, this.saveVar)
+        } else {
+            this.pageContext.removeAttribute(this.itemId)
+        }
+        if (this.saveIndex != null) {
+            this.pageContext.setAttribute(this.indexId, this.saveIndex)
+        } else {
+            this.pageContext.removeAttribute(this.indexId)
+        }
+    }
+
+    setBegin(begin) {
+        if (begin !== null) {
+            this.begin = begin;
+        }
+    }
+
+    setEnd(end) {
+        if (end !== null) {
+            this.end = end;
+        }
+    }
+
+    setIndex(indexId) {
+        if (this.pageContext.hasValue(indexId)) {
+            this.saveIndex = this.pageContext.getAttribute(indexId);
+        }
+        this.indexId = indexId;
+    }
+
+    exposeVariables(firstTime) {
+        if (this.itemId != null) {
+            if (this.getCurrent() == null) {
+            } else if (this.deferredExpression != null) {
+
+            } else {
+                this.pageContext.setAttribute(this.itemId, this.getCurrent())
+                this.pageContext.setAttribute(this.indexId, this.index + 1)
+            }
+        }
+
+    }
+
+    discard(n) {
+        let oldIndex = this.index;
+        while (n-- > 0 && !this.atEnd() && this.hasNext()) {
+            this.index++;
+            this.next();
+        }
+        this.index = oldIndex;
+    }
+
+    doStartTag() {
+
+        if (this.end != -1 && this.begin > this.end) {
+            return
+        }
+        this.index = 0;
+        this.count = 1;
+        this.cindex = 0;// 重置游标
+        this.last = false;
+        this.iteratedExpression = null;
+        this.deferredExpression = null;
+
+        this.prepare();// 数据转换
+        this.all_len = this.items.length;// 重置长度
+
+        // 设置了开始标签，直接从开始标签起步
+        this.discardIgnoreSubset(this.begin);
+        if (this.hasNext()) {
+            this.item = this.next();
+        } else {
+            return this.SKIP_BODY;
+        }
+        this.discard(this.step - 1);
+
+        // 设置临时变量，比如循环中第一个object 赋值为 item
+        this.exposeVariables(true);
+        this.calibrateLast();
+
+        return this.EVAL_BODY_INCLUDE;
+    }
+
+
+    doAfterBody() {
+        this.index += this.step - 1;
+        this.count++;
+        // console.log("开始判断", this.item, this.hasNext(), !this.atEnd(), this.end, this.begin, this.index)
+        if (this.hasNext() && !this.atEnd()) {
+            this.index++;
+            this.item = this.next();
+        } else {
+            this.resetVar();
+            return this.SKIP_BODY;
+        }
+
+        this.discard(this.step - 1)
+        this.exposeVariables(false);
+        this.calibrateLast();
+        return this.EVAL_BODY_AGAIN;
     }
 
     /**
-     * 覆盖父类visit 抽象方法
-     */
-    visit(n) {
-        let name = n.name;
+     * 将 rawItems 转换设置为items
+     * */
+    prepare() {
+        if (this.rawItems != null) {
+            // 数据转换
+            this.rawItems = this.supportedTypeForEachIterator(this.rawItems)
+            this.items = this.rawItems;
 
-         if (n instanceof Node.CustomTag) {
-            let obj = {};
-            obj.name = name;
-            obj.child = [];
-            let gtmp = this.tmp
-            this.tmp.push(obj);
-            this.tmp = obj.child;
-            this.visitBody(n)
-            this.tmp = gtmp;
+        } else {
+            // 没有items 就使用begin ,end
+            this.items = this.beginEndForEachIterator();
         }
-        else if (n instanceof Node.Root) {
-            let obj = {};
-            obj.name = name;
-            obj.child = [];
-            this.tmp.push(obj);
-            let gtmp = this.tmp
-            this.tmp = obj.child;
-            this.visitBody(n)
-            this.tmp = gtmp;
-        } else if (n instanceof Node.TempleteText) {
-            let obj = {};
-            obj.name = name;
-            obj.text=n.text;
-            this.tmp.push(obj);
-        } else if (n instanceof Node.ELExpression) {
-            let obj = {};
-            obj.name = name;
-            this.tmp.push(obj);
+
+    }
+
+    discardIgnoreSubset(n) {
+        while (n-- > 0 && this.hasNext()) {
+            this.next();
         }
+    }
+
+    atEnd() {
+        return ((this.end != -1) && (this.begin + this.index >= this.end));
+    }
+
+    calibrateLast() {
+        this.last = !this.hasNext() || this.atEnd() || (this.end != -1 && (this.begin + this.index + this.step > this.end));
+    }
+
+    beginEndForEachIterator() {
+        let ia = [];
+        for (let i = 0; i <= this.end; i++) {
+            ia[i] = i;
+        }
+        return ia;
+    }
+
+    getCurrent() {
+        return this.item;
+    }
+
+    /**
+     * 遍历数据类型转换
+     * @param o{Object}
+     * */
+    supportedTypeForEachIterator(o) {
+        let ret = [];
+        if (o instanceof Array) {
+            ret = Object.assign([], o);
+        } else if (typeof o == "object") {
+            for (let key in o) {
+                if (typeof o[key] !== "function") {
+                    let obj = {key: key, value: o[key]};
+                    ret.push(obj);
+                }
+            }
+        } else if (typeof o == "string") {
+            ret = o.split(",")
+        } else {
+
+        }
+        return ret;
     }
 }
 
-GenerateVisitor.prototype = {
-    tagVarNumbers: {},
-    parent: "",
-    isFragment: "",
-    methodNesting: 0,
-    arrayCount: 0,
-    textMap: {},
-}
-
-module.exports = GenerateVisitor;
+module.exports = ForEachIpml;
 
 /***/ }),
-/* 33 */
+/* 28 */
+/***/ (function(module, exports) {
+
+class Tag {
+    constructor () {
+        this.SKIP_BODY = 0;
+        this.EVAL_BODY_INCLUDE = 1;
+        this.EVAL_BODY_AGAIN = 2;
+        this.SKIP_PAGE = 5;
+        this.EVAL_PAGE = 6;
+    }
+}
+Tag.prototype = {
+    SKIP_BODY: 0,
+    EVAL_BODY_INCLUDE: 1,
+    EVAL_BODY_AGAIN: 2,
+    SKIP_PAGE: 5,
+    EVAL_PAGE: 6,
+}
+module.exports = Tag;
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const TagSupport = __webpack_require__(5);
+const TagSupport = __webpack_require__(4);
+
+class IfIpml extends TagSupport {
+    constructor() {
+        super();
+        this.test = false;
+        this.result = false;
+        this.var;
+    }
+
+    setTest(el) {
+
+        if (typeof el == "boolean") {
+            this.test = el;
+        } else {
+            this.test = false;
+        }
+    }
+
+    exposeVariables(firstTime) {
+        if (this.var != null) {
+            this.pageContext.setAttribute(this.var, this.result);
+        }
+    }
+
+
+    condition() {
+        return this.test;
+    }
+
+    doStartTag() {
+        this.result = this.condition();
+        this.exposeVariables();
+        if (this.result)
+            return this.EVAL_BODY_INCLUDE;
+        else
+            return this.SKIP_BODY;
+    }
+
+
+    doAfterBody() {
+        return this.SKIP_BODY;
+    }
+
+}
+
+module.exports = IfIpml;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const TagSupport = __webpack_require__(4);
 
 class IncludeIpml extends TagSupport {
     constructor() {
@@ -2956,6 +2882,135 @@ class IncludeIpml extends TagSupport {
 }
 
 module.exports = IncludeIpml;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const PAGE_SCOPE = 1;
+const REQUEST_SCOPE = 2;
+const SESSION_SCOPE = 3;
+const APPLICATION_SCOPE = 4;
+
+const PAGE = "node.jstl.jsPage";
+const REQUEST = "node.jstl.jsRequest";
+const SESSION = "node.jstl.jsSession";
+
+const ELparser = __webpack_require__(32);
+const path = __webpack_require__(3);
+
+class PageContext {
+    constructor(data) {
+        this.data = data;
+        this.attributes = {};
+        this.isNametableInitialized = false;
+    }
+
+    setAttribute(name, attribute) {
+        if (attribute != null) {
+            if (!this.isNametableInitialized) {
+                this.initializePageScopeNameTable();
+            }
+            this.data[name] = attribute;
+        } else {
+            this.data[name] = null;
+        }
+    }
+
+    removeAttribute(name) {
+        this.data[name] = null;
+    }
+
+    hasValue(itemName) {
+        return this.data[itemName] != null;
+    }
+
+    getAttribute(name) {
+        if (!this.isNametableInitialized) {
+            this.initializePageScopeNameTable();
+        }
+        return this.data[name];
+    }
+
+    initializePageScopeNameTable() {
+        // 留着以后扩展吧，暂时用不到
+        this.isNametableInitialized = true;
+        this.setAttribute(PAGE, {})
+        this.setAttribute(REQUEST, {})
+        this.setAttribute(SESSION, {})
+    }
+}
+
+module.exports = PageContext;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Created by ghy on 2018/1/4.
+ */
+
+// const AstCompiler = require("./AstCompiler");
+const jerr = __webpack_require__(11);
+
+class ELparser {
+    static getValue(el, ctx, node) {
+        // return "";
+        return ELparser.getValueByLocal (el, ctx,node);
+        // return ELparser.getValueByAst(el, ctx);
+    }
+
+    // 正规 ast 抽象语法树路线，解释器需要自己写，（目前就实现了基础表达式的解析）。
+    static getValueByAst(el, ctx) {
+        let astCompiler = new AstCompiler(ctx);
+        let value = astCompiler.excute(el);
+        // console.log("el:",el,value,JSON.stringify(ctx))
+        return value;
+    }
+
+    // with 关键字，市面上的模版引擎基本都采用这套方案，代码量少，使用简单，其实最终执行环境还是走AST 那一套
+    static getValueByLocal(el, ctx, node) {
+        let str = "with(ctx){return " + el + "}";
+        let value = null;
+        try {
+            let fn = new Function('ctx', str);
+            let value = fn.call(ctx, ctx) || "";
+            return value;
+        }
+        catch (e) {
+            jerr.err(node, "Elparser.getelValue err")
+        }
+    }
+}
+
+module.exports = ELparser;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Created by ghy on 2017/12/1.
+ */
+
+const ServletWriter = __webpack_require__ (7);
+const StringWriter = __webpack_require__ (26);
+class GenBuffer {
+    constructor () {
+        this.stringWriter = new StringWriter ();
+        this.out = new ServletWriter (this.stringWriter);
+    }
+
+    getOut () {
+        return this.out;
+    }
+
+    toString () {
+        return this.out.toString ();
+    }
+}
+module.exports = GenBuffer;
 
 /***/ })
 /******/ ]);

@@ -3,20 +3,20 @@
  */
 
 
-const Node = require ("../node/Node-Api");
-const JspReader = require ("./JspReader");
-const Ut = require ("./Ut");
-const Mark = require ("./Mark");
-const Attributes = require ("../node/Attributes")
-const TagInfo = require ("../taglib/TagInfo");
-const jerr = require ("../err/Err");
+const Node = require("../node/Node-Api");
+const JspReader = require("./JspReader");
+const Ut = require("./Ut");
+const Mark = require("./Mark");
+const Attributes = require("../node/Attributes")
+const TagInfo = require("../taglib/TagInfo");
+const jerr = require("../err/Err");
 
 const JSP_BODY_CONTENT_PARAM = "JSP_BODY_CONTENT_PARAM"
 
 class Parser {
-    constructor (reader) {
+    constructor(reader) {
         this.reader = reader;
-        this.start = reader.mark ();
+        this.start = reader.mark();
     }
 
     /**
@@ -26,110 +26,107 @@ class Parser {
      * @param parent {Node} 字符读取处理类实例
      * @return {Node.Nodes} page 对象，
      */
-    static parse (reader, parent) {
-        let parser = new Parser (reader);
-        let root = new Node.Root (reader.mark (), parent);
+    static parse(reader, parent) {
+        let parser = new Parser(reader);
+        let root = new Node.Root(reader.mark(), parent);
         let i = 0;
-        while (reader.hasMoreInput ()) {
-            parser.parseElements (root);
+        while (reader.hasMoreInput()) {
+            parser.parseElements(root);
             i++;
         }
-        let page = new Node.Nodes (root);
+        let page = new Node.Nodes(root);
         return page;
     }
 
-    parseElements (parent) {
-
-        this.start = this.reader.mark ();
-        if (this.reader.matches ("${")) {
-            this.parseELExpression (parent, "${")
+    parseElements(parent) {
+        this.start = this.reader.mark();
+        if (this.reader.matches("${")) {
+            this.parseELExpression(parent, "${")
         }
-        // else if (this.reader.matches("<jsp:")) {
-        //     this.parseStandardAction(parent);
-        // }
-        else if (!this.parseCustomTag (parent)) {
-            this.parseTempleteText (parent);
+        else if (!this.parseCustomTag(parent)) {
+            this.parseTempleteText(parent);
         }
     }
 
 
-    parseTempleteText (parent) {
+    parseTempleteText(parent) {
 
         // if (!this.reader.hasMoreInput()) {
         //     return;// 不会执行到这儿，因为上层已经屏蔽了
         // }
         let ttext = "";
-        let ch = this.reader.nextChar ();
+        let ch = this.reader.nextChar();
         if (ch == '\\') {
-            this.reader.pushChar ();
+            this.reader.pushChar();
         } else {
             ttext += ch;
         }
-        while (this.reader.hasMoreInput ()) {
-            ch = this.reader.nextChar ();
+        while (this.reader.hasMoreInput()) {
+
+            ch = this.reader.nextChar();
             if (ch == '<') {
-                let c1 = this.reader.nextChar ();
-                if (!this.reader.hasMoreInput ()) {
-                    ttext += ch+c1;
+                let c1 = this.reader.nextChar();
+                if (!this.reader.hasMoreInput()) {
+                    ttext += ch + c1;
                     break;
                 }
-                let c2 = this.reader.nextChar ();
-                if (!this.reader.hasMoreInput ()) {
-                    ttext += ch+c1+c2;
+                let c2 = this.reader.nextChar();
+                if (!this.reader.hasMoreInput()) {
+                    ttext += ch + c1 + c2;
                     break;
                 }
-                let c3 = this.reader.nextChar ();
-                if (!this.reader.hasMoreInput ()) {
-                    ttext += ch+c1+c2+c3;
+                let c3 = this.reader.nextChar();
+                if (!this.reader.hasMoreInput()) {
+                    ttext += ch + c1 + c2 + c3;
                     break;
                 }
                 if (c1 == 'c' && c2 == ':') {
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
                     break;
                 } else if (c1 == '/' && c2 == 'c' && c3 == ':') {
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
+                    this.reader.pushChar();
                     break;
                 }
-                this.reader.pushChar ();
-                this.reader.pushChar ();
-                this.reader.pushChar ();
+                this.reader.pushChar();
+                this.reader.pushChar();
+                this.reader.pushChar();
                 ttext += ch;
                 continue;
                 // this.reader.pushChar();
                 // break;
-            } else if (ch == '$' || ch == '$') {
-                if (!this.reader.hasMoreInput ()) {
+            } else if (ch == '$' || ch == '#') {
+                if (!this.reader.hasMoreInput()) {
                     ttext += ch;
                     break;
                 }
-                if (this.reader.nextChar () == '{') {
-                    this.reader.pushChar ();
-                    this.reader.pushChar ();
+                if (this.reader.nextChar() == '{') {
+                    this.reader.pushChar();
+                    this.reader.pushChar();
                     break;
                 }
                 ttext += ch;
-                this.reader.pushChar ();
+                this.reader.pushChar();
                 continue;
             }
             else if (ch == '\\') { // abc\\${123 连个斜杠情况下
-                if (!this.reader.hasMoreInput ()) {
+                if (!this.reader.hasMoreInput()) {
                     ttext += ch;
                     break;
                 }
-                let next = this.reader.peekChar ();
+                let next = this.reader.peekChar();
                 if (next == '%' || next == '$' || next == '#') {
-                    ch = this.reader.nextChar ();
+                    ch = this.reader.nextChar();
                 }
             }
             ttext += ch;
         }
-        new Node.TempleteText (ttext, this.start, parent);
+        new Node.TempleteText(ttext, this.start, parent);
     }
 
     /**
@@ -153,28 +150,28 @@ class Parser {
     //     this.parseOptionalBody(includeNode, "jsp:include", TagInfo.BODY_CONTENT_PARAM)
     // }
 
-    parseCustomTag (parent) {
+    parseCustomTag(parent) {
         // this.reader.showP("Parser.parseCustomTag")
-        if (this.reader.peekChar () != '<') {
+        if (this.reader.peekChar() != '<') {
             return false;
         }
 
-        this.reader.nextChar ();
+        this.reader.nextChar();
         // let tagnName = "c:forEach"// 这儿tag 应该从一个方法中获取，暂时写死
-        let tagName = this.reader.parseToken ();
-        let i = tagName.indexOf (':');
+        let tagName = this.reader.parseToken();
+        let i = tagName.indexOf(':');
         if (i == -1) {
-            this.reader.reset (this.start);
+            this.reader.reset(this.start);
             return false;
         }
-        let prefix = tagName.substring (0, i);
-        let shortTagName = tagName.substring (i + 1);
+        let prefix = tagName.substring(0, i);
+        let shortTagName = tagName.substring(i + 1);
 
-        let attrs = this.parseAttributes ();
+        let attrs = this.parseAttributes();
         let uri = "";
-        this.reader.skipSpaces ();
-        if (this.reader.matches ("/>")) {
-            new Node.CustomTag (
+        this.reader.skipSpaces();
+        if (this.reader.matches("/>")) {
+            new Node.CustomTag(
                 tagName,
                 prefix,
                 shortTagName,
@@ -185,7 +182,7 @@ class Parser {
             return true;
         }
         // 有内容
-        let tagNode = new Node.CustomTag (
+        let tagNode = new Node.CustomTag(
             tagName,
             prefix,
             shortTagName,
@@ -193,7 +190,7 @@ class Parser {
             attrs,
             this.start,
             parent);
-        this.parseOptionalBody (tagNode, tagName, "JSP")
+        this.parseOptionalBody(tagNode, tagName, "JSP")
         return true;
     }
 
@@ -203,20 +200,20 @@ class Parser {
      * @param
      * @return
      */
-    parseELExpression (parent, typeEL) {
-        this.start = this.reader.mark ();
+    parseELExpression(parent, typeEL) {
+        this.start = this.reader.mark();
         let singleQuoted = false;
         let doubleQuoted = false;
         let curl = 0;
         let ch;
         while (ch != '}' || curl >= 0 || singleQuoted || doubleQuoted) {
-            ch = this.reader.nextChar ();
+            ch = this.reader.nextChar();
             if (ch == '\\' && (singleQuoted || doubleQuoted)) {
-                this.reader.nextChar ();
-                ch = this.reader.nextChar ();
+                this.reader.nextChar();
+                ch = this.reader.nextChar();
             }
             if (ch == null) {
-                jerr.err (this.reader.mark (), "parser.parseELExpression")
+                jerr.err(this.reader.mark(), "parser.parseELExpression")
             }
             if (ch == '"') {
                 doubleQuoted = !doubleQuoted;
@@ -229,35 +226,35 @@ class Parser {
                 curl--;
             }
         }
-        let text = typeEL + this.reader.getText (this.start, this.reader.mark ())
-        new Node.ELExpression (text, this.start, parent);
+        let text = typeEL + this.reader.getText(this.start, this.reader.mark())
+        new Node.ELExpression(text, this.start, parent);
     }
 
-    parseOptionalBody (parent, tagName, bodyType) {
+    parseOptionalBody(parent, tagName, bodyType) {
         // this.reader.showP("Parser.parseOptionalBody")
 
         // if (this.reader.matches("/>")) {
         //     // EmptyBody 一般不会走到这儿
         //     return;
         // }
-        if (!this.reader.matches (">")) {
-            jerr.err (this.reader.mark (), "parser.parseOptionalBody")
+        if (!this.reader.matches(">")) {
+            jerr.err(this.reader.mark(), "parser.parseOptionalBody")
         }
-        this.reader.skipSpaces ();
-        if (this.reader.matchesETag (tagName)) {
+        this.reader.skipSpaces();
+        if (this.reader.matchesETag(tagName)) {
             // EmptyBody
             return;
         }
-        if (!this.parseJspAttributeAndBody (parent, tagName, bodyType)) {
+        if (!this.parseJspAttributeAndBody(parent, tagName, bodyType)) {
             // Must be ( '>' # Body ETag )
-            this.parseBody (parent, tagName, bodyType);
+            this.parseBody(parent, tagName, bodyType);
         }
     }
 
     /**
      *先留着吧
      * */
-    parseJspAttributeAndBody () {
+    parseJspAttributeAndBody() {
         let result = false;
         //todo 这块可以去掉优化
         return result;
@@ -267,16 +264,16 @@ class Parser {
      * 开始解析 foreach 这种自定义标签内部，为了防止程序陷入死循环，加入限制锁，4086,基本上没有网页能有4千个节点
      *
      * */
-    parseBody (parent, tag, bodyType) {
+    parseBody(parent, tag, bodyType) {
         // throw  new Error ("parsebody");
         // this.reader.showP("Parser.parseBody  " + tag + " " + bodyType + " " + (bodyType == TagInfo.BODY_CONTENT_JSP))
         let c = 0;
-        while (this.reader.hasMoreInput () && ++c < 4086) {
-            if (this.reader.matchesETag (tag)) {
+        while (this.reader.hasMoreInput() && ++c < 4086) {
+            if (this.reader.matchesETag(tag)) {
                 return;
             }
             if (bodyType == TagInfo.BODY_CONTENT_JSP) {
-                this.parseElements (parent);
+                this.parseElements(parent);
             }
             // else if (bodyType == TagInfo.BODY_CONTENT_PARAM) {
             //     this.reader.skipSpaces();
@@ -335,50 +332,50 @@ class Parser {
     /**
      * @param attrs {Attributes}
      */
-    parseAttributes () {
-        let attribute = new Attributes ();
-        this.reader.skipSpaces ();
-        while (this.parseAttribute (attribute)) {
-            this.reader.skipSpaces ();
+    parseAttributes() {
+        let attribute = new Attributes();
+        this.reader.skipSpaces();
+        while (this.parseAttribute(attribute)) {
+            this.reader.skipSpaces();
         }
         return attribute;
     }
 
-    parseAttribute (attrs) {
-        let qName = this.parseName ();
+    parseAttribute(attrs) {
+        let qName = this.parseName();
         if (qName == null) {
             return false;
         }
         let localName = qName;
-        let index = qName.indexOf (':');
+        let index = qName.indexOf(':');
         if (index != -1) {
-            let prefix = qName.substring (0, index);
-            localName = qName.substring (index + 1);
+            let prefix = qName.substring(0, index);
+            localName = qName.substring(index + 1);
         }
-        this.reader.skipSpaces ();
-        if (!this.reader.matches ("=")) {
-            jerr.err (this.reader.mark (), "parser.parseAttribute err")
+        this.reader.skipSpaces();
+        if (!this.reader.matches("=")) {
+            jerr.err(this.reader.mark(), "parser.parseAttribute err")
         }
-        this.reader.skipSpaces ();
-        let quote = this.reader.nextChar ();
+        this.reader.skipSpaces();
+        let quote = this.reader.nextChar();
         if (quote != '\'' && quote != '"') {
-            jerr.err (this.reader.mark (), "parser.parsequote err")
+            jerr.err(this.reader.mark(), "parser.parsequote err")
         }
         let watchString = quote;// java jsp 中 还有 <%=%> 这种情况（此时 watchString=%>"），js 版本中不考虑了
-        let attrValue = this.parseAttributeValue (watchString);
-        attrs.addAttribute (localName, qName, "CDATA", attrValue)
+        let attrValue = this.parseAttributeValue(watchString);
+        attrs.addAttribute(localName, qName, "CDATA", attrValue)
         return true;
     }
 
-    parseAttributeValue (watch) {
-        let start = this.reader.mark ();
-        let stop = this.reader.skipUntilIgnoreEsc (watch);
+    parseAttributeValue(watch) {
+        let start = this.reader.mark();
+        let stop = this.reader.skipUntilIgnoreEsc(watch);
         if (stop == null) {
-            jerr.err (this.reader.mark (), "parser.parseAttributeValue err")
+            jerr.err(this.reader.mark(), "parser.parseAttributeValue err")
         }
         //todo 需要转义 parseQuoted （这一版先不做，不影响功能）
         // let ret = this.parseQuoted(this.reader.getText(start, stop));
-        let ret = this.reader.getText (start, stop);
+        let ret = this.reader.getText(start, stop);
 
         return ret;
     }
@@ -389,16 +386,16 @@ class Parser {
      * @return {String}
      */
 
-    parseName () {
-        let ch = this.reader.peekChar ();
-        if (Ut.isLetter (ch) || ch == '_' || ch == ':') {
+    parseName() {
+        let ch = this.reader.peekChar();
+        if (Ut.isLetter(ch) || ch == '_' || ch == ':') {
             let ret = ch;
-            this.reader.nextChar ();
-            ch = this.reader.peekChar ();
-            while (Ut.isLetter (ch) || Ut.isDigit (ch) || ch == '.' || ch == '_' || ch == ':') {
+            this.reader.nextChar();
+            ch = this.reader.peekChar();
+            while (Ut.isLetter(ch) || Ut.isDigit(ch) || ch == '.' || ch == '_' || ch == ':') {
                 ret += ch;
-                this.reader.nextChar ();
-                ch = this.reader.peekChar ();
+                this.reader.nextChar();
+                ch = this.reader.peekChar();
             }
             return ret;
         }

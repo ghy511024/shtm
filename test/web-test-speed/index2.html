@@ -23,50 +23,50 @@
 
     </script>
     <!-- art-template || ejs || lodash-template || underscore-template -->
-    <script id="art-template" type="text/tmpl">
-<ul>
-    <% for (var i = 0, l = list.length; i < l; i ++) { %>
-        <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
-    <% } %>
-</ul>
+    <div id="art-template" class="tmp">
+        <ul>
+            <%=title %>
+            {{if if_test1}}
+            test1
+            {{/if}}
+            {{each list}}
+               {{each $value.list}}
+                    {{ $value }}
+               {{/each}}
+            {{/each}}
+        </ul>
+    </div>
+
+    <div id="ejs" class="tmp">
+        <ul>
+            <% for (var i = 0, l = list.length; i < l; i ++) { %>
+            <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
+            <% } %>
+        </ul>
 
 
-    </script>
-
-    <script id="ejs" type="text/tmpl">
-<ul>
-    <% for (var i = 0, l = list.length; i < l; i ++) { %>
-        <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
-    <% } %>
-</ul>
-
-
-    </script>
+    </div>
 
 
     <!-- pug -->
-    <script id="Jade" type="text/tmpl">
-ul
-    -for (var i = 0, l = list.length; i < l; i ++) {
+    <div id="Jade" class="tmp">
+        ul
+        -for (var i = 0, l = list.length; i < l; i ++) {
         li User: #{list[i].user} / Web Site: #{list[i].site}
-    -}
-
-
-    </script>
+        -}
+    </div>
 
     <!-- doT -->
-    <script id="doT" type="text/tmpl">
-<ul>
-    {{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
-        <li>User: {{!it.list[i].user}} / Web Site: {{!it.list[i].site}}</li>
-    {{ } }}
-</ul>
-
-
-    </script>
+    <div id="doT" class="tmp">
+        <ul>
+            {{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
+            <li>User: {{!it.list[i].user}} / Web Site: {{!it.list[i].site}}</li>
+            {{ } }}
+        </ul>
+    </div>
 
     <!--Mustache -->
-    <div id="mustache" type="text/tmpl">
+    <div id="mustache" class="tmp">
         <ul>
             {{#list}}
             <li>User: {{user}} / Web Site: {{site}}</li>
@@ -74,7 +74,7 @@ ul
         </ul>
     </div>
 
-    <div id="mustache-raw" type="text/tmpl">
+    <div id="mustache-raw" class="tmp">
         <ul>
             {{#list}}
             <li>User: {{{user}}} / Web Site: {{{site}}}</li>
@@ -83,7 +83,7 @@ ul
     </div>
 
     <!--Handlebars  -->
-    <div id="handlebars" type="text/tmpl">
+    <div id="handlebars" class="tmp">
         <ul>
             {{#list}}
             <li>User: {{user}} / Web Site: {{site}}</li>
@@ -100,25 +100,23 @@ ul
     </div>
 
     <!--swig  -->
-    <div id="swig" type="text/tmpl" class="tmp">
+    <div type="text/html" id="swig" type="text/tmpl" class="tmp">
         <ul>
             {% for key, value in list %}
             <li>User: {{value.user}} / Web Site: {{value.site}}</li>
             {% endfor %}
         </ul>
-
-
     </div>
 
-    <div id="swig-raw" class="tmp">
+    <script type="text/html" id="swig-raw" class="tmp">
         {% for key, value in list %}
         {% autoescape false %}
         <li>User: {{value.user}} / Web Site: {{value.site}}</li>
         {% endautoescape %}
         {% endfor %}
-    </div>
+    </script>
 
-    <div id="shtm" class="tmp">
+    <script type="text/html" id="shtm" class="tmp">
         ${title}
         <c:if test="${test1}">test1</c:if>
         <c:forEach items="${list}" var="item">
@@ -127,7 +125,7 @@ ul
                 -${val}
             </c:forEach>
         </c:forEach>
-    </div>
+    </script>
     <style id="style">
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -153,13 +151,17 @@ ul
         #app ul {
             padding-left: 0;
         }
+
+        .tmp {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
 
 <div id="app"></div>
-<div id="body" class="tmp">
+<script type="text/html" id="body" class="tmp">
     <h1>模版性能测试</h1>
     <div class="header">
         <div class="item">
@@ -167,8 +169,8 @@ ul
                 <label>数据长度:<input type="number" value="${data_length}" id="data_length"></label>
                 <strong>×</strong>
                 <label>执行次数:<input type="number" value="${calls}" id="calls"></label>
-                <label>节点重复次数:<input type="number" value="${node_repeat}" id="node_repeat"> </label>
-                <label>文本填充次数:<input type="number" value="${str_repeat}" id="str_repeat"> </label>
+                <label>节点重复次数:<input type="number" value="0" id="node_repeat"> </label>
+                <label>文本填充次数:<input type="number" value="0" id="str_repeat"> </label>
                 <label>cache 缓存：<input type="checkbox"
                     <c:if test="${cache==true}">checked</c:if>
                     id="cache"> </label>
@@ -187,7 +189,7 @@ ul
             </c:forEach>
         </ul>
     </div>
-</div>
+</script>
 <script>
     window.option = {
         // 列表条数
@@ -220,7 +222,6 @@ ul
             var obj = {};
             var array = hash.split("&") || [];
             for (var i = 0; i < array.length; i++) {
-                console.log(array[i])
                 var item = (array[i] || "").split("=")
                 if (item[0] && item[1]) {
                     if (item[0] == "cache") {
@@ -236,7 +237,6 @@ ul
         var fn = shtm.compile(document.getElementById('body').innerHTML);
         var hashoption = Tool.urlToObj((window.location.hash || "").replace("#", ""));
         window.option = Object.assign(window.option, hashoption)
-        console.log(hashoption, "...");
         document.getElementById('app').innerHTML = fn(window.option);
     })();
 </script>

@@ -9,6 +9,7 @@ const fs = require("fs");
 let data = {
     title: "smart html template",
     if_test1: true,
+    test1:true,
     if_test2: false,
     list: [
         {name: "北京", data: ["朝阳", "海淀"], key: "key1"},
@@ -16,9 +17,8 @@ let data = {
     maps: {key1: "value1", key2: "value2"},
     list2: ["sc", "bj"],
     nameMap: {sc: "四川", bj: "北京"},
-    // _debug:true
+    _debug:true
 }
-
 
 
 var T = {
