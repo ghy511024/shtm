@@ -28,7 +28,7 @@ class Compiler {
 
         let pageNodes = this.getPageNode(tmpstr, null);
         let fnstr = this.getFnStrByPageNode(pageNodes);
-        console.log(fnstr);
+        // console.log(fnstr);
         var rundemo = new Function('data, option', fnstr);
 
         var option = {
