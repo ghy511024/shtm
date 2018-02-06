@@ -1,3 +1,9 @@
-11111111111111
-<c:include page="../header/header.shtm"></c:include>
-22222222222222
+111
+<c:if test="${true}">
+    <script>
+        var a={ss:"${ss}"
+        }
+    </script>
+</c:if>
+
+222

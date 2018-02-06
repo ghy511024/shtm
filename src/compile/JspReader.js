@@ -15,7 +15,7 @@ class JspReader {
     }
 
     showP (msg) {
-        // console.log (msg, this.current.line, this.current.col, this.current.cursor, ":end")
+        console.log (msg, this.current.line, this.current.col, this.current.cursor, ":end")
     }
 
     matches (str) {

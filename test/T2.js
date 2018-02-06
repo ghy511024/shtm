@@ -21,7 +21,8 @@ let data = {
         {list: "3,4"}
     ],
     maps: {key1: "5"},
-    str: "str1,str2,str3,str4"
+    str: "str1,str2,str3,str4",
+    _debug:true
 }
 
 
