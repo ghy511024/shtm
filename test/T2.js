@@ -15,7 +15,8 @@ let data = {
         {name: "四川", data: ["新都", "龙泉", "天府广场"], key: "key2"}],
     maps: {key1: "value1", key2: "value2"},
     list2: ["sc", "bj"],
-    nameMap: {sc: "四川", bj: "北京"}
+    nameMap: {sc: "四川", bj: "北京"},
+    // _debug:true
 }
 
 
@@ -71,6 +72,6 @@ var PC = {
     }
 }
 // C.t1();
-// T.t1();
+T.t1();
 // T.t2 ();
-PC.t1();
+// PC.t1();

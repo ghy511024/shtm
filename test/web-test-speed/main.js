@@ -1,7 +1,5 @@
 var runConf = [
     "art-template",
-    "shtm_d",
-    "shtm_c",
     "shtm",
     "doT",
     "ejs",
@@ -182,12 +180,6 @@ var T = {
         switch (type) {
             case "shtm":
                 fn = shtm.compile(source)
-                break;
-            case "shtm_c":
-                fn = shtm_c.compile(source)
-                break;
-            case "shtm_d":
-                fn = shtm_d.compile(source)
                 break;
             case "art-template":
                 fn = template.compile(source);
