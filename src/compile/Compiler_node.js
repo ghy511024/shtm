@@ -26,9 +26,6 @@ class Compiler {
         this.baseDir = baseDir;
     }
 
-    setTempDir(filename) {
-        this.tempDir = filename.slice(0, fileName.lastIndexOf(path.join("/")));
-    }
 
     getBaseDir() {
         return this.tempDir == "" ? this.baseDir : this.tempDir;
@@ -41,27 +38,33 @@ class Compiler {
      * */
     getFnByFile(fileName) {
         var baseDir = fileName.slice(0, fileName.lastIndexOf(path.join("/")));
+        var shortFileName = fileName.slice(fileName.lastIndexOf(path.join("/")) + 1, fileName.length);
         this.setBaseDir(baseDir);
+        let pageNodes;
+        // try {
+            pageNodes = this.getPageNode(fileName, null);
+        // }
+        // catch (e) {
+        //     console.log("mmmmmmmmmmmmmmm")
+        //     console.log(e);
+        // }
 
-        let pageNodes = this.getPageNode(fileName, null);
         let fnstr = this.getFnStrByPageNode(pageNodes);
+
+        // console.log(fnstr);
         var rundemo = new Function('data, option', fnstr);
 
-        var option = {
-            ForEachImpl: ForEachImpl,
-            IfImpl: IfImpl,
-            pageNodes: pageNodes,
-            PageContext: PageContext
-        }
+        // 走ast 编译，检查错误
         return function (data) {
             var option = {
                 ForEachImpl: ForEachImpl,
                 IfImpl: IfImpl,
                 IncludeImpl: IncludeImpl,
-                out: null,
-                pageNodes: pageNodes,
                 PageContext: PageContext,
-                Mark: Mark
+            }
+            if (data["_debug"] == true) {
+                var outdir = path.join(baseDir, shortFileName + "_debug_.js");
+                fs.writeFileSync(outdir, fnstr);
             }
             var strs = rundemo.call(data, data, option)
             return strs;

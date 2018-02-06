@@ -7,21 +7,18 @@ const shtm_pc = require("../src/shtm-pc");
 const path = require("path");
 const fs = require("fs");
 let data = {
-    // title: "smart html template",
-    // if_test1: true,
-    // if_test2: false,
-    // list: [
-    //     {name: "北京", data: ["朝阳", "海淀"], key: "key1"},
-    //     {name: "四川", data: ["新都", "龙泉", "天府广场"], key: "key2"}],
-    // maps: {key1: "value1", key2: "value2"},
-    // list2: ["sc", "bj"],
-    // nameMap: {sc: "四川", bj: "北京"},
+    title: "smart html template",
+    if_test1: true,
+    test1: true,
+    if_test2: false,
     list: [
-        {list: ["1", "2", 3, 4, 5, 6, 7]},
-        {list: "3,4"}
+        { user: "ss",
+            site: "xixi",}
     ],
-    maps: {key1: "5"},
-    str: "str1,str2,str3,str4"
+    maps: {key1: "value1", key2: "value2"},
+    list2: ["sc", "bj"],
+    nameMap: {sc: "四川", bj: "北京"},
+    _debug: true
 }
 
 
@@ -31,8 +28,8 @@ var T = {
      *
      * */
     t1: function () {
-        // var filename = path.join(__dirname, "./view/demo2.shtm");
-        var filename = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
+        var filename = path.join(__dirname, "./view/home/home.shtm");
+        // var filename = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
         var str = shtm.compile(filename, data);
         console.log(str);
     },
@@ -67,9 +64,9 @@ var C = {
 }
 var PC = {
     t1: function () {
-        var tmpfile = path.join(__dirname, "./view/demo2.shtm");
+        var tmpfile = path.join(__dirname, "./view/home/home.shtm");
+        var outfile = path.join(__dirname, "../src/runtime/out_rundemo.js");
         // var tmpfile = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
-
         var tmpstr = fs.readFileSync(tmpfile, "utf-8")
         var fn = shtm_pc.compile(tmpstr);
         var str = fn(data);
@@ -77,6 +74,6 @@ var PC = {
     }
 }
 // C.t1();
-T.t1();
+// T.t1();
 // T.t2 ();
-// PC.t1();
+PC.t1();

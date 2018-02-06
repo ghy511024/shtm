@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script src="js/handlebars-v4.0.11.js"></script>
+
+    <!--Handlebars  -->
+    <script id="handlebars" type="text/html">
+        <ul>
+            {{#list}}
+            <li>User: {{{user}}} / Web Site: {{{site}}}</li>
+            {{/list}}
+        </ul>
+    </script>
+</head>
+
+<body>
+
+<script>
+    var source   = document.getElementById("handlebars").innerHTML;
+    var template = Handlebars.compile(source);
+
+    var context = {title: "My New Post", body: "This is my first post!"};
+    var html    = template(context);
+    console.log(html)
+</script>
+</body>
+
+</html>

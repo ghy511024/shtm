@@ -34,17 +34,15 @@ class Generator {
     var ForEachImpl = option.ForEachImpl;
     var IfImpl = option.IfImpl;
     var IncludeImpl = option.IncludeImpl;
-    var Mark = option.Mark;
     var pageContext = new option.PageContext(data);
     var ${GenerateVisitor.OUT_STR}="";
     with (data || {}) {
         var out = option.out;
-        var pageNodes = option.pageNodes;
         try {
-            service(pageNodes.list[0])
+            service()
         }
         catch (e) {
-            str = e.message;
+           throw  new Error(e);
         }
         function service (n) {`)
     }

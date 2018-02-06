@@ -8,7 +8,18 @@ class CustomTag extends Node {
         this.uri = uri;
         this.name = "customTag"
         this.outstr = "\"";
+        this.buffer = "";
+    }
 
+    write(s) {
+        this.buffer += s;
+    }
+
+    flush() {
+        // return "333333333333333333333333333333333333333333333333333333"
+        var buffer = this.buffer;
+        this.buffer = "";
+        return buffer;
     }
 }
 

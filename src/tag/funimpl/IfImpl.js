@@ -1,36 +1,36 @@
-const TagSupport = require ("../TagSupport");
+const TagSupport = require("../TagSupport");
 
 class IfIpml extends TagSupport {
-    constructor () {
-        super ();
+    constructor() {
+        super();
         this.test = false;
         this.result = false;
         this.var;
     }
 
-    setTest (el) {
+    setTest(el) {
 
         if (typeof el == "boolean") {
             this.test = el;
-        } else if (typeof el == "string") {
-            this.test = this.pageContext.getElValue (el);
+        } else {
+            this.test = false;
         }
     }
 
-    exposeVariables (firstTime) {
+    exposeVariables(firstTime) {
         if (this.var != null) {
-            this.pageContext.setAttribute (this.var, this.result);
+            this.pageContext.setAttribute(this.var, this.result);
         }
     }
 
 
-    condition () {
+    condition() {
         return this.test;
     }
 
-    doStartTag () {
-        this.result = this.condition ();
-        this.exposeVariables ();
+    doStartTag() {
+        this.result = this.condition();
+        this.exposeVariables();
         if (this.result)
             return this.EVAL_BODY_INCLUDE;
         else
@@ -38,7 +38,7 @@ class IfIpml extends TagSupport {
     }
 
 
-    doAfterBody () {
+    doAfterBody() {
         return this.SKIP_BODY;
     }
 

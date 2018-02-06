@@ -1,1 +1,2 @@
 child1-
+<c:include page="child/child2.shtm"></c:include>

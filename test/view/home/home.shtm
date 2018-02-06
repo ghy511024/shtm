@@ -1,0 +1,5 @@
+<ul>
+    <c:forEach items="${list}" var="item">
+        <li>${item.user}/Web Site:${item.site}</li>
+    </c:forEach>
+</ul>

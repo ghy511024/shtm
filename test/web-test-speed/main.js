@@ -1,9 +1,8 @@
 var runConf = [
     "art-template",
-    "shtm_d",
-    "shtm_c",
     "shtm",
     "doT",
+    "handlebars",
     "ejs",
     "Jade",
     "swig"
@@ -158,7 +157,10 @@ var T = {
                 }
                 html = fn(data);
             }
-            // console.log(type,"=================== 输出:\n",html)
+            // if (option.log === true) {
+            //     console.log(type, "=================== 输出:\n", html)
+            // }
+            // console.log(type, "=================== 输出:\n", html)
             return html;
         }
     }
@@ -170,8 +172,8 @@ var T = {
         };
         for (var i = 0; i < option.data_length; i++) {
             data.list.push({
-                index: i,
-                user: '<strong style="color:red">老王' + i + '</strong>',
+                user: i,
+                site: "xixi",
             });
         }
         return data;
@@ -183,12 +185,6 @@ var T = {
             case "shtm":
                 fn = shtm.compile(source)
                 break;
-            case "shtm_c":
-                fn = shtm_c.compile(source)
-                break;
-            case "shtm_d":
-                fn = shtm_d.compile(source)
-                break;
             case "art-template":
                 fn = template.compile(source);
                 break;
@@ -196,7 +192,7 @@ var T = {
                 fn = doT.template(source);
                 break;
             case "ejs":
-                fn = fn = ejs.compile(source)
+                 fn = ejs.compile(source)
                 break;
             case "Jade":
                 var pug = require('pug');
@@ -205,7 +201,9 @@ var T = {
             case "swig":
                 fn = swig.compile(source);
                 break;
-
+            case "handlebars":
+                fn =Handlebars.compile (source)
+                break;
             default:
                 fn = function () {
                 };

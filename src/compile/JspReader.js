@@ -2,7 +2,6 @@
  * Created by ghy on 2017/11/17.
  */
 const path = require ("path");
-// const fs = require("fs");
 
 const Ut = require ("./Ut");
 const Mark = require ("./Mark");

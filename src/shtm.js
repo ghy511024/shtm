@@ -72,7 +72,7 @@ class SHTM {
      'view engine': 'shtm' }
      *
      * */
-    _express(filename, options, cb) {
+    _express(fileName, options, cb) {
         let retstr;
         try {
             let baseDir = (options.settings || {}).views;

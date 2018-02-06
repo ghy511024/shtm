@@ -28,13 +28,13 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * 覆盖父类visit 抽象方-----+-+法
      */
-    visit(n, i) {
+    visit(n) {
         if (n instanceof Node.CustomTag) {
             this.out.println(OUT_STR + "+=\"" + n.parent.flush() + "\"")
-            this._vCustomTag(n, i);
+            this._vCustomTag(n);
         }
         else if (n instanceof Node.Root) {
-            this._vRoot(n, i);
+            this._vRoot(n);
         } else if (n instanceof Node.TempleteText) {
             this._vTempleteText(n);
         } else if (n instanceof Node.ELExpression) {
@@ -45,7 +45,7 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * 打印根目录
      * */
-    _vRoot(n, i) {
+    _vRoot(n) {
         this.visitBody(n);
         this.out.println(OUT_STR + "+=\"" + n.flush() + "\"")
     }
@@ -53,7 +53,7 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * 技巧处理，存缓存，然后回退打印父类
      */
-    _vCustomTag(n, i) {
+    _vCustomTag(n) {
         let outSave = null;
         let baseVar = this.createTagVarName(n.qName, n.prefix, n.localName)
         let tagEvalVar = "_js_eval_" + baseVar;
@@ -62,8 +62,7 @@ class GenerateVisitor extends Node.Visitor {
         let tagMethod = "_js_meth_" + baseVar;
 
         this.out.println();
-        this.out.print(`if(${tagMethod}(n.body.list[${i}])){return true;}`)
-
+        this.out.print(`if(${tagMethod}()){return true;}`)
         let genBuffer = new GenBuffer();
         this.methodsBuffered.push(genBuffer);
         outSave = this.out;// 存档
@@ -72,14 +71,20 @@ class GenerateVisitor extends Node.Visitor {
         // this.out.print("// 开始输出函数体");
         this.out.println()
         this.out.println(`function ${tagMethod}(n){`)
+        let implName = this.getImplMethName(n);
+        this.out.println(`var ${tagHandlerVar} =new ${implName}();`)
+        this.out.println(`var instance=${tagHandlerVar}`)
         this.out.println(`  try {`)
         this.generateCustomStart(n, tagHandlerVar);
 
         if (n.localName == "include") {
             this._vIncludeAction(n);
+            // this.out.println (OUT_STR + "+=\"" + n.flush () + "\"")
         } else {
             this.visitBody(n);
             this.out.println(OUT_STR + "+=\"" + n.flush() + "\"")
+            // this.out.println(OUT_STR + "+=\"+ item.user+ item.site"  + "\"")
+            // this.out.println(OUT_STR + "+=item.user+ item.site ")
         }
 
         this.generateCustomEnd(n, tagHandlerVar);
@@ -89,16 +94,17 @@ class GenerateVisitor extends Node.Visitor {
     /**
      * include 实现，
      * */
-    _vIncludeAction(n) {
+    _vIncludeAction(n, i) {
         if (this.compiler.getBaseDir() == null || this.compiler.getBaseDir().length == 0) {
             return;
         }
-        let pageNodes = this.compiler.getPageNode(path.join(this.compiler.getBaseDir(), n.attrs.getValue("page")), n.parent);
+        // let pageNodes = this.compiler.getPageNode(path.join(this.compiler.getBaseDir(), n.attrs.getValue("page")), n.parent);
+        let pageNodes = this.compiler.getPageNode(path.join(this.compiler.getBaseDir(), n.attrs.getValue("page")), n);
         if (pageNodes == null) {
             jerr.err("GetnnerateVisitor.visitInclude err")
             return;
         }
-        pageNodes.visit(this);
+        pageNodes.visit(this, (n.parent.body.list.length - 1));
     }
 
 
@@ -150,9 +156,41 @@ class GenerateVisitor extends Node.Visitor {
      *
      * */
     _vELExpression(n) {
-        if (n.parent.write) {
-            n.parent.write("\"+(" + this.getAfterElexpress(n.text) + "==null?\"\":" + this.getAfterElexpress(n.text) + ")+\"");
+        // if (n.parent.write) {
+        var el_test = this.getAfterElexpress(n.text);
+        if (n.parent instanceof Node.CustomTag) {
+            var _val = n.parent.attrs.getValue("var");
+            el_test=el_test.replace(_val,"instance.getItem()");
         }
+        n.parent.write("\"+" + el_test + "+\"");
+        // }
+
+        //     if (n.parent.write) {
+        //         let errinfo = jerr.getErrInfoByNode(n);
+        //         let genBuffer = new GenBuffer();
+        //         this.methodsBuffered.push(genBuffer);
+        //         let baseVar = this.createTagVarName("", "c", "el")
+        //         let tagMethod = "_js_meth_" + baseVar;
+        //         var tag_el = this.getAfterElexpress(n.text)
+        //         let outSave = null;
+        //         n.parent.write("\"+" + tagMethod + "()" + "+\"");
+        //         outSave = this.out;// 存档
+        //         this.out = genBuffer.getOut();
+        //         this.out.println(`
+        // function ${tagMethod}() {
+        //     try {
+        //     if(${tag_el}==null){
+        //     ${tag_el}="";}
+        //         return ${tag_el};
+        //     } catch (e) {
+        //          return "";
+        //          // 暂时不按异常处理，当空处理
+        //         // throw  "${errinfo}";
+        //     }
+        // }`)
+        //         this.out = outSave;
+        //     }
+
     }
 
     /**
@@ -162,23 +200,31 @@ class GenerateVisitor extends Node.Visitor {
      * */
     generateCustomStart(n, tagHandlerVar) {
         this.out.println("//" + n.qName);
-        let implName = this.getImplMethName(n);
+        let errinfo = jerr.getErrInfoByNode(n);// 预先获取错误信息，当异常得时候，可以直接拿出来输出
         this.out.pushIndent();
-        this.out.println(`let ${tagHandlerVar} =new ${implName}();`)
         this.out.println(`${tagHandlerVar}.setPageContext(pageContext);`)
+        // this.out.println(`${tagHandlerVar}.setErrInfo("${errinfo}");`)
         this.generateSetters(n, tagHandlerVar);
         this.out.print(`
-        let each_val = ${tagHandlerVar}.doStartTag();
+        var each_val = ${tagHandlerVar}.doStartTag();
         if (each_val != ${tagHandlerVar}.SKIP_BODY){
          while (true) {`);
     }
 
     generateSetters(n, tagHandlerVar) {
         // this.out.print(`${tagHandlerVar}.setPageContext(pageContext);`);//
+        let genBuffer = new GenBuffer();
+        let outSave = this.out;// 存档
         if (n.localName == "forEach") {
             let valName = this.getAfterElexpress(n.attrs.getValue("items"));
+
+            let baseVar = this.createTagVarName("", "forEach", "el")
+            let tagMethod = "_js_meth_" + baseVar;
+
             this.out.print(`${tagHandlerVar}.setItems(${valName});`);//
+
             this.out.print(`${tagHandlerVar}.setVar("${n.attrs.getValue("var")}");`);//
+
             if (/^\d+$/g.test(n.attrs.getValue("begin"))) {
                 this.out.print(`${tagHandlerVar}.setBegin(${n.attrs.getValue("begin")});`);//
             }
@@ -188,7 +234,6 @@ class GenerateVisitor extends Node.Visitor {
             if (n.attrs.getValue("index") != null && n.attrs.getValue("index").length > 0) {
                 this.out.print(`${tagHandlerVar}.setIndex("${n.attrs.getValue("index")}");`);//
             }
-
         }
         else if (n.localName == "if") {
             let valName = this.getAfterElexpress(n.attrs.getValue("test"));
@@ -198,24 +243,29 @@ class GenerateVisitor extends Node.Visitor {
 
     generateCustomEnd(n, tagHandlerVar) {
         this.out.print(`let evalDoAfterBody = ${tagHandlerVar}.doAfterBody();
-                    if (evalDoAfterBody != ${tagHandlerVar}.EVAL_BODY_AGAIN) {
+                    if (evalDoAfterBody !== 2) {
                         break;
                     }
                 }
             }
-            if (${tagHandlerVar}.doEndTag() == ${tagHandlerVar}.SKIP_PAGE) {
-            return true;
-        }
+        //     if (${tagHandlerVar}.doEndTag() == ${tagHandlerVar}.SKIP_PAGE) {
+        //     return true;
+        // }
       }
       catch(e){
-      var msg = getErrInfo(n);
-      msg += e;
-      ${OUT_STR}=msg;
+        var msg;
+ if(typeof e=="string"){
+ msg=e;
+ }else{
+  msg = ${tagHandlerVar}.getErrInfo();
+ }
+    throw msg;
       return true;
       }
          return false;}
             `)
     }
+
 
     /**
      * 输出结束代码
@@ -233,41 +283,26 @@ class GenerateVisitor extends Node.Visitor {
             let buffer = this.methodsBuffered[i];
             this.out.printMultiLn(buffer.toString());
         }
-        this.genErrFn();// err 处理函数
         this.out.printil("return " + OUT_STR + ";");// with 函数结尾
 
     }
 
-    genErrFn() {
-        var errfn = `
-        function getErrInfo(node) {
-        var mark = node.startMark;
-        var line = mark.line;
-        var col = mark.col;
-        var name = mark.name;
-        var preline = 2;
-        var nextline = 2;
-        var msginfo = "ERROR: " + " position:(" + line + "," + col + ")\\n";
-
-        var sline = Math.max(mark.line - preline, 1)
-        var retstr = "";
-        for (let i = sline; i < mark.line; i++) {
-            var start = Mark.newMark(mark);
-            start.resetLine(i);
-            retstr += ("   " + i + "|" + mark.reader.getTextline(start, i));
+    getElMethod(tagMethod, n, attr_key) {
+        let errinfo = jerr.getErrInfoByNode(n);
+        let genBuffer = new GenBuffer();
+        this.methodsBuffered.push(genBuffer);
+        var tag_el = this.getAfterElexpress(n[attr_key])
+        this.out.println(`
+    function ${tagMethod}() {
+        try {
+        if(${tag_el}==null){
+        ${tag_el}="";
         }
-        let cmark = Mark.newMark(mark);
-        cmark.resetLine(mark.line);
-        retstr += (">> " + cmark.line + "|" + cmark.reader.getTextline(cmark, cmark.line));
-        for (let i = 1; i < nextline; i++) {
-            let start = Mark.newMark(mark);
-            start.resetLine(mark.line + i);
-            retstr += "   " + start.line + "|" + mark.reader.getTextline(start, start.line)
+            return ${tag_el};
+        } catch (e) {
+            throw  "${errinfo}";
         }
-        return msginfo + retstr;
-    }
-        `
-        this.out.printil(errfn);
+    }`)
     }
 
     /**

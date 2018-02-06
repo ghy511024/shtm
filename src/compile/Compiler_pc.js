@@ -28,12 +28,12 @@ class Compiler {
 
         let pageNodes = this.getPageNode(tmpstr, null);
         let fnstr = this.getFnStrByPageNode(pageNodes);
+        // console.log(fnstr);
         var rundemo = new Function('data, option', fnstr);
 
         var option = {
             ForEachImpl: ForEachImpl,
             IfImpl: IfImpl,
-            pageNodes: pageNodes,
             PageContext: PageContext
         }
         return function (data) {
@@ -42,13 +42,14 @@ class Compiler {
                 IfImpl: IfImpl,
                 IncludeImpl: IncludeImpl,
                 out: null,
-                pageNodes: pageNodes,
                 PageContext: PageContext,
-                Mark: Mark
             }
             var strs = rundemo.call(data, data, option)
             return strs;
         }
+    }
+
+    getBaseDir() {
     }
 
     getFnStrByPageNode(pageNodes) {

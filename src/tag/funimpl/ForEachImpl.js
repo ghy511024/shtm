@@ -25,20 +25,24 @@ class ForEachIpml extends TagSupport {
     }
 
     next() {
+        // console.log(this.items[this.cursor], "ghy")
+        var item = this.items[this.cursor];
+        // var item = this.items.shift()
         this.cursor++;
-        return this.items[this.cursor];
-        // return this.items.shift();
+        return item;
 
     }
-
+    getItem(){
+        return this.item;
+    }
     setItems(o) {
         this.rawItems = o;
     }
 
     setVar(_id) {
-        if (this.pageContext.hasValue(_id)) {
-            this.saveVar = this.pageContext.getAttribute(_id)
-        }
+        // if (this.pageContext.hasValue(_id)) {
+        //     this.saveVar = this.pageContext.getAttribute(_id)
+        // }
         this.itemId = _id;
     }
 
@@ -75,16 +79,7 @@ class ForEachIpml extends TagSupport {
     }
 
     exposeVariables(firstTime) {
-        if (this.itemId != null) {
-            if (this.getCurrent() == null) {
-            } else if (this.deferredExpression != null) {
-
-            } else {
-                this.pageContext.setAttribute(this.itemId, this.getCurrent())
-                this.pageContext.setAttribute(this.indexId, this.index + 1)
-            }
-        }
-
+        this.pageContext.setAttribute(this.itemId, this.getCurrent())
     }
 
     discard(n) {
@@ -97,52 +92,46 @@ class ForEachIpml extends TagSupport {
     }
 
     doStartTag() {
-
-        if (this.end != -1 && this.begin > this.end) {
-            return
-        }
-        this.index = 0;
-        this.count = 1;
-        this.cindex = 0;// 重置游标
-        this.last = false;
-        this.iteratedExpression = null;
-        this.deferredExpression = null;
+        // if (this.end != -1 && this.begin > this.end) {
+        //     return
+        // }
+        // this.index = 0;
+        // this.count = 1;
+        // this.cindex = 0;// 重置游标
+        // this.last = false;
+        // this.iteratedExpression = null;
+        // this.deferredExpression = null;
 
         this.prepare();// 数据转换
-        this.all_len = this.items.length;// 重置长度
+        // this.all_len = this.items.length;// 重置长度
 
         // 设置了开始标签，直接从开始标签起步
-        this.discardIgnoreSubset(this.begin);
+        // this.discardIgnoreSubset(this.begin);
         if (this.hasNext()) {
             this.item = this.next();
         } else {
             return this.SKIP_BODY;
         }
-        this.discard(this.step - 1);
+        // this.discard(this.step - 1);
 
         // 设置临时变量，比如循环中第一个object 赋值为 item
         this.exposeVariables(true);
-        this.calibrateLast();
+        // this.calibrateLast();
 
         return this.EVAL_BODY_INCLUDE;
     }
 
 
     doAfterBody() {
-        this.index += this.step - 1;
+        // console.log("22")
         this.count++;
-        // console.log("开始判断", this.item, this.hasNext(), !this.atEnd(), this.end, this.begin, this.index)
-        if (this.hasNext() && !this.atEnd()) {
+        if (this.hasNext()) {
             this.index++;
             this.item = this.next();
         } else {
-            this.resetVar();
             return this.SKIP_BODY;
         }
-
-        this.discard(this.step - 1)
         this.exposeVariables(false);
-        this.calibrateLast();
         return this.EVAL_BODY_AGAIN;
     }
 
@@ -150,10 +139,13 @@ class ForEachIpml extends TagSupport {
      * 将 rawItems 转换设置为items
      * */
     prepare() {
+
         if (this.rawItems != null) {
-            // 数据转换
-            this.rawItems = this.supportedTypeForEachIterator(this.rawItems)
             this.items = this.rawItems;
+            return;
+            // 数据转换
+            // this.rawItems = this.supportedTypeForEachIterator(this.rawItems)
+            // this.items = this.rawItems;
 
         } else {
             // 没有items 就使用begin ,end

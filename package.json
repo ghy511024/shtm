@@ -1,6 +1,6 @@
 {
   "name": "shtm",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "license": "MIT",
   "main": "./src/shtm.js",
   "scripts": {
@@ -19,9 +19,6 @@
   "dependencies": {
   },
   "devDependencies": {
-    "babel-loader": "^7.1.2",
-    "esprima": "^4.0.0",
-    "extract-text-webpack-plugin": "^3.0.2",
     "rimraf": "^2.6.2",
     "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",

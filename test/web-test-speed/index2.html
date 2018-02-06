@@ -10,14 +10,11 @@
     <script src="lib/template-web.js"></script>
     <script src="js/doT.min.js"></script>
     <script src="js/ejs.min.js"></script>
-    <script src="js/handlebars.js"></script>
+    <script src="js/handlebars-v4.0.11.js"></script>
     <script src="js/mustache.min.js"></script>
     <script src="js/pug.min.js"></script>
     <script src="js/swig.min.js"></script>
-    <!--<script src="../../build/shtm.js"></script>-->
-    <script src="../../build/shtm_fn.js"></script>
-    <script src="../../build/shtm_fn_c.js"></script>
-    <script src="../../build/shtm_fn_d.js"></script>
+    <script src="../../build/shtm.js"></script>
 
     <script>
         Highcharts.setOptions({
@@ -25,34 +22,23 @@
         });
 
     </script>
-
-
     <!-- art-template || ejs || lodash-template || underscore-template -->
-    <script id="art-template" type="text/tmpl">
-<ul>
-    <% for (var i = 0, l = list.length; i < l; i ++) { %>
-        <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
-    <% } %>
-</ul>
-
-
-
-
-
+    <script id="art-template" type="text/html">
+        <ul>
+            <% for (var i = 0, l = list.length; i < l; i ++) { %>
+            <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
+            <% } %>
+        </ul>
     </script>
-    <script id="ejs" type="text/tmpl">
-<ul>
-    <% for (var i = 0, l = list.length; i < l; i ++) { %>
-        <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
-    <% } %>
-</ul>
-
-
-
+    <script id="ejs" type="text/html">
+        <ul>
+            <% for (var i = 0, l = list.length; i < l; i ++) { %>
+            <li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
+            <% } %>
+        </ul>
     </script>
 
 
-    <!-- pug -->
     <script id="Jade" type="text/tmpl">
 ul
     -for (var i = 0, l = list.length; i < l; i ++) {
@@ -60,124 +46,75 @@ ul
     -}
 
 
-
-
     </script>
 
     <!-- doT -->
-    <script id="doT" type="text/tmpl">
-<ul>
-    {{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
-        <li>User: {{!it.list[i].user}} / Web Site: {{!it.list[i].site}}</li>
-    {{ } }}
-</ul>
-
-
-
-
+    <script id="doT" type="text/html">
+        <ul>
+            {{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
+            <li>User: {{!it.list[i].user}} / Web Site: {{!it.list[i].site}}</li>
+            {{ } }}
+        </ul>
     </script>
 
     <!--Mustache -->
-    <script id="mustache" type="text/tmpl">
-<ul>
-    {{#list}}
-        <li>User: {{user}} / Web Site: {{site}}</li>
-    {{/list}}
-</ul>
-
-
-
-
+    <script id="mustache" type="text/html">
+        <ul>
+            {{#list}}
+            <li>User: {{user}} / Web Site: {{site}}</li>
+            {{/list}}
+        </ul>
     </script>
 
-    <script id="mustache-raw" type="text/tmpl">
-<ul>
-    {{#list}}
-        <li>User: {{{user}}} / Web Site: {{{site}}}</li>
-    {{/list}}
-</ul>
-
-
-
-
+    <script id="mustache-raw" type="text/html">
+        <ul>
+            {{#list}}
+            <li>User: {{{user}}} / Web Site: {{{site}}}</li>
+            {{/list}}
+        </ul>
     </script>
 
     <!--Handlebars  -->
-    <script id="handlebars" type="text/tmpl">
-<ul>
-    {{#list}}
-        <li>User: {{user}} / Web Site: {{site}}</li>
-    {{/list}}
-</ul>
-
-
-
-
+    <script id="handlebars" type="text/html">
+        <ul>
+            {{#list}}
+            <li>User: {{{user}}} / Web Site: {{{site}}}</li>
+            {{/list}}
+        </ul>
     </script>
 
-    <script id="handlebars-raw" type="text/tmpl">
-<ul>
-    {{#list}}
-        <li>User: {{{user}}} / Web Site: {{{site}}}</li>
-    {{/list}}
-</ul>
-
-
-
-
-    </script>
+    <div id="handlebars-raw" class="tmp">
+        <ul>
+            {{#list}}
+            <li>User: {{{user}}} / Web Site: {{{site}}}</li>
+            {{/list}}
+        </ul>
+    </div>
 
     <!--swig  -->
-    <script id="swig" type="text/tmpl">
-<ul>
-    {% for key, value in list %}
-        <li>User: {{value.user}} / Web Site: {{value.site}}</li>
-    {% endfor %}
-</ul>
-
-
-
-
+    <script type="text/html" id="swig" type="text/tmpl" type="text/html">
+        <ul>
+            {% for key, value in list %}
+            <li>User: {{value.user}} / Web Site: {{value.site}}</li>
+            {% endfor %}
+        </ul>
     </script>
 
-    <script id="swig-raw" type="text/tmpl">
-<ul>
-    {% for key, value in list %}
-        {% autoescape false %}<li>User: {{value.user}} / Web Site: {{value.site}}</li>{% endautoescape %}
-    {% endfor %}
-</ul>
-
-
-
-
+    <script type="text/html" id="swig-raw" class="tmp">
+        <ul>
+            {% for key, value in list %}
+            {% autoescape false %}
+            <li>User: {{value.user}} / Web Site: {{value.site}}</li>
+            {% endautoescape %}
+            {% endfor %}
+        </ul>
     </script>
-    <script id="shtm" type="text/tmpl">
-<ul>
-   <c:forEach items="${list}" var="item">
-    <li>${item.user}/Web Site:${item.site}</li>
-   </c:forEach>
-</ul>
-
+    <script id="shtm" type="text/html">
+        <ul>
+            <c:forEach items="${list}" var="item">
+            <li>${item.user}/Web Site:${item.site}</li></c:forEach>
+        </ul>
     </script>
-
-    <script id="shtm_c" type="text/tmpl">
-<ul>
-   <c:forEach items="${list}" var="item">
-    <li>${item.user}/Web Site:${item.site}</li>
-   </c:forEach>
-</ul>
-
-    </script>
-
-    <script id="shtm_d" type="text/tmpl">
-<ul>
-   <c:forEach items="${list}" var="item">
-    <li>${item.user}/Web Site:${item.site}</li>
-   </c:forEach>
-</ul>
-
-    </script>
-
     <style id="style">
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -203,23 +140,28 @@ ul
         #app ul {
             padding-left: 0;
         }
+
+        .tmp {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
 
 <div id="app"></div>
-<script id="body" type="text/tmpl">
+<script type="text/html" id="body" class="tmp">
     <h1>模版性能测试</h1>
     <div class="header">
         <div class="item">
-        <form id=form>
-            <label>数据长度:<input type="number" value="${data_length}" id="data_length"></label>
-            <strong>×</strong>
-            <label>执行次数:<input type="number" value="${calls}" id="calls"></label>
-            <label>节点重复次数:<input type="number" value="${node_repeat}" id="node_repeat"> </label>
-            <label>文本填充次数:<input type="number" value="${str_repeat}" id="str_repeat"> </label>
-            <label>cache 缓存：<input type="checkbox" <c:if test="${cache==true}">checked</c:if> id="cache"> </label>
+            <form id=form>
+                <label>数据长度:<input type="number" value="${data_length}" id="data_length"></label>
+                <strong>×</strong>
+                <label>执行次数:<input type="number" value="${calls}" id="calls"></label>
+                <label>节点重复次数:<input type="text" value="${node_repeat}" id="node_repeat"> </label>
+                <label>文本填充次数:<input type="text" value="${str_repeat}" id="str_repeat"> </label>
+                <label>cache 缓存：<input type="checkbox" <c:if test="${cache==true}">checked</c:if>
+                    id="cache"> </label>
             </form>
         </div>
         <div class="item">
@@ -230,22 +172,18 @@ ul
     </div>
     <div id="container" style="min-width: 400px; margin: 0 auto">
         <ul>
-        <c:forEach items="${option.testList}" var="item">
-        <li>${item}</li>
-        </c:forEach>
+            <c:forEach items="${option.testList}" var="item">
+                <li>${item}</li>
+            </c:forEach>
         </ul>
     </div>
-
-
-
-
 </script>
 <script>
     window.option = {
         // 列表条数
-        data_length: 1000,
+        data_length: 30000,
         // 渲染次数
-        calls: 100,
+        calls: 1,
         // 是否编码
         escape: true,
         // 填充字符串
@@ -253,7 +191,7 @@ ul
         // 字符串重复数量
         str_repeat: 10,
         // 节点重复数量
-        node_repeat: 2,
+        node_repeat: 0,
         cache: true,
     };
     window.Tool = {
@@ -272,7 +210,6 @@ ul
             var obj = {};
             var array = hash.split("&") || [];
             for (var i = 0; i < array.length; i++) {
-                console.log(array[i])
                 var item = (array[i] || "").split("=")
                 if (item[0] && item[1]) {
                     if (item[0] == "cache") {
@@ -288,7 +225,6 @@ ul
         var fn = shtm.compile(document.getElementById('body').innerHTML);
         var hashoption = Tool.urlToObj((window.location.hash || "").replace("#", ""));
         window.option = Object.assign(window.option, hashoption)
-        console.log(hashoption, "...");
         document.getElementById('app').innerHTML = fn(window.option);
     })();
 </script>

@@ -8,7 +8,7 @@ begin-
 <c:forEach items="${maps}" var="item">
     ${item.value}
 </c:forEach>
--str-
+        -str-
 <c:forEach items="${str}" var="item">
     ${item}
 </c:forEach>
