@@ -16,14 +16,18 @@ class ForEachIpml extends TagSupport {
         this.statusId = null;
         this.all_len = 0;
         this.cindex = 0;// 当前索引
+        this.cursor = 0;
     }
 
     hasNext() {
-        return this.items != null && this.items.length > 0;
+        // return this.items != null && this.items.length > 0;
+        return this.items != null && this.cursor < this.items.length;
     }
 
     next() {
-        return this.items.shift();
+        this.cursor++;
+        return this.items[this.cursor];
+        // return this.items.shift();
 
     }
 

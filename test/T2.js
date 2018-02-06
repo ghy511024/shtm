@@ -17,13 +17,12 @@ let data = {
     // list2: ["sc", "bj"],
     // nameMap: {sc: "四川", bj: "北京"},
     list: [
-        {list: ["1", "2"]},
+        {list: ["1", "2", 3, 4, 5, 6, 7]},
         {list: "3,4"}
     ],
     maps: {key1: "5"},
     str: "str1,str2,str3,str4"
 }
-
 
 
 var T = {
@@ -68,8 +67,8 @@ var C = {
 }
 var PC = {
     t1: function () {
-        // var tmpfile = path.join(__dirname, "./view/demo2.shtm");
-        var tmpfile = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
+        var tmpfile = path.join(__dirname, "./view/demo2.shtm");
+        // var tmpfile = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
 
         var tmpstr = fs.readFileSync(tmpfile, "utf-8")
         var fn = shtm_pc.compile(tmpstr);
