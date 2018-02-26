@@ -23,6 +23,17 @@ describe("Compiler_node", function () {
         str = str.replace(/(?:\s|\n)/g, "");
         expect(str).toBe("begin-1234-map-5-str-str1str2-end");
     });
+    it("foreach-value-null", function () {
+        let p1 = path.join(__dirname, "../demo/custom-forEach_null.shtm");
+        let fn = cp.getFnByFile(p1);
+        var data = {
+            list: undefined,
+            // _debug:true
+        }
+        let str = fn(data);
+        str = str.replace(/(?:\s|\n)/g, "");
+        console.log(str);
+    });
     /**
      * 验证begin end index
      * */

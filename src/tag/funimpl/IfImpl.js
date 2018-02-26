@@ -10,11 +10,12 @@ class IfIpml extends TagSupport {
 
     setTest(el) {
 
-        if (typeof el == "boolean") {
-            this.test = el;
-        } else {
-            this.test = false;
-        }
+        this.test = el;
+        // if (typeof el == "boolean") {
+        //     this.test = el;
+        // } else {
+        //     this.test = false;
+        // }
     }
 
     exposeVariables(firstTime) {

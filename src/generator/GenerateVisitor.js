@@ -204,8 +204,8 @@ class GenerateVisitor extends Node.Visitor {
     }
 
     generateSetters(n, tagHandlerVar) {
-        // this.out.print(`${tagHandlerVar}.setPageContext(pageContext);`);//
         let genBuffer = new GenBuffer();
+        this.methodsBuffered.push(genBuffer);
         let outSave = this.out;// 存档
         if (n.localName == "forEach") {
             let valName = this.getAfterElexpress(n.attrs.getValue("items"));
@@ -213,7 +213,12 @@ class GenerateVisitor extends Node.Visitor {
             let baseVar = this.createTagVarName("", "forEach", "el")
             let tagMethod = "_js_meth_" + baseVar;
 
-            this.out.print(`${tagHandlerVar}.setItems(${valName});`);//
+            // this.out.print(`${tagHandlerVar}.setItems(${valName});`);//
+            this.out.print(`${tagHandlerVar}.setItems(${tagMethod}());`);//
+
+            this.out = genBuffer.getOut();
+            this.getElMethod_forEach(tagMethod, n, valName)
+            this.out = outSave;
 
             this.out.print(`${tagHandlerVar}.setVar("${n.attrs.getValue("var")}");`);//
 
@@ -229,8 +234,17 @@ class GenerateVisitor extends Node.Visitor {
         }
         else if (n.localName == "if") {
             let valName = this.getAfterElexpress(n.attrs.getValue("test"));
+
+            let baseVar = this.createTagVarName("", "if", "el")
+            // let tagMethod = "_js_meth_" + baseVar;
             this.out.print(`${tagHandlerVar}.setTest(${valName});`);//
+            // this.out.print(`${tagHandlerVar}.setTest(${tagMethod}());`);//
+            // this.out = genBuffer.getOut();
+            // this.getElMethod_forEach(tagMethod, n, valName)
+            this.out = outSave;
+
         }
+
     }
 
     generateCustomEnd(n, tagHandlerVar) {
@@ -279,18 +293,31 @@ class GenerateVisitor extends Node.Visitor {
 
     }
 
-    getElMethod(tagMethod, n, attr_key) {
+    getElMethod_forEach(tagMethod, n, tag_el) {
         let errinfo = jerr.getErrInfoByNode(n);
-        let genBuffer = new GenBuffer();
-        this.methodsBuffered.push(genBuffer);
-        var tag_el = this.getAfterElexpress(n[attr_key])
         this.out.println(`
     function ${tagMethod}() {
+    var ret=null;
         try {
-        if(${tag_el}==null){
-        ${tag_el}="";
+        if(typeof ${tag_el}=="undefined"){
+     ret=null
+        }else{
+       ret= ${tag_el}
         }
-            return ${tag_el};
+            return ret;
+        } catch (e) {
+            throw  "${errinfo}";
+        }
+    }`)
+    }
+    getElMethod_if(tagMethod, n, tag_el) {
+        let errinfo = jerr.getErrInfoByNode(n);
+        this.out.println(`
+    function ${tagMethod}() {
+    var ret=false;
+        try {
+    ret=${tag_el};
+            return ret;
         } catch (e) {
             throw  "${errinfo}";
         }

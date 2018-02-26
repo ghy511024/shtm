@@ -9,7 +9,7 @@ describe ("Compiler_include", function () {
     it ("simple demo", function () {
         let p1 = path.join (__dirname, "../demo/comstom-include.shtm");
         let fn = cp.getFnByFile (p1);
-        let str = fn ({ test1: true,_debug:true });
+        let str = fn ({ test1: true });
         str = str.replace (/(?:\s|\n)/g, "");
         expect (str).toBe ("parent-child1-child2-test1");
     });

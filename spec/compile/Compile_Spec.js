@@ -29,8 +29,8 @@ describe("Compiler_node", function () {
         expect(str).not.toMatch("t2");
         expect(str).not.toMatch("t3");
         expect(str).toMatch("t4");
-        expect(str).not.toMatch("t5");
-        expect(str).not.toMatch("t6");
+        expect(str).toMatch("t5");
+        expect(str).toMatch("t6");
         expect(str).toMatch("t7");
     });
 })

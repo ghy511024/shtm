@@ -1,0 +1,8 @@
+begin-
+<c:forEach items="${list}" var="item">
+mid
+</c:forEach>
+end
+<c:forEach items="${list2}" var="item">
+   后台并未传(list2)此数据，应该当空,忽略处理而不是报异常
+</c:forEach>

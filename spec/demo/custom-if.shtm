@@ -5,3 +5,4 @@
 <c:if test="${test3}">t5</c:if>
 <c:if test="${'xixihaha'}">t6</c:if>
 <c:if test="${'xixihaha'.length>0}">t7</c:if>
+<c:if test="${typeof value_null!='undefined'}">t8</c:if>
