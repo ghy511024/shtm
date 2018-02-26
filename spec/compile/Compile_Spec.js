@@ -23,7 +23,7 @@ describe("Compiler_node", function () {
     it("custom-if", function () {
         let p1 = path.join(__dirname, "../demo/custom-if.shtm");
         let fn = cp.getFnByFile(p1);
-        let str = fn({test1: true, test2: false, test3: 1});
+        let str = fn({test1: true, test2: false, test3: 1,_debug:true});
         str = str.replace(/(?:\s|\n)/g, "");
         expect(str).toMatch("t1");
         expect(str).not.toMatch("t2");

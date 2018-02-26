@@ -1,7 +1,3 @@
-${title}
-=========before==========
-<c:forEach items="${list}" var="title" begin="0" end="0" index="index">
-    ${index}-${title.name}-
-</c:forEach>
-=========after==========
-${title}-${index}
+
+
+${user.real_name || user.name || '-'}

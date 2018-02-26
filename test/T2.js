@@ -40,7 +40,7 @@ var T = {
     },
     // 将js 文件解析执行，调试用
     t2: function () {
-        const cp = new Compiler();
+        const cp = new Compiler_node();
         var tmpfile = path.join(__dirname, "./view/demo2.shtm");
         var fnfile = path.join(__dirname, "../src/runtime/out_rundemo.js");
 
@@ -59,7 +59,7 @@ var C = {
         const cp = new Compiler_node();
         // var filename = path.join(__dirname, "./view/demo_include.shtm");
         // var filename = path.join(__dirname, "./view/demo2.shtm");
-        var filename = path.join(__dirname, "../spec/demo/custom-forEach_simple.shtm");
+        var filename = path.join(__dirname,  "./view/demo2.shtm");
         var outfile = path.join(__dirname, "../src/runtime/out_rundemo.js");
         let pagenode = cp.getPageNode(filename);
         var fnstr = cp.getFnStrByPageNode(pagenode);
@@ -78,7 +78,7 @@ var PC = {
         console.log(str)
     }
 }
-// C.t1();
-T.t1();
+C.t1();
+// T.t1();
 // T.t2 ();
 // PC.t1();
