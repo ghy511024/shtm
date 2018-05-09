@@ -4,17 +4,17 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Template Engine Rendering Speed Test</title>
-    <script src="js/jquery-1.7.2.min.js"></script>
-    <script src="js/highcharts.js"></script>
+    <script src="speedTest/js/jquery-1.7.2.min.js"></script>
+    <script src="speedTest/js/highcharts.js"></script>
 
-    <script src="lib/template-web.js"></script>
-    <script src="js/doT.min.js"></script>
-    <script src="js/ejs.min.js"></script>
-    <script src="js/handlebars-v4.0.11.js"></script>
-    <script src="js/mustache.min.js"></script>
-    <script src="js/pug.min.js"></script>
-    <script src="js/swig.min.js"></script>
-    <script src="../../build/shtm.js"></script>
+    <script src="speedTest/js/template-web.js"></script>
+    <script src="speedTest/js/doT.min.js"></script>
+    <script src="speedTest/js/ejs.min.js"></script>
+    <script src="speedTest/js/handlebars-v4.0.11.js"></script>
+    <script src="speedTest/js/mustache.min.js"></script>
+    <script src="speedTest/js/pug.min.js"></script>
+    <script src="speedTest/js/swig.min.js"></script>
+    <script src="build/shtm.js"></script>
 
     <script>
         Highcharts.setOptions({
@@ -44,8 +44,6 @@ ul
     -for (var i = 0, l = list.length; i < l; i ++) {
         li User: #{list[i].user} / Web Site: #{list[i].site}
     -}
-
-
     </script>
 
     <!-- doT -->
@@ -228,7 +226,7 @@ ul
         document.getElementById('app').innerHTML = fn(window.option);
     })();
 </script>
-<script src="main.js"></script>
+<script src="speedTest/main.js"></script>
 </body>
 
 </html>
