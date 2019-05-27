@@ -79,7 +79,11 @@ class SHTM {
             if (baseDir != null && this.cp.baseDir == null) {
                 this.cp.setBaseDir(baseDir);
             }
-            let fn = this.compileFileTofn(fileName, false);// 暂时不加缓存
+            let cache = true;
+            if (options['settings']['env'] == 'development') {
+                cache = false
+            }
+            let fn = this.compileFileTofn(fileName, cache);// 暂时不加缓存
             retstr = fn(options);
             if (typeof cb === "function") {
                 cb(null, retstr);
