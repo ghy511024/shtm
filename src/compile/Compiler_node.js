@@ -43,7 +43,6 @@ class Compiler {
         let pageNodes = this.getPageNode (fileName, null);
         let fnstr = this.getFnStrByPageNode (pageNodes);
         var rundemo = new Function ('data, option', fnstr);
-
         return function (data) {
             var option = {
                 ForEachImpl: ForEachImpl,

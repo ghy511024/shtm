@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shtm</title>
+</head>
+<body>
+
+<!--ejs-->
+<ul>
+    <% users.forEach(function(user){ %>
+    <%- include('user/show', {user: user}); %>
+    <% }); %>
+</ul>
+
+<!--art-template-->
+{{each list}}
+<li>{{$index}} {{$value}}</li>
+{{/each}}
+
+<!--handlebars-->
+<ul>
+    {{#each people}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+
+<!--jstl-->
+<ul>
+    <forEach items="${list}" var="item">
+        <li>name:${item.name}</li>
+    </forEach>
+</ul>
+
+</body>
+</html>

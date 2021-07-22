@@ -171,9 +171,6 @@ class GenerateVisitor extends Node.Visitor {
             this.out.println(`
     function ${tagMethod}() {
         try {
-        if(typeof (${tag_el})=='undefined'||(${tag_el})==null){
-            return "";
-        }
             return ${tag_el};
         } catch (e) {
              return "";

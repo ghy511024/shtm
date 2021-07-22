@@ -45,7 +45,7 @@ class SHTM {
         } else {
             fn = this.cp.getFnByFile(filename)
         }
-
+        console.log(fn.toString())
         return fn;
     }
 
@@ -83,7 +83,7 @@ class SHTM {
             if (options['settings']['env'] == 'development') {
                 cache = false
             }
-            let fn = this.compileFileTofn(fileName, cache);// 暂时不加缓存
+            let fn = this.compileFileTofn(fileName, cache);
             retstr = fn(options);
             if (typeof cb === "function") {
                 cb(null, retstr);

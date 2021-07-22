@@ -1,6 +1,6 @@
 {
   "name": "shtm",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "license": "MIT",
   "main": "./src/shtm.js",
   "scripts": {
@@ -14,10 +14,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:ghy511024/shtm.git"
+    "url": "git+ssh://git@github.com:ghy511024/shtm.git",
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "rimraf": "^2.6.2",
     "coveralls": "^3.0.0",
